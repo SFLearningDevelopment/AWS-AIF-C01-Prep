@@ -65,14 +65,14 @@ body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-ser
 /* SF auth gate — Google SSO (hd: sourcefuse.com, redirect) + email/password.
    Reuses sfcertification-grafana. PASTE the live config below per the golden rule. */
 (function () {
-  const firebaseConfig = {
-    apiKey: "PASTE_API_KEY",
-    authDomain: "sfcertification-grafana.firebaseapp.com",
-    projectId: "sfcertification-grafana",
-    storageBucket: "sfcertification-grafana.appspot.com",
-    messagingSenderId: "PASTE_SENDER_ID",
-    appId: "PASTE_APP_ID"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyC-I-IOCq2fCwa471fsD5xOn6SYQSBDp7Q",
+  authDomain: "sfcertification-grafana.firebaseapp.com",
+  projectId: "sfcertification-grafana",
+  storageBucket: "sfcertification-grafana.firebasestorage.app",
+  messagingSenderId: "227322696511",
+  appId: "1:227322696511:web:12e7ced7dd3d45fa06798a"
+};
   const ALLOWED_DOMAIN = "sourcefuse.com";
   const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
   let auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn, appMod;
