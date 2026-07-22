@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072204 -->
+<!-- build: 2026072205 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 1 (Basic)</title>
@@ -93,9 +93,9 @@ window.AIF_BANK_SET1 = [
   "q": "Which statement best distinguishes machine learning from traditional rule-based programming?",
   "o": [
    "ML requires the programmer to hand-code every decision path",
-   "ML cannot be used for prediction tasks",
+   "ML cannot be used for prediction tasks and is limited to describing data that has already been collected",
    "ML learns patterns from data rather than relying on explicitly written rules",
-   "ML only works on numeric data"
+   "ML only works on purely numeric data and cannot be applied to text, images, or other kinds of input"
   ],
   "a": 2,
   "e": "The defining trait of ML is that behavior is learned from data rather than explicitly coded as rules. Rule-based systems require hand-written logic; ML infers it. ML handles many data types and is widely used for prediction."
@@ -128,10 +128,10 @@ window.AIF_BANK_SET1 = [
   "d": 2,
   "q": "In generative AI, what is a 'token'?",
   "o": [
-   "A security credential for the model API",
+   "A security credential used to authenticate requests to the model API before any text can be processed",
    "A unit of text (such as a word fragment) the model processes",
-   "A billing unit unrelated to text",
-   "A trained copy of the model"
+   "A billing unit used only for invoicing that has no relationship to the text a model reads or generates",
+   "A fully trained copy of the model that is distributed to each user session when a request is made"
   ],
   "a": 1,
   "e": "A token is a chunk of text — often a word or sub-word fragment — that the model reads and generates. Model input/output length and often pricing are measured in tokens. It is not a credential or a model copy."
@@ -152,9 +152,9 @@ window.AIF_BANK_SET1 = [
   "d": 2,
   "q": "What does a 'foundation model' refer to in generative AI?",
   "o": [
-   "A small model trained for one narrow task",
-   "A rule engine that validates outputs",
-   "A database of prompt templates",
+   "A small, specialized model trained from scratch for one narrow task and not reusable for anything else",
+   "A deterministic rule engine that validates and post-processes the outputs produced by another system",
+   "A curated database of reusable prompt templates that applications select from at request time",
    "A large model pre-trained on broad data that can be adapted to many tasks"
   ],
   "a": 3,
@@ -176,10 +176,10 @@ window.AIF_BANK_SET1 = [
   "d": 2,
   "q": "Which is a realistic limitation of generative AI models that users should plan for?",
   "o": [
-   "They can never produce fluent text",
+   "They can never produce fluent, natural-sounding text and always read as obviously machine-generated",
    "They may produce confident but factually incorrect output (hallucination)",
-   "They cannot accept text prompts",
-   "They always cite sources automatically"
+   "They cannot accept free-form text prompts and must be driven entirely through structured API fields",
+   "They always cite their sources automatically, so every claim they make can be verified without extra work"
   ],
   "a": 1,
   "e": "Generative models can 'hallucinate' — produce fluent, confident, but incorrect content. They do produce fluent text and accept prompts, and they do not automatically provide reliable citations without added grounding."
@@ -236,10 +236,10 @@ window.AIF_BANK_SET1 = [
   "d": 3,
   "q": "Which best describes 'prompt engineering'?",
   "o": [
-   "Retraining a model's internal weights",
-   "Encrypting the prompt before sending it",
+   "Retraining and updating a model's internal weights on new data so it behaves differently next time",
+   "Encrypting the prompt before sending it to the model so the input text stays private in transit",
    "Crafting and structuring inputs to guide a model toward better outputs",
-   "Compressing the model to run on smaller hardware"
+   "Compressing the model so it can run on smaller, cheaper hardware without a large accelerator"
   ],
   "a": 2,
   "e": "Prompt engineering is designing the wording, structure, and context of inputs to steer model output — no weight changes involved. Retraining, encryption, and model compression are different activities."
@@ -320,10 +320,10 @@ window.AIF_BANK_SET1 = [
   "d": 4,
   "q": "Why is keeping a 'human in the loop' valuable for higher-risk AI decisions?",
   "o": [
-   "It removes the need for any monitoring",
+   "It removes the need for any ongoing monitoring, since a person has already checked the system once",
    "It lets a person review or override outputs before harmful action is taken",
-   "It guarantees the model never makes errors",
-   "It eliminates the need for training data"
+   "It guarantees the model will never make errors, because a person signs off on every prediction it makes",
+   "It eliminates the need for quality training data, since a human reviewer compensates for any gaps"
   ],
   "a": 1,
   "e": "Human-in-the-loop adds oversight so a person can catch and correct problematic outputs before impact. It does not remove monitoring needs, guarantee perfection, or eliminate the need for data."
@@ -344,9 +344,9 @@ window.AIF_BANK_SET1 = [
   "d": 5,
   "q": "A company must ensure prompts and data sent to a foundation model are not used to train the base model and stay within their control. Which practice supports this?",
   "o": [
-   "Raising the temperature setting",
-   "Increasing the max token limit",
-   "Switching to a larger instance type",
+   "Raising the sampling temperature setting so that prompts are handled without being retained by the service",
+   "Increasing the maximum token limit so that longer prompts are processed without being used for training",
+   "Switching to a larger, more powerful instance type so the data stays within the customer's own control",
    "Reviewing the service's data privacy and usage terms"
   ],
   "a": 3,
