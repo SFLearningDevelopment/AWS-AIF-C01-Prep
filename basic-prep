@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<!-- build: 2026072201 -->
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIF-C01 Prep — Set 2 (Intermediate to Advanced)</title>
+<style>
+:root{--blue:#1a6eb5;--blue-d:#12507f;--ink:#1a2733;--mut:#5a6b7a;--line:#e2e8ef;--ok:#127a3e;--no:#b5341a;--amber:#8a5a00;--amber-bg:#fff6e0;--bg:#f5f8fb;}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+.aif-wrap{max-width:760px;margin:0 auto;padding:28px 20px 60px}
+.aif-head{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.aif-badge{background:var(--blue);color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:20px;letter-spacing:.3px}
+.aif-head small{color:var(--mut)}
+.aif-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:0 1px 3px rgba(20,50,80,.05)}
+h1{font-size:22px;margin:0 0 6px}
+.aif-sub{color:var(--mut);margin:0 0 18px}
+.aif-meta{list-style:none;padding:0;margin:0 0 22px}
+.aif-meta li{padding:8px 0;border-bottom:1px solid var(--line);color:var(--mut);font-size:14px}
+.aif-topbar{display:flex;justify-content:space-between;font-size:13px;color:var(--mut);margin-bottom:10px;font-weight:600}
+.aif-progress{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:18px}
+.aif-progress-fill{height:100%;background:var(--blue);transition:width .3s}
+.aif-domain{display:inline-block;font-size:12px;font-weight:700;color:var(--blue-d);background:#eaf3fb;padding:3px 10px;border-radius:12px;margin-bottom:12px}
+.aif-annot{background:var(--amber-bg);border:1px solid #f0d488;color:var(--amber);padding:10px 12px;border-radius:8px;font-size:13.5px;margin-bottom:14px}
+.aif-q{font-size:16.5px;font-weight:600;margin-bottom:18px}
+.aif-opts{display:flex;flex-direction:column;gap:10px}
+.aif-opt{display:flex;align-items:flex-start;gap:10px;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:13px 14px;font-size:14.5px;cursor:pointer;transition:.15s;color:var(--ink);font-family:inherit}
+.aif-opt:hover:not(.locked){border-color:var(--blue);background:#f7fbff}
+.aif-letter{background:var(--bg);border:1px solid var(--line);border-radius:6px;min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.aif-opt.correct{border-color:var(--ok);background:#eefaf1}
+.aif-opt.correct .aif-letter{background:var(--ok);color:#fff;border-color:var(--ok)}
+.aif-opt.wrong{border-color:var(--no);background:#fdeeeb}
+.aif-opt.wrong .aif-letter{background:var(--no);color:#fff;border-color:var(--no)}
+.aif-opt.locked{cursor:default}
+.aif-expl{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px}
+.aif-expl.ok{background:#eefaf1;border:1px solid #bfe6cc}
+.aif-expl.no{background:#fdeeeb;border:1px solid #f2c6bd}
+.aif-nav{margin-top:18px}
+.aif-next{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.aif-next:hover{background:var(--blue-d)}
+.aif-next:disabled{background:#b9c6d2;cursor:not-allowed}
+.aif-reset{display:block;margin-top:14px;background:none;border:0;color:var(--mut);font-size:13px;cursor:pointer;text-decoration:underline;font-family:inherit}
+.aif-result{text-align:center}
+.aif-score{font-size:44px;font-weight:800;color:var(--blue)}
+.aif-pct{font-size:18px;color:var(--mut);margin-bottom:8px}
+.aif-verdict{font-size:14.5px;margin:12px 0 20px;color:var(--ink)}
+.aif-break{text-align:left;background:var(--bg);border-radius:10px;padding:14px 16px;margin:18px 0}
+.aif-break-title{font-weight:700;font-size:13px;margin-bottom:8px;color:var(--blue-d)}
+.aif-break-row{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0;border-bottom:1px solid var(--line)}
+.aif-break-row:last-child{border-bottom:0}
+.aif-foot{text-align:center;color:var(--mut);font-size:12px;margin-top:24px}
+</style></head>
+<body><div class="aif-wrap">
+<div class="aif-head"><span class="aif-badge">AIF-C01 · SET 2</span><small>Intermediate to Advanced · AWS Certified AI Practitioner readiness</small></div>
+<div class="aif-card"><div id="aif2"></div></div>
+<div class="aif-foot">Original practice items aligned to the AIF-C01 exam domains. Not affiliated with or endorsed by AWS. For internal SF Knowledge Hub prep only.</div>
+</div>
+<script>
+// AIF-C01 Prep — Set 2 (Intermediate to Advanced)
+// Original scenario-based MCQs. Domain distribution mirrors AIF-C01 weightings.
+// Answer positions balanced across A-D to avoid position bias.
+window.AIF_BANK_SET2 = [
+ {
+  "d": 1,
+  "q": "A fraud team has millions of transactions but only ~0.3% are labeled fraudulent. A model trained on this data reports 99.7% accuracy yet misses almost all fraud. What is the core problem and a sound fix?",
+  "o": [
+   "Severe class imbalance is inflating accuracy; use metrics like recall/precision and rebalancing or class weighting",
+   "The model is underfitting; raise its complexity",
+   "The temperature is too low; increase it",
+   "The dataset is too small; the only fix is collecting labeled data for years"
+  ],
+  "a": 0,
+  "e": "With 0.3% positives, a model can hit 99.7% accuracy by predicting 'not fraud' every time — accuracy is misleading under class imbalance. The right response is to evaluate with recall/precision/F1 and address imbalance (resampling, class weights, thresholds). Temperature applies to generative sampling, not this classifier, and complexity alone won't fix a metric/imbalance problem."
+ },
+ {
+  "d": 1,
+  "q": "A team must choose between a simple, highly interpretable model and a complex model with slightly higher accuracy for a regulated credit decision. Which trade-off is most relevant to weigh?",
+  "o": [
+   "Token cost vs. context window",
+   "Interpretability/explainability vs. marginal accuracy gain",
+   "Batch vs. real-time inference latency only",
+   "Supervised vs. unsupervised labeling cost only"
+  ],
+  "a": 1,
+  "e": "In regulated decisions affecting people, the interpretability-versus-accuracy trade-off is central: a small accuracy gain may not justify losing the ability to explain and justify decisions. The other trade-offs exist but are not the governing concern for a regulated credit decision."
+ },
+ {
+  "d": 1,
+  "q": "During evaluation, a classifier shows high precision but low recall on the positive class. What does this indicate?",
+  "o": [
+   "It labels almost everything positive",
+   "It is perfectly calibrated",
+   "When it predicts positive it is usually right, but it misses many true positives",
+   "Its accuracy must also be high"
+  ],
+  "a": 2,
+  "e": "High precision means positive predictions are usually correct; low recall means many actual positives are missed. Labeling everything positive would lower precision. Calibration and overall accuracy are separate properties."
+ },
+ {
+  "d": 1,
+  "q": "A company wants a managed way to label a large image dataset using human annotators plus automation. Which SageMaker capability fits?",
+  "o": [
+   "SageMaker Model Monitor",
+   "SageMaker Neo",
+   "SageMaker Feature Store",
+   "SageMaker Ground Truth"
+  ],
+  "a": 3,
+  "e": "SageMaker Ground Truth manages data labeling workflows combining human labelers with automation. Model Monitor watches deployed models for drift, Neo compiles models for edge devices, and Feature Store manages features — none handle labeling."
+ },
+ {
+  "d": 2,
+  "q": "An application must return answers strictly grounded in a fixed policy document and must minimize hallucination, but the policy changes weekly. Which design is most appropriate?",
+  "o": [
+   "Use RAG so the latest policy is retrieved at query time as grounding context",
+   "Fine-tune the model weekly on the policy",
+   "Increase temperature to encourage creative answers",
+   "Cache one answer and reuse it for all questions"
+  ],
+  "a": 0,
+  "e": "RAG retrieves the current policy at query time, so weekly changes are reflected without retraining and answers stay grounded — reducing hallucination. Weekly fine-tuning is slow and costly for frequently changing text, higher temperature increases variability, and caching a single answer ignores question variety."
+ },
+ {
+  "d": 2,
+  "q": "A team compares two foundation models for a summarization feature and needs a repeatable, managed way to score quality on their own dataset. Which Bedrock capability is designed for this?",
+  "o": [
+   "Amazon Bedrock Guardrails",
+   "Amazon Bedrock Model Evaluation",
+   "Amazon Bedrock Playgrounds only",
+   "Amazon CloudWatch Logs"
+  ],
+  "a": 1,
+  "e": "Bedrock Model Evaluation provides managed, repeatable evaluation (automatic and human-based) to compare models on your data. Guardrails enforce safety policies, Playgrounds are for ad-hoc manual trials, and CloudWatch Logs record events rather than scoring model quality."
+ },
+ {
+  "d": 2,
+  "q": "Two teams debate embeddings. Which statement is correct?",
+  "o": [
+   "Embeddings are encrypted copies of the prompt",
+   "Embeddings disable a model's safety filters",
+   "Embeddings are numeric vector representations that capture semantic meaning, enabling similarity search",
+   "Embeddings are the model's billing tokens"
+  ],
+  "a": 2,
+  "e": "Embeddings map text (or other data) into numeric vectors whose distances reflect semantic similarity, powering search and retrieval. They are not encrypted prompts, safety controls, or billing units."
+ },
+ {
+  "d": 2,
+  "q": "A startup wants lower latency and cost for a high-volume chat feature and is willing to accept a smaller model if quality stays acceptable. Which selection factor set is most relevant?",
+  "o": [
+   "Only the model's release date",
+   "The color of the console theme",
+   "The number of AWS Regions in the world",
+   "Model size/capability, latency, and cost trade-offs for the use case"
+  ],
+  "a": 3,
+  "e": "Choosing a model means balancing capability against latency and cost for the specific workload — a smaller, cheaper, faster model can be the right pick if quality suffices. Release date alone, UI theme, and Region count are not selection criteria."
+ },
+ {
+  "d": 2,
+  "q": "An organization wants to centrally store, version, and reuse tested prompts across teams in Bedrock. Which capability supports this?",
+  "o": [
+   "Bedrock Prompt Management",
+   "Amazon S3 Glacier",
+   "AWS Trusted Advisor",
+   "Amazon EventBridge"
+  ],
+  "a": 0,
+  "e": "Bedrock Prompt Management lets teams create, version, and reuse prompts as managed resources. Glacier is archival storage, Trusted Advisor gives best-practice checks, and EventBridge routes events."
+ },
+ {
+  "d": 2,
+  "q": "A team wants to process mixed documents (PDFs, images, audio) into structured outputs to feed a generative workflow with minimal custom code. Which newer Bedrock capability targets this?",
+  "o": [
+   "Amazon Bedrock Guardrails",
+   "Amazon Bedrock Data Automation",
+   "Amazon Bedrock Playgrounds",
+   "Amazon SNS"
+  ],
+  "a": 1,
+  "e": "Bedrock Data Automation extracts and structures content from unstructured multimodal inputs (documents, images, audio, video) to feed downstream GenAI workflows. Guardrails enforce safety, Playgrounds are manual testing, and SNS is messaging."
+ },
+ {
+  "d": 3,
+  "q": "A RAG chatbot returns fluent answers that are often unrelated to the retrieved passages. Which is the MOST likely cause to investigate first?",
+  "o": [
+   "The IAM policy is too permissive",
+   "The S3 bucket is in the wrong Region",
+   "Poor retrieval relevance/chunking so the model isn't grounded in the right context",
+   "The model's temperature is set to 0"
+  ],
+  "a": 2,
+  "e": "When answers ignore the source, the retrieval stage is the prime suspect — poor chunking, embeddings, or relevance means the right context never reaches the model. IAM and bucket Region wouldn't cause off-topic-but-fluent answers, and temperature 0 makes output more deterministic, not less grounded."
+ },
+ {
+  "d": 3,
+  "q": "An enterprise needs an agent that plans multi-step tasks, calls internal APIs, retains session context, and must scale securely in production. Which approach best fits current AWS tooling?",
+  "o": [
+   "A single static prompt with no tools",
+   "A CloudWatch dashboard",
+   "An S3 lifecycle policy",
+   "Bedrock Agents (with AgentCore capabilities) to orchestrate tool calls, memory, and secure execution"
+  ],
+  "a": 3,
+  "e": "Building production agents that plan, call tools/APIs, and manage memory/identity securely is what Bedrock Agents and AgentCore capabilities are for. A static prompt can't call tools or manage steps; CloudWatch and S3 lifecycle policies are monitoring and storage features."
+ },
+ {
+  "d": 3,
+  "q": "A team must decide between fine-tuning and RAG for a bot that needs up-to-date factual answers from frequently updated internal wikis. Which choice and reason is soundest?",
+  "o": [
+   "RAG, because it grounds answers in current retrieved documents without retraining on every update",
+   "Fine-tuning, because it injects live facts at query time",
+   "Fine-tuning, because it is always cheaper than RAG",
+   "RAG, because it changes the model's internal weights"
+  ],
+  "a": 0,
+  "e": "RAG suits frequently changing factual knowledge — it retrieves current documents at query time without retraining. Fine-tuning bakes knowledge into weights (not live facts) and is costly to repeat on every wiki edit. RAG does not alter model weights."
+ },
+ {
+  "d": 3,
+  "q": "A prompt keeps producing inconsistent JSON that breaks a downstream parser. Which prompt-engineering adjustment most directly improves structural reliability?",
+  "o": [
+   "Increase temperature and top-p",
+   "Specify an explicit output schema/format with an example and constrain the response",
+   "Ask the model to be more creative",
+   "Remove all instructions to keep the prompt short"
+  ],
+  "a": 1,
+  "e": "Giving an explicit format/schema plus an example (and lowering randomness) makes structured output far more reliable. Raising temperature/top-p or asking for creativity increases variability, and stripping instructions removes the guidance the parser depends on."
+ },
+ {
+  "d": 3,
+  "q": "A company wants to reduce repeated cost and latency when the same large context prefix is sent on many Bedrock requests. Which capability helps most?",
+  "o": [
+   "Guardrails",
+   "Model distillation at inference",
+   "Prompt caching",
+   "Cross-Region replication"
+  ],
+  "a": 2,
+  "e": "Prompt caching reuses computation for a repeated context prefix, cutting latency and cost on subsequent calls. Guardrails enforce safety, distillation is a training-time technique, and cross-Region replication copies data, not prompt compute."
+ },
+ {
+  "d": 3,
+  "q": "An agent occasionally emits disallowed content and also leaks a customer's PII from context. Which layered controls address BOTH issues?",
+  "o": [
+   "Only raise the token limit",
+   "Only lower the temperature",
+   "Only enable CloudTrail",
+   "Apply Bedrock Guardrails for content/topic and sensitive-information (PII) filtering across prompts and responses",
+   "Switch Regions"
+  ],
+  "a": 3,
+  "e": "Guardrails can filter harmful/disallowed content AND detect/redact sensitive information such as PII on both input and output — covering both problems. Token limits and temperature don't enforce policy, and CloudTrail only audits API calls after the fact."
+ },
+ {
+  "d": 3,
+  "q": "A team fine-tunes a model on 40 examples and it now parrots those examples but fails on anything slightly different. What happened and what's a reasonable fix?",
+  "o": [
+   "Overfitting to a tiny dataset; add more diverse examples or prefer RAG/prompting for this need",
+   "Underfitting; reduce data further",
+   "Tokenization error; change Regions",
+   "Guardrail misconfiguration; disable guardrails"
+  ],
+  "a": 0,
+  "e": "A model that memorizes a tiny tuning set and fails to generalize is overfitting; expanding and diversifying data — or using RAG/prompting instead of tuning — is the sensible path. Reducing data worsens it, and the issue is unrelated to Regions or guardrails."
+ },
+ {
+  "d": 4,
+  "q": "A generative feature must be launched responsibly. Which combination best reflects responsible-AI practice before and after launch?",
+  "o": [
+   "Ship fast, add oversight only if users complain",
+   "Assess bias/fairness, document limitations, add guardrails and human review for high-risk paths, and monitor after release",
+   "Disable logging to protect privacy and skip evaluation",
+   "Maximize temperature to seem more human"
+  ],
+  "a": 1,
+  "e": "Responsible deployment means evaluating fairness, documenting limits, adding guardrails and human-in-the-loop for risky decisions, and monitoring in production. Shipping without oversight, disabling logging (which harms accountability), or tuning for 'human-ness' are not responsible-AI controls."
+ },
+ {
+  "d": 4,
+  "q": "An image model produces lower-quality results for certain skin tones, traced to unrepresentative training data. Which term and remedy pair is correct?",
+  "o": [
+   "Overfitting; raise temperature",
+   "Latency; add caching",
+   "Data/representation bias; improve dataset diversity and evaluate fairness across groups",
+   "Prompt injection; rotate API keys"
+  ],
+  "a": 2,
+  "e": "Unequal performance stemming from unrepresentative data is representation bias; the remedy is more diverse data plus fairness evaluation across groups. It is not overfitting, latency, or a prompt-injection security issue."
+ },
+ {
+  "d": 4,
+  "q": "For an AI system that denies or approves benefits, which capability most improves accountability to affected individuals?",
+  "o": [
+   "Storing prompts in Glacier",
+   "Higher top-p sampling",
+   "More Availability Zones",
+   "Explainability of decisions plus documented model cards and human review"
+  ],
+  "a": 3,
+  "e": "Accountability comes from being able to explain decisions, document intended use/limitations (model cards), and provide human review. Archival storage, sampling parameters, and infrastructure redundancy don't make individual decisions explainable."
+ },
+ {
+  "d": 4,
+  "q": "A team wants to reduce toxic or biased generations at inference without retraining. Which is the most direct, responsible control on AWS?",
+  "o": [
+   "Amazon Bedrock Guardrails content filters and denied topics",
+   "Amazon EBS snapshots",
+   "AWS Cost Explorer",
+   "Amazon Route 53 routing"
+  ],
+  "a": 0,
+  "e": "Bedrock Guardrails apply content filters and topic denials at inference to curb toxic/biased output without retraining. Snapshots, cost analysis, and DNS routing are unrelated to output safety."
+ },
+ {
+  "d": 5,
+  "q": "An enterprise requires that data sent to Bedrock never traverse the public internet. Which approach meets this?",
+  "o": [
+   "Use a public endpoint with a strong password",
+   "Access Bedrock over a VPC interface endpoint (AWS PrivateLink) to keep traffic on the AWS network",
+   "Raise the temperature",
+   "Store prompts in a public S3 bucket"
+  ],
+  "a": 1,
+  "e": "A VPC interface endpoint (PrivateLink) lets traffic to Bedrock stay on the AWS private network rather than the public internet. Passwords on public endpoints, temperature, and public buckets do not satisfy the private-networking requirement."
+ },
+ {
+  "d": 5,
+  "q": "To follow least-privilege for a team that should only invoke one specific Bedrock model, what is the best practice?",
+  "o": [
+   "Grant full administrator access for convenience",
+   "Share one root account among the team",
+   "Write a scoped IAM policy allowing only the required Bedrock invoke action on that model resource",
+   "Disable IAM entirely"
+  ],
+  "a": 2,
+  "e": "Least privilege means granting only the specific action on the specific resource via a scoped IAM policy. Admin access, shared root accounts, and disabling IAM all violate security best practice."
+ },
+ {
+  "d": 5,
+  "q": "A regulated firm must prove which users invoked which models and when, for an audit. Which combination provides this governance evidence?",
+  "o": [
+   "CloudTrail for API activity plus IAM identities, with logs retained per policy",
+   "Increasing max tokens",
+   "A larger EC2 instance",
+   "Only the Bedrock Playground history"
+  ],
+  "a": 3,
+  "e": "CloudTrail records API calls tied to IAM identities, and retaining those logs provides the audit trail regulators expect. Playground history, token limits, and instance sizing don't constitute governance evidence."
+ },
+ {
+  "d": 5,
+  "q": "A company wants to encrypt data at rest for their AI datasets and manage the keys with rotation and access control. Which service fits?",
+  "o": [
+   "AWS KMS",
+   "Amazon Lex",
+   "Amazon Polly",
+   "AWS Ground Station"
+  ],
+  "a": 0,
+  "e": "AWS KMS manages encryption keys — including rotation and access policies — for encrypting data at rest across AWS services. Lex, Polly, and Ground Station are unrelated to key management."
+ },
+ {
+  "d": 5,
+  "q": "During a security review, a team finds prompts may contain customer PII that shouldn't reach the model. Which layered response is soundest?",
+  "o": [
+   "Ignore it; models don't store data",
+   "Redact/filter PII (e.g., Guardrails sensitive-info filters) AND restrict access via IAM AND audit with CloudTrail",
+   "Only rename the S3 bucket",
+   "Only increase the token limit"
+  ],
+  "a": 1,
+  "e": "A layered response — filtering/redacting PII, restricting access with IAM, and auditing with CloudTrail — addresses the risk in depth. Assuming no storage is unsafe, and bucket renaming or token limits don't protect sensitive data."
+ }
+];
+
+</script>
+<script>/* AIF-C01 Eval Engine — SAP-C02-style attempt model.
+   - Three unique attempts of ATTEMPT_SIZE questions drawn from the bank without
+     cross-attempt repeat (until the bank is exhausted).
+   - Attempt 3+ leads with questions the learner previously answered wrong.
+   - Per-question amber banner when a question was previously answered wrong.
+   - Full explanation shown after each answer.
+   Progress is kept in-memory + localStorage keyed by SET_KEY. No backend calls;
+   swap persistState/loadState for Firestore to wire into the platform.
+*/
+(function () {
+  const DOMAIN_NAMES = {
+    1: "Fundamentals of AI & ML",
+    2: "Fundamentals of Generative AI",
+    3: "Applications of Foundation Models",
+    4: "Guidelines for Responsible AI",
+    5: "Security, Compliance & Governance"
+  };
+  const ATTEMPT_SIZE = 8;
+  const MAX_ATTEMPTS = 3;
+
+  function loadState(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || {}; }
+    catch (e) { return {}; }
+  }
+  function persistState(key, s) {
+    try { localStorage.setItem(key, JSON.stringify(s)); } catch (e) {}
+  }
+
+  // Deterministic shuffle so a given attempt is reproducible per seed.
+  function seededShuffle(arr, seed) {
+    const a = arr.slice(); let s = seed || 1;
+    for (let i = a.length - 1; i > 0; i--) {
+      s = (s * 9301 + 49297) % 233280;
+      const j = Math.floor((s / 233280) * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Build the question list for a given attempt number (1-based).
+  function buildAttempt(bank, state, attemptNo) {
+    const used = new Set((state.usedIds || []));
+    const wrong = new Set((state.wrongIds || []));
+    const withIdx = bank.map((q, i) => Object.assign({ _id: i }, q));
+
+    let pool = withIdx.filter(q => !used.has(q._id));
+    // If the unused pool can't fill an attempt, allow reuse (bank exhausted).
+    if (pool.length < ATTEMPT_SIZE) pool = withIdx.slice();
+
+    let ordered = seededShuffle(pool, attemptNo * 17 + 3);
+
+    // Attempt 3+ : lead with previously-wrong questions.
+    if (attemptNo >= 3) {
+      const lead = ordered.filter(q => wrong.has(q._id));
+      const rest = ordered.filter(q => !wrong.has(q._id));
+      ordered = lead.concat(rest);
+    }
+
+    // Try to spread domains across the selection.
+    const picked = [], seenDomainCount = {};
+    for (const q of ordered) {
+      if (picked.length >= ATTEMPT_SIZE) break;
+      const dc = seenDomainCount[q.d] || 0;
+      if (dc < 2 || picked.length >= ATTEMPT_SIZE - 2) {
+        picked.push(q); seenDomainCount[q.d] = dc + 1;
+      }
+    }
+    let idx = 0;
+    while (picked.length < ATTEMPT_SIZE && idx < ordered.length) {
+      if (!picked.includes(ordered[idx])) picked.push(ordered[idx]);
+      idx++;
+    }
+    return picked.slice(0, ATTEMPT_SIZE);
+  }
+
+  function AifEval(opts) {
+    const bank = opts.bank;
+    const SET_KEY = opts.setKey;
+    const mount = opts.mount;
+    const title = opts.title;
+    const subtitle = opts.subtitle;
+
+    let state = loadState(SET_KEY);
+    state.usedIds = state.usedIds || [];
+    state.wrongIds = state.wrongIds || [];
+    state.attemptNo = state.attemptNo || 0;
+    state.history = state.history || []; // [{attempt, score, total, ts}]
+
+    let current = null; // {questions, answers[], pos}
+
+    function startAttempt() {
+      if (state.attemptNo >= MAX_ATTEMPTS) { renderExhausted(); return; }
+      const attemptNo = state.attemptNo + 1;
+      const questions = buildAttempt(bank, state, attemptNo);
+      current = { attemptNo, questions, answers: new Array(questions.length).fill(null), pos: 0 };
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = current.questions[current.pos];
+      const wasWrong = state.wrongIds.includes(q._id);
+      const answered = current.answers[current.pos];
+      let html = "";
+      html += `<div class="aif-topbar"><span>Attempt ${current.attemptNo} of ${MAX_ATTEMPTS}</span>`;
+      html += `<span>Question ${current.pos + 1} of ${current.questions.length}</span></div>`;
+      html += `<div class="aif-progress"><div class="aif-progress-fill" style="width:${((current.pos) / current.questions.length) * 100}%"></div></div>`;
+      html += `<div class="aif-domain">${DOMAIN_NAMES[q.d]}</div>`;
+      if (wasWrong) {
+        html += `<div class="aif-annot">⚠ You answered this incorrectly on a previous attempt — read carefully.</div>`;
+      }
+      html += `<div class="aif-q">${q.q}</div>`;
+      html += `<div class="aif-opts">`;
+      q.o.forEach((opt, i) => {
+        let cls = "aif-opt";
+        if (answered !== null) {
+          if (i === q.a) cls += " correct";
+          else if (i === answered) cls += " wrong";
+          cls += " locked";
+        }
+        html += `<button class="${cls}" data-i="${i}" ${answered !== null ? "disabled" : ""}>`;
+        html += `<span class="aif-letter">${String.fromCharCode(65 + i)}</span>${opt}</button>`;
+      });
+      html += `</div>`;
+      if (answered !== null) {
+        const right = answered === q.a;
+        html += `<div class="aif-expl ${right ? "ok" : "no"}">`;
+        html += `<strong>${right ? "Correct." : "Not quite."}</strong> ${q.e}</div>`;
+        const isLast = current.pos === current.questions.length - 1;
+        html += `<div class="aif-nav"><button class="aif-next" id="aif-next">${isLast ? "See results" : "Next question"}</button></div>`;
+      }
+      mount.innerHTML = html;
+
+      mount.querySelectorAll(".aif-opt").forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (current.answers[current.pos] !== null) return;
+          const i = parseInt(btn.getAttribute("data-i"), 10);
+          current.answers[current.pos] = i;
+          if (i !== q.a && !state.wrongIds.includes(q._id)) state.wrongIds.push(q._id);
+          if (i === q.a) state.wrongIds = state.wrongIds.filter(id => id !== q._id);
+          renderQuestion();
+        });
+      });
+      const next = mount.querySelector("#aif-next");
+      if (next) next.addEventListener("click", () => {
+        if (current.pos < current.questions.length - 1) { current.pos++; renderQuestion(); }
+        else finishAttempt();
+      });
+    }
+
+    function finishAttempt() {
+      let score = 0;
+      current.questions.forEach((q, i) => { if (current.answers[i] === q.a) score++; });
+      current.questions.forEach(q => { if (!state.usedIds.includes(q._id)) state.usedIds.push(q._id); });
+      state.attemptNo = current.attemptNo;
+      state.history.push({ attempt: current.attemptNo, score, total: current.questions.length, ts: Date.now() });
+      persistState(SET_KEY, state);
+      renderResults(score, current.questions.length);
+    }
+
+    function renderResults(score, total) {
+      const pct = Math.round((score / total) * 100);
+      // Domain breakdown for this attempt
+      const dTotals = {}, dRight = {};
+      current.questions.forEach((q, i) => {
+        dTotals[q.d] = (dTotals[q.d] || 0) + 1;
+        if (current.answers[i] === q.a) dRight[q.d] = (dRight[q.d] || 0) + 1;
+      });
+      let html = `<div class="aif-result"><div class="aif-score">${score}/${total}</div>`;
+      html += `<div class="aif-pct">${pct}%</div>`;
+      html += `<div class="aif-verdict">${pct >= 70 ? "On track — 70%+ suggests readiness on this set." : "Keep practicing — aim for 70%+ before exam day."}</div>`;
+      html += `<div class="aif-break"><div class="aif-break-title">By domain (this attempt)</div>`;
+      Object.keys(dTotals).sort().forEach(d => {
+        const r = dRight[d] || 0, t = dTotals[d];
+        html += `<div class="aif-break-row"><span>${DOMAIN_NAMES[d]}</span><span>${r}/${t}</span></div>`;
+      });
+      html += `</div>`;
+      if (state.attemptNo < MAX_ATTEMPTS) {
+        html += `<button class="aif-next" id="aif-again">Start attempt ${state.attemptNo + 1}</button>`;
+      } else {
+        html += `<div class="aif-verdict">All ${MAX_ATTEMPTS} attempts complete.</div>`;
+      }
+      html += `<button class="aif-reset" id="aif-reset">Reset all progress</button></div>`;
+      mount.innerHTML = html;
+      const again = mount.querySelector("#aif-again");
+      if (again) again.addEventListener("click", startAttempt);
+      mount.querySelector("#aif-reset").addEventListener("click", () => {
+        localStorage.removeItem(SET_KEY);
+        state = { usedIds: [], wrongIds: [], attemptNo: 0, history: [] };
+        renderStart();
+      });
+    }
+
+    function renderExhausted() { renderResults(0, ATTEMPT_SIZE); }
+
+    function renderStart() {
+      let html = `<div class="aif-start"><h1>${title}</h1><p class="aif-sub">${subtitle}</p>`;
+      html += `<ul class="aif-meta"><li>${MAX_ATTEMPTS} attempts · ${ATTEMPT_SIZE} questions each</li>`;
+      html += `<li>Questions span all five AIF-C01 domains</li>`;
+      html += `<li>Attempt 3 leads with questions you missed earlier</li>`;
+      html += `<li>Full explanation after every question</li></ul>`;
+      if (state.history.length) {
+        html += `<div class="aif-break"><div class="aif-break-title">Your attempts so far</div>`;
+        state.history.forEach(h => {
+          html += `<div class="aif-break-row"><span>Attempt ${h.attempt}</span><span>${h.score}/${h.total}</span></div>`;
+        });
+        html += `</div>`;
+      }
+      const label = state.attemptNo >= MAX_ATTEMPTS ? "All attempts used"
+        : state.attemptNo > 0 ? `Start attempt ${state.attemptNo + 1}` : "Start attempt 1";
+      html += `<button class="aif-next" id="aif-begin" ${state.attemptNo >= MAX_ATTEMPTS ? "disabled" : ""}>${label}</button>`;
+      if (state.attemptNo > 0) html += `<button class="aif-reset" id="aif-reset2">Reset all progress</button>`;
+      html += `</div>`;
+      mount.innerHTML = html;
+      const begin = mount.querySelector("#aif-begin");
+      if (begin) begin.addEventListener("click", startAttempt);
+      const r2 = mount.querySelector("#aif-reset2");
+      if (r2) r2.addEventListener("click", () => {
+        localStorage.removeItem(SET_KEY);
+        state = { usedIds: [], wrongIds: [], attemptNo: 0, history: [] };
+        renderStart();
+      });
+    }
+
+    renderStart();
+  }
+
+  window.AifEval = AifEval;
+})();
+</script>
+<script>
+AifEval({
+  bank: window.AIF_BANK_SET2,
+  setKey: "aif_set2_adv_v1",
+  mount: document.getElementById("aif2"),
+  title: "AIF-C01 Prep — Set 2 (Intermediate to Advanced)",
+  subtitle: "Scenario-driven questions with close distractors, mirroring the harder AIF-C01 style."
+});
+</script>
+</body></html>
