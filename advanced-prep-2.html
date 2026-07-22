@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072201 -->
+<!-- build: 2026072203 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 2 (Intermediate to Advanced)</title>
@@ -10,6 +10,7 @@
 .aif-head{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .aif-badge{background:var(--blue);color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:20px;letter-spacing:.3px}
 .aif-head small{color:var(--mut)}
+.aif-user{margin-left:auto;font-size:12.5px;color:var(--mut)}
 .aif-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:0 1px 3px rgba(20,50,80,.05)}
 h1{font-size:22px;margin:0 0 6px}
 .aif-sub{color:var(--mut);margin:0 0 18px}
@@ -49,7 +50,7 @@ h1{font-size:22px;margin:0 0 6px}
 .aif-foot{text-align:center;color:var(--mut);font-size:12px;margin-top:24px}
 </style></head>
 <body><div class="aif-wrap">
-<div class="aif-head"><span class="aif-badge">AIF-C01 · SET 2</span><small>Intermediate to Advanced · AWS Certified AI Practitioner readiness</small></div>
+<div class="aif-head"><span class="aif-badge">AIF-C01 · SET 2</span><small>Intermediate to Advanced · AWS Certified AI Practitioner readiness</small><span class="aif-user" id="aif2-user"></span></div>
 <div class="aif-card"><div id="aif2"></div></div>
 <div class="aif-foot">Original practice items aligned to the AIF-C01 exam domains. Not affiliated with or endorsed by AWS. For internal SF Knowledge Hub prep only.</div>
 </div>
@@ -603,13 +604,179 @@ window.AIF_BANK_SET2 = [
   window.AifEval = AifEval;
 })();
 </script>
+<script>/* SF auth gate — Google SSO (hd: sourcefuse.com) + email/password fallback.
+   Reuses the sfcertification-grafana Firebase project. Firebase v10 modular SDK
+   loaded via CDN in the page. Exposes window.SFAuth.mount(onReady) which shows
+   the overlay and calls onReady(email) once a valid @sourcefuse.com user is in.
+   NOTE: paste the real sfcertification-grafana firebaseConfig values below —
+   left as clearly-marked placeholders per the golden rule (never invent config). */
+(function () {
+  // >>> REPLACE with the live sfcertification-grafana config from the deployed repo <<<
+  const firebaseConfig = {
+    apiKey: "PASTE_API_KEY",
+    authDomain: "sfcertification-grafana.firebaseapp.com",
+    projectId: "sfcertification-grafana",
+    storageBucket: "sfcertification-grafana.appspot.com",
+    messagingSenderId: "PASTE_SENDER_ID",
+    appId: "PASTE_APP_ID"
+  };
+  const ALLOWED_DOMAIN = "sourcefuse.com";
+
+  let app, auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn;
+  let readyCb = null;
+
+  async function initFirebase() {
+    const appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    // Reuse default app if the host page already initialized it.
+    app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(firebaseConfig);
+    auth = authMod.getAuth(app);
+    GoogleProvider = authMod.GoogleAuthProvider;
+    signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    getRedirect = () => authMod.getRedirectResult(auth);
+    signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
+    onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
+    signOutFn = () => authMod.signOut(auth);
+  }
+
+  function overlayHTML() {
+    return `
+    <div class="sf-auth-backdrop" id="sf-auth">
+      <div class="sf-auth-card">
+        <div class="sf-auth-badge">SF Knowledge Hub</div>
+        <h2>Sign in to start</h2>
+        <p class="sf-auth-sub">Use your SourceFuse account to save your attempts.</p>
+        <button class="sf-google" id="sf-google">
+          <span class="sf-g">G</span> Sign in with Google
+        </button>
+        <div class="sf-or"><span>or</span></div>
+        <label class="sf-lbl">Email</label>
+        <input class="sf-inp" id="sf-email" type="email" placeholder="you@sourcefuse.com" autocomplete="username">
+        <label class="sf-lbl">Password</label>
+        <input class="sf-inp" id="sf-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        <button class="sf-signin" id="sf-signin">Sign in</button>
+        <div class="sf-err" id="sf-err"></div>
+      </div>
+    </div>`;
+  }
+
+  function styleTag() {
+    return `<style>
+    .sf-auth-backdrop{position:fixed;inset:0;background:rgba(16,38,60,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .sf-auth-card{background:#fff;border-radius:16px;padding:30px 28px;width:100%;max-width:380px;box-shadow:0 12px 40px rgba(10,30,55,.25);font-family:inherit}
+    .sf-auth-badge{display:inline-block;background:var(--blue,#1a6eb5);color:#fff;font-weight:700;font-size:12px;padding:4px 11px;border-radius:14px;margin-bottom:14px}
+    .sf-auth-card h2{margin:0 0 4px;font-size:20px;color:#1a2733}
+    .sf-auth-sub{margin:0 0 20px;color:#5a6b7a;font-size:14px}
+    .sf-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #dbe3ec;border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:#1a2733;cursor:pointer;font-family:inherit}
+    .sf-google:hover{background:#f7fbff;border-color:var(--blue,#1a6eb5)}
+    .sf-g{background:conic-gradient(from -45deg,#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0);color:#fff;font-weight:800;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .sf-or{display:flex;align-items:center;text-align:center;color:#93a1af;font-size:12px;margin:18px 0}
+    .sf-or::before,.sf-or::after{content:"";flex:1;height:1px;background:#e2e8ef}
+    .sf-or span{padding:0 12px}
+    .sf-lbl{display:block;font-size:12.5px;font-weight:600;color:#5a6b7a;margin-bottom:5px}
+    .sf-inp{width:100%;border:1.5px solid #dbe3ec;border-radius:9px;padding:11px 12px;font-size:14.5px;margin-bottom:14px;font-family:inherit}
+    .sf-inp:focus{outline:none;border-color:var(--blue,#1a6eb5)}
+    .sf-signin{width:100%;background:var(--blue,#1a6eb5);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+    .sf-signin:hover{background:var(--blue-d,#12507f)}
+    .sf-err{color:#b5341a;font-size:13px;margin-top:12px;min-height:16px}
+    </style>`;
+  }
+
+  function fail(msg) { const e = document.getElementById("sf-err"); if (e) e.textContent = msg; }
+
+  function validDomain(email) {
+    return typeof email === "string" && email.toLowerCase().endsWith("@" + ALLOWED_DOMAIN);
+  }
+
+  function proceed(email) {
+    const el = document.getElementById("sf-auth");
+    if (el) el.remove();
+    if (readyCb) readyCb(email);
+  }
+
+  async function wireOverlay() {
+    document.getElementById("sf-google").addEventListener("click", async () => {
+      fail("");
+      if (!signInRedirect) return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      try {
+        const provider = new GoogleProvider();
+        provider.setCustomParameters({ hd: ALLOWED_DOMAIN, prompt: "select_account" });
+        // Redirect leaves the page and returns to it; result is picked up on load
+        // by handleRedirectResult(). This works inside the LMS iframe, unlike popup.
+        await signInRedirect(provider);
+      } catch (err) {
+        fail("Google sign-in couldn't start. Use email/password below.");
+      }
+    });
+    document.getElementById("sf-signin").addEventListener("click", async () => {
+      fail("");
+      const email = (document.getElementById("sf-email").value || "").trim();
+      const pass = document.getElementById("sf-pass").value || "";
+      if (!validDomain(email)) return fail("Email must be an @sourcefuse.com address.");
+      if (!pass) return fail("Enter your password.");
+      try {
+        const res = await signInEmail(email, pass);
+        const e = (res.user && res.user.email) || email;
+        proceed(e);
+      } catch (err) { fail("Incorrect email or password."); }
+    });
+  }
+
+  async function mount(onReady) {
+    readyCb = onReady;
+    document.head.insertAdjacentHTML("beforeend", styleTag());
+    document.body.insertAdjacentHTML("beforeend", overlayHTML());
+    try {
+      await initFirebase();
+    } catch (e) {
+      // If Firebase can't load (e.g. local file://), keep overlay but let email/password
+      // at least validate domain so the page is testable; real auth needs https host.
+      fail("Auth service loading… (Google SSO needs the deployed https host).");
+    }
+    // Handle the return leg of signInWithRedirect: when the user comes back from
+    // Google, getRedirectResult() resolves with their credential.
+    if (getRedirect) {
+      try {
+        const res = await getRedirect();
+        if (res && res.user) {
+          const email = res.user.email;
+          if (!validDomain(email)) { await signOutFn(); fail("Please use your @sourcefuse.com account."); }
+          else { proceed(email); return; }
+        }
+      } catch (err) {
+        fail("Google sign-in didn't complete. Try again or use email/password.");
+      }
+    }
+    // If a session already exists (redirect just completed, or prior session), skip the overlay.
+    if (onAuth) {
+      onAuth((user) => {
+        if (user && validDomain(user.email)) proceed(user.email);
+      });
+    }
+    wireOverlay();
+  }
+
+  window.SFAuth = { mount };
+})();
+</script>
 <script>
-AifEval({
-  bank: window.AIF_BANK_SET2,
-  setKey: "aif_set2_adv_v1",
-  mount: document.getElementById("aif2"),
-  title: "AIF-C01 Prep — Set 2 (Intermediate to Advanced)",
-  subtitle: "Scenario-driven questions with close distractors, mirroring the harder AIF-C01 style."
-});
+(function(){
+  var mountId="aif2";
+  document.getElementById(mountId).innerHTML='<p class="aif-sub">Sign in to begin…</p>';
+  window.SFAuth.mount(function(email){
+    var badge=document.getElementById(mountId+"-user");
+    if(badge) badge.textContent=email;
+    // localStorage key is namespaced per signed-in email so attempts are per-user;
+    // swap loadState/persistState in the engine for courseExamResults later.
+    var safe=email.replace(/[^a-z0-9]/gi,"_").toLowerCase();
+    AifEval({
+      bank: window.AIF_BANK_SET2,
+      setKey: "aif_set2_adv_v1__"+safe,
+      mount: document.getElementById(mountId),
+      title: "AIF-C01 Prep — Set 2 (Intermediate to Advanced)",
+      subtitle: "Scenario-driven questions with close distractors, mirroring the harder AIF-C01 style."
+    });
+  });
+})();
 </script>
 </body></html>
