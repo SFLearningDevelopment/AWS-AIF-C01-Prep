@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072207 -->
+<!-- build: 2026072208 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 3 (Expert · Applied ML & LLM scenarios)</title>
@@ -60,7 +60,7 @@ h1{font-size:22px;margin:0 0 6px}
 <script>
 // AIF-C01 Prep — Set 3 (Expert · Applied ML & LLM scenarios)
 // Original scenario-first MCQs, blueprint-weighted. Foundational depth (selection/application/trade-offs).
-// Distractors length-matched; answer positions balanced across A-D.
+// Distractors length-matched; answer positions balanced across A-D. Unique from Sets 1 & 2.
 // domains: 1=Fundamentals AI/ML, 2=Fundamentals GenAI, 3=Applications of FMs, 4=Responsible AI, 5=Security/Compliance/Governance
 window.AIF_BANK_SET3 = [
  {
@@ -89,15 +89,15 @@ window.AIF_BANK_SET3 = [
  },
  {
   "d": 1,
-  "q": "A team has a large set of product reviews with no labels and wants to discover natural groupings of similar reviews before deciding what to do next. Which approach fits?",
+  "q": "A team's model performs well in offline testing but its accuracy steadily degrades over months in production as customer behaviour shifts. What is this phenomenon, and what practice addresses it?",
   "o": [
-   "Supervised classification, training on labeled examples of each predefined review category",
-   "A regression model, which would output a continuous score for each individual review",
-   "Unsupervised clustering, which groups the unlabeled reviews by similarity into segments",
-   "Reinforcement learning, which would learn review-handling actions through reward feedback"
+   "Overfitting; the single fix is to reduce the number of input features the model was given",
+   "Underfitting; the single fix is to train the same model for many more epochs up front",
+   "Model drift; monitor performance on live data and retrain the model when accuracy declines",
+   "Data leakage; the single fix is to remove the target column that leaked into the inputs"
   ],
   "a": 2,
-  "e": "Discovering groupings in unlabeled data is unsupervised clustering. Supervised classification needs labels, regression outputs continuous numbers, and reinforcement learning optimizes actions — none discover natural segments in unlabeled text."
+  "e": "Accuracy decaying over time as real-world data shifts away from the training distribution is model (or data) drift; the practice is ongoing monitoring plus retraining. Overfitting, underfitting, and leakage are training-time conditions, not gradual post-deployment decay."
  },
  {
   "d": 1,
@@ -113,27 +113,27 @@ window.AIF_BANK_SET3 = [
  },
  {
   "d": 1,
-  "q": "A company wants a managed AWS service to build, train, and deploy a custom ML model end to end, rather than call a pre-built AI API. Which service fits?",
+  "q": "A hospital wants a model whose individual predictions a clinician can inspect and justify to a patient, and is willing to give up a small amount of accuracy to get it. Which consideration should drive the model choice?",
   "o": [
-   "Amazon SageMaker AI, a platform for building, training, and deploying custom ML models",
-   "Amazon Rekognition, a pre-trained service that analyzes images and video out of the box",
-   "Amazon Comprehend, a pre-trained service that extracts insights and entities from text",
-   "Amazon Textract, a pre-trained service that extracts text and data from scanned documents"
+   "Favouring an interpretable model, since explainable predictions matter more than a marginal accuracy gain here",
+   "Choosing the largest available model, since more parameters always improve how much a clinician can trust it",
+   "Choosing whichever model has the lowest inference latency regardless of how it decides",
+   "Choosing the model with the biggest training dataset, since more data guarantees fairness"
   ],
   "a": 0,
-  "e": "SageMaker AI is the end-to-end custom-model platform. Rekognition, Comprehend, and Textract are pre-trained AI services for fixed tasks (vision, NLP, document extraction), not general model-building."
+  "e": "In a high-stakes clinical setting where decisions must be justified, interpretability can outweigh a small accuracy gain — that trade-off should drive the choice. Model size, latency, and dataset size don't determine whether a prediction can be explained to a patient."
  },
  {
   "d": 2,
-  "q": "An application sends the same long reference document as a prefix on thousands of LLM requests and wants to cut the repeated cost and latency of reprocessing it. Which capability helps most?",
+  "q": "A team notices that when they send a very long conversation history, the model starts ignoring instructions given near the beginning. Which limitation are they running into?",
   "o": [
-   "Raising the temperature, which increases the randomness and variety of generated output",
-   "Prompt caching, which reuses computation for a repeated prompt prefix across many calls",
-   "Increasing the max token limit, which allows the model to return longer completions",
-   "Adding more few-shot examples, which shows the model additional input-output patterns"
+   "The temperature setting, which is discarding the earliest instructions from the prompt",
+   "The context window limit, beyond which earlier tokens are truncated or attended to weakly",
+   "The embedding dimension, which caps how many distinct instructions a prompt may contain",
+   "The guardrail policy, which is silently removing the opening instructions from each request"
   ],
   "a": 1,
-  "e": "Prompt caching reuses the computed representation of a repeated prefix, cutting latency and cost on later calls. Temperature and token limits affect output character, and adding examples increases prompt size rather than reducing repeated cost."
+  "e": "A model attending poorly to early content in a very long input reflects the finite context window — content beyond it is truncated or weakly attended. Temperature, embedding dimension, and guardrails don't cause early-instruction loss as input length grows."
  },
  {
   "d": 2,
@@ -161,15 +161,15 @@ window.AIF_BANK_SET3 = [
  },
  {
   "d": 2,
-  "q": "A startup needs a high-volume chat feature and will accept a smaller, cheaper foundation model if quality stays acceptable. Which set of factors should drive the model choice?",
+  "q": "A team's application shows users a generated answer within a second by displaying tokens as they are produced, rather than waiting for the whole response. Which capability of the model API makes this possible?",
   "o": [
-   "Model capability, latency, and cost weighed against the quality the use case requires",
-   "Only the model's release date, since the most recently released model is always best",
-   "Only the size of the model's context window, since larger context is always preferable",
-   "Only the number of languages the model supports, regardless of the actual workload"
+   "Response streaming, which returns tokens incrementally so output can be shown as it is generated",
+   "A higher temperature, which speeds up how quickly the full response is returned to the user",
+   "A larger context window, which lets the whole answer be delivered in one immediate block",
+   "Prompt caching, which stores the finished answer so it appears instantly on the first request"
   ],
   "a": 0,
-  "e": "Model selection balances capability, latency, and cost against the quality the use case needs — a smaller cheaper model can win if quality suffices. Release date, context window, or language count alone are not sufficient selection criteria."
+  "e": "Displaying output token-by-token as it's produced relies on response streaming, which returns partial output incrementally. Temperature and context window don't change delivery timing this way, and prompt caching reuses prefix computation, not first-response streaming."
  },
  {
   "d": 2,
@@ -185,99 +185,99 @@ window.AIF_BANK_SET3 = [
  },
  {
   "d": 2,
-  "q": "A team wants a managed, repeatable way to compare two foundation models' output quality on their own dataset before choosing one. Which Amazon Bedrock capability fits?",
+  "q": "A retrieval system returns passages that are keyword matches but often miss documents that mean the same thing in different words. Switching to which representation would most improve finding semantically related content?",
   "o": [
-   "Bedrock Guardrails, which apply content and topic policies to prompts and responses",
-   "Bedrock Playgrounds, which let you try individual prompts manually one at a time in the console",
-   "Bedrock Model Evaluation, which scores and compares models on your data automatically or with humans",
-   "Bedrock Prompt Management, which stores, versions, and reuses tested prompts across teams"
+   "A higher temperature setting, so the retriever considers a wider spread of candidate documents",
+   "A larger maximum token limit, so each retrieved document can be returned in fuller length",
+   "Vector embeddings, so retrieval ranks documents by semantic similarity rather than exact keywords",
+   "A different tokenizer vocabulary, so the same words are split into different sub-word units"
   ],
   "a": 2,
-  "e": "Bedrock Model Evaluation provides managed, repeatable scoring to compare models on your data. Guardrails enforce safety, Playgrounds are for ad-hoc manual trials, and Prompt Management versions prompts — none systematically compare model quality."
+  "e": "Keyword search misses paraphrases; embedding-based (vector) retrieval ranks by semantic similarity, capturing same-meaning-different-words matches. Temperature and token limits don't change retrieval semantics, and swapping tokenizers doesn't add semantic matching."
  },
  {
   "d": 3,
-  "q": "A support bot must answer strictly from internal policy documents that change weekly, while minimizing fabricated answers. Which approach is soundest and why?",
+  "q": "A RAG chatbot grounded in a fixed manual answers common questions well but confidently invents specifics when asked something the manual doesn't cover. Which change best reduces the harm from these gaps?",
   "o": [
-   "Fine-tune the model weekly, because retraining is the only way to reflect updated policy text",
-   "Raise the temperature, because more creative sampling produces more helpful policy answers",
-   "Cache one canonical answer, because reusing a single response guarantees perfect consistency",
-   "Use RAG, because it retrieves the current policy at query time so answers stay grounded and current"
+   "Raise the temperature so the model produces more varied answers to the uncovered questions",
+   "Remove the retrieval step so the model relies entirely on its broad pre-trained knowledge",
+   "Increase the token limit so the model can generate longer answers for uncovered questions",
+   "Instruct the model to answer only from the retrieved context and say when information is not found"
   ],
   "a": 3,
-  "e": "RAG retrieves the latest policy at query time, keeping answers current and grounded without constant retraining — ideal for frequently changing text. Weekly fine-tuning is costly and slow, higher temperature adds variability, and a single cached answer ignores question variety."
+  "e": "Instructing the model to answer only from retrieved context and to explicitly say when something isn't found curbs fabrication on gaps. Higher temperature increases invention, removing retrieval removes grounding entirely, and a longer limit just yields longer fabrications."
  },
  {
   "d": 3,
-  "q": "A RAG assistant returns fluent answers that frequently ignore the retrieved passages entirely. Which cause should the team investigate first?",
+  "q": "An agent that calls internal tools occasionally takes an unsafe or unintended action when a user request is ambiguous. Which control most directly reduces the risk of the agent acting wrongly on its own?",
   "o": [
-   "Retrieval relevance or chunking is poor, so the right context never reaches the model to ground it",
-   "The IAM policy is overly permissive, which is corrupting the text of the generated answers",
-   "The S3 bucket is in the wrong Region, which is causing the answers to drift off the source",
-   "The temperature is set to zero, which is why the answers no longer match the source passages"
+   "Require human approval for high-impact actions and scope each tool to least-privilege access",
+   "Give the agent broader tool permissions so it can always finish the task without being blocked",
+   "Raise the model temperature so the agent explores more possible actions before choosing one",
+   "Remove all logging so the agent's internal decisions are not exposed to reviewers afterwards"
   ],
   "a": 0,
-  "e": "Fluent-but-ungrounded answers point to the retrieval stage — poor chunking, embeddings, or relevance means the right context isn't supplied. IAM, bucket Region, and temperature-zero wouldn't cause off-topic-yet-fluent output."
+  "e": "Human approval on high-impact actions plus least-privilege tool scoping limits what an agent can do wrong unsupervised. Broader permissions increase risk, higher temperature increases unpredictability, and removing logging destroys the oversight trail."
  },
  {
   "d": 3,
-  "q": "An enterprise needs an assistant that plans a multi-step task, calls internal APIs, retains session context, and runs securely in production. Which AWS approach fits best?",
+  "q": "A team gets good answers from a foundation model but needs it to consistently adopt a specific brand voice and terminology across every response, without supplying examples each time. Which approach fits best?",
   "o": [
-   "A single static prompt with no tool access, relying on the base model to complete every step alone",
-   "Bedrock Agents with AgentCore capabilities, to orchestrate tool calls, memory, and secure execution",
-   "A CloudWatch dashboard, configured to monitor the metrics emitted during the task's execution",
-   "An S3 lifecycle policy, which transitions the task's intermediate data between storage classes"
+   "Raising the temperature on each call so the responses sound more distinctive and on-brand",
+   "Fine-tuning the model on brand-voice examples so the style is consistently applied by default",
+   "Storing the finished responses in a knowledge base so future answers copy their exact wording",
+   "Increasing the token limit so each response has room to express the full brand personality"
   ],
   "a": 1,
-  "e": "Bedrock Agents (with AgentCore) plan multi-step tasks, invoke tools/APIs, manage memory, and run securely — exactly this need. A static prompt can't call tools, and CloudWatch and S3 lifecycle are monitoring and storage features."
+  "e": "Consistently baking in a style/voice without per-request examples is a fit for fine-tuning on brand-voice data. Temperature changes randomness not style, a knowledge base grounds facts not tone, and token limits govern length, not voice."
  },
  {
   "d": 3,
-  "q": "A team must choose between fine-tuning and RAG for a bot answering from frequently updated internal wikis. Which choice and reasoning is soundest?",
+  "q": "A team runs the same foundation model for a real-time chat feature and for an overnight batch that summarizes millions of archived tickets, and wants to control cost for the non-urgent batch job. Which distinction should guide how they run each workload?",
   "o": [
-   "Fine-tuning, because it injects the newest wiki facts into the model live at each query",
-   "Fine-tuning, because it is always cheaper than retrieval and needs no search index to maintain",
-   "RAG, because it grounds answers in currently retrieved documents without retraining on every edit",
-   "RAG, because it continuously rewrites the model's internal weights to match each wiki change"
+   "Run both workloads with the maximum temperature so every response is generated as fast as possible",
+   "Run both workloads through the same real-time endpoint, since batch processing is never cheaper",
+   "Use latency-optimized real-time inference for chat, and cheaper batch inference for the overnight job",
+   "Increase the token limit on the batch job so all tickets are summarized in one single request"
   ],
   "a": 2,
-  "e": "RAG suits frequently changing facts: it retrieves current documents at query time, no retraining per edit. Fine-tuning bakes knowledge into weights (not live facts) and is costly to repeat; RAG does not alter weights."
+  "e": "Interactive chat needs real-time inference, while a non-urgent bulk job suits cheaper batch/asynchronous inference — matching the delivery mode to urgency controls cost. Temperature doesn't govern cost mode, real-time isn't the only option, and token limits don't merge millions of tickets into one call."
  },
  {
   "d": 3,
-  "q": "A prompt keeps returning inconsistently formatted JSON that breaks a downstream parser. Which prompt-engineering change most directly improves structural reliability?",
+  "q": "A team compares two prompting strategies for a reasoning-heavy task and wants the model to show intermediate steps to improve answer quality. Which prompt technique are they applying?",
   "o": [
-   "Increase temperature and top-p so the model has more freedom when formatting the JSON output",
-   "Ask the model to be more creative and expressive when composing the structured JSON it returns",
-   "Remove the formatting instructions to keep the prompt short and let the model choose the shape",
-   "Specify an explicit output schema with an example and constrain the response to that format"
+   "Zero-shot prompting, which gives only the task instruction with no reasoning steps requested",
+   "Prompt caching, which reuses computation for a repeated prompt prefix across many requests",
+   "Model distillation, which trains a smaller model to reproduce a larger model's outputs",
+   "Chain-of-thought prompting, which asks the model to reason through steps before the final answer"
   ],
   "a": 3,
-  "e": "Giving an explicit schema plus an example (and reducing randomness) makes structured output far more reliable. Raising temperature/top-p or asking for creativity increases variability, and removing instructions strips the guidance the parser needs."
+  "e": "Asking the model to work through intermediate steps before answering is chain-of-thought prompting, which often improves reasoning-heavy tasks. Zero-shot omits reasoning guidance, prompt caching is a cost/latency optimization, and distillation is a training technique."
  },
  {
   "d": 3,
-  "q": "A team fine-tunes a model on just 40 examples; it now repeats those examples well but fails on anything slightly different. What happened, and what is a reasonable fix?",
+  "q": "A production RAG system is accurate but too slow because it retrieves and re-ranks far more passages than needed on every query. Which adjustment most directly targets the latency without abandoning grounding?",
   "o": [
-   "Overfitting to a tiny dataset; add more diverse examples, or prefer RAG or prompting for this need",
-   "Underfitting on the task; the fix is to reduce the training data further so it generalizes better",
-   "A tokenization error during training; the fix is to move the workload to a different AWS Region",
-   "A guardrail misconfiguration causing the behaviour; the fix is to disable guardrails on the model"
+   "Retrieve fewer, higher-relevance passages (tune top-k and chunking) so less context is processed",
+   "Remove retrieval entirely so the model answers from pre-trained knowledge with no lookup delay",
+   "Raise the temperature so the model commits to an answer faster instead of weighing passages",
+   "Increase the maximum token limit so longer contexts can be processed in a single pass"
   ],
   "a": 0,
-  "e": "Memorizing a tiny tuning set and failing to generalize is overfitting; expand and diversify the data, or use RAG/prompting instead. Reducing data worsens it, and the issue is unrelated to Regions or guardrails."
+  "e": "Retrieving fewer, more relevant passages (tuning top-k and chunking) cuts the context the model must process, reducing latency while keeping grounding. Removing retrieval drops grounding, temperature doesn't affect retrieval cost, and a larger limit adds work rather than removing it."
  },
  {
   "d": 3,
-  "q": "A team wants to add enforceable rules that block a foundation model from returning disallowed topics and from leaking PII, on both input and output. Which Bedrock capability fits?",
+  "q": "A team wants to reuse a well-tested prompt across several applications and track changes to it over time as they refine the wording. Which Bedrock capability is purpose-built for this?",
   "o": [
    "Bedrock Knowledge Bases, which ingest and index documents so the model can answer from them",
-   "Bedrock Guardrails, which filter harmful content and sensitive information across prompts and responses",
-   "Bedrock Playgrounds, which provide a console to try prompts and compare responses manually",
-   "Bedrock Prompt Management, which stores and versions tested prompts for reuse across teams"
+   "Bedrock Prompt Management, which lets teams store, version, and reuse prompts as managed resources",
+   "Bedrock Guardrails, which filter harmful content and restrict disallowed topics on both sides",
+   "Bedrock Model Evaluation, which scores and compares foundation models on a provided dataset"
   ],
   "a": 1,
-  "e": "Bedrock Guardrails enforce content/topic policies and detect or redact sensitive information such as PII on input and output. Knowledge Bases add retrieval, Playgrounds are for testing, and Prompt Management versions prompts."
+  "e": "Storing, versioning, and reusing prompts across teams and apps is exactly Bedrock Prompt Management. Knowledge Bases add retrieval, Guardrails enforce safety, and Model Evaluation compares models — none manage prompt versioning."
  },
  {
   "d": 3,
@@ -293,87 +293,87 @@ window.AIF_BANK_SET3 = [
  },
  {
   "d": 4,
-  "q": "An image model gives lower-quality results for certain skin tones, traced to unrepresentative training data. What is this, and what is the appropriate remedy?",
+  "q": "Before releasing a hiring-screen model, a team wants evidence that it does not systematically disadvantage any protected group. Which activity most directly provides that evidence?",
   "o": [
-   "Overfitting; the remedy is to raise the sampling temperature during generation to smooth results",
-   "A latency problem; the remedy is to add caching so results are returned to users more quickly",
-   "A prompt-injection attack; the remedy is to rotate the API keys used to call the image model",
-   "Representation bias; improve dataset diversity and evaluate fairness across the affected groups"
+   "Increasing the model's overall accuracy target until the aggregate score is as high as possible",
+   "Lowering the inference latency so recruiters receive each candidate's score more quickly",
+   "Expanding the model's context window so it can read longer candidate résumés in one pass",
+   "Measuring the model's outcomes separately across groups and comparing fairness metrics between them"
   ],
   "a": 3,
-  "e": "Unequal performance from unrepresentative data is representation bias; the remedy is more diverse data plus fairness evaluation across groups. It is not overfitting, latency, or a prompt-injection security issue."
+  "e": "Disaggregating outcomes by group and comparing fairness metrics is how you evidence that a model doesn't systematically disadvantage a group. Aggregate accuracy can hide group disparities, and latency and context window are unrelated to fairness evidence."
  },
  {
   "d": 4,
-  "q": "A generative feature is about to launch in a customer-facing product. Which combination best reflects responsible-AI practice before and after release?",
+  "q": "A company publishes a document describing a model's intended uses, known limitations, and performance across conditions so downstream teams use it appropriately. What is this artifact, and what responsible-AI goal does it serve?",
   "o": [
-   "Assess fairness, document limitations, add guardrails and human review for risky paths, then monitor",
-   "Ship it quickly and add oversight or review only later, if and when users actually complain",
-   "Disable all logging to protect user privacy and skip pre-launch evaluation to speed the release",
-   "Maximize the sampling temperature so the generated output feels more human and natural to users"
+   "A model card; it promotes transparency so others understand where the model should and shouldn't be used",
+   "A load-test report; it proves the model can serve peak request volume without failing",
+   "A billing alarm; it warns teams when the model's inference spend crosses a set threshold",
+   "A VPC endpoint policy; it defines which private networks are permitted to reach the model over AWS"
   ],
   "a": 0,
-  "e": "Responsible deployment means evaluating fairness, documenting limits, adding guardrails and human-in-the-loop for risky paths, and monitoring after launch. Shipping without oversight, disabling logging, or tuning for 'human-ness' are not responsible-AI controls."
+  "e": "Documenting intended use, limitations, and performance is a model card, serving transparency and appropriate use. A load-test report, billing alarm, and endpoint policy are operational or cost artifacts, not transparency documentation."
  },
  {
   "d": 4,
-  "q": "For an AI system that approves or denies loan applications, which capability most improves accountability to the people affected by its decisions?",
+  "q": "A generative assistant will operate in a domain where a wrong answer could cause real harm. Beyond accuracy, which combination best reflects responsible operation once it is live?",
   "o": [
-   "Storing every prompt and response in Amazon S3 Glacier so a long-term archived record exists",
-   "Explainability of decisions, together with documented model cards and human review of outcomes",
-   "Configuring higher top-p sampling so the system's decisions are expressed more clearly to reviewers",
-   "Deploying across more Availability Zones so the decision service stays resilient and highly available"
+   "Turning off logging entirely so that no record of the assistant's mistakes is ever retained",
+   "Continuous monitoring, a clear way for users to report problems, and human review of flagged cases",
+   "Raising the temperature so the assistant's tone feels more confident and reassuring to users",
+   "Removing usage limits so the assistant can respond to as many requests as possible per minute"
   ],
   "a": 1,
-  "e": "Accountability comes from explainable decisions, documented intended use and limits (model cards), and human review. Archival storage, sampling parameters, and infrastructure redundancy don't make individual decisions explainable."
+  "e": "Responsible live operation in a high-harm domain means ongoing monitoring, user feedback channels, and human review of flagged outputs. Disabling logging removes accountability, higher temperature adds risk, and lifting limits doesn't address harm."
  },
  {
   "d": 4,
-  "q": "Why is keeping a human in the loop valuable for higher-risk AI decisions that affect people?",
+  "q": "A team is concerned their training data may embed historical biases that the model will reproduce. Which step most directly addresses the source of that risk rather than its symptoms?",
   "o": [
-   "It removes the need for any ongoing monitoring, since a person has already checked the system once",
-   "It guarantees the model will never make errors, because a person signs off on every prediction",
-   "It lets a person review or override the model's output before a harmful action is actually taken",
-   "It eliminates the need for quality training data, since a reviewer compensates for any data gaps"
+   "Deploying the model across more Availability Zones so it stays available during retraining",
+   "Raising the model's temperature so biased outputs are diluted by more random variation",
+   "Examining and curating the training data for representativeness and known biased patterns",
+   "Increasing the token limit so the model can add disclaimers to every response it generates"
   ],
   "a": 2,
-  "e": "Human-in-the-loop adds oversight so a person can catch and correct problematic output before impact. It doesn't remove monitoring, guarantee perfection, or eliminate the need for good data."
+  "e": "Because bias often originates in the data, examining and curating the training data for representativeness tackles the source. Multi-AZ deployment, temperature, and token limits address availability, randomness, and length — not the biased data itself."
  },
  {
   "d": 5,
-  "q": "An enterprise requires that data sent to Amazon Bedrock never traverse the public internet. Which approach meets this requirement?",
+  "q": "A team asks who is responsible for securing what when they use a managed AWS AI service: the underlying infrastructure versus their own data, access policies, and how they use the service. Which model describes this split?",
   "o": [
-   "Use the public Bedrock endpoint but protect it with a strong password so the traffic stays private",
-   "Raise the model's sampling temperature so that requests are handled without leaving the AWS network",
-   "Store all prompts and responses in a public S3 bucket so the data path avoids the public internet",
-   "Access Bedrock over a VPC interface endpoint (AWS PrivateLink) to keep traffic on the AWS network"
+   "The context window model, where the provider and the customer alternate control of security on each request",
+   "The tokenization model, where responsibility is divided according to how text is split into tokens",
+   "The temperature model, where security duties shift depending on how deterministic outputs are",
+   "The shared responsibility model, where AWS secures the cloud infrastructure and the customer secures their data and access"
   ],
   "a": 3,
-  "e": "A VPC interface endpoint (PrivateLink) keeps traffic to Bedrock on the AWS private network. Passwords on public endpoints, temperature, and public buckets do not satisfy a private-networking requirement."
+  "e": "The division of security duties — AWS for the infrastructure, the customer for their data, IAM policies, and usage — is the shared responsibility model. The other options are invented; context window, tokenization, and temperature are not governance frameworks."
  },
  {
   "d": 5,
-  "q": "A regulated firm must produce an audit trail proving which users invoked which models and when. Which combination provides this governance evidence?",
+  "q": "A company operates under a regulation requiring that its customer data be processed and stored only within a specific country. Which AWS concept lets them satisfy this data-residency requirement when using AI services?",
   "o": [
-   "AWS CloudTrail recording API activity tied to IAM identities, with those logs retained per policy",
-   "Relying only on the Bedrock Playground history to show which users invoked which models and when",
-   "Increasing the maximum token limit so each request and its full response are captured for audit",
-   "Provisioning a larger EC2 instance so the platform can retain a complete record of every invocation"
+   "Choosing an AWS Region located in the required country so data is processed and stored there",
+   "Raising the model's temperature so responses are generated closer to the customer's location",
+   "Increasing the token limit so more of the customer's data fits within one country's boundary",
+   "Enabling response streaming so data crosses borders in smaller, less noticeable increments"
   ],
   "a": 0,
-  "e": "CloudTrail records API calls tied to IAM identities, and retaining those logs provides the audit trail regulators expect. Playground history, token limits, and instance sizing don't constitute governance evidence."
+  "e": "Data residency is met by selecting an AWS Region in the required country, since Regions are geographically bounded. Temperature, token limits, and streaming have nothing to do with where data is physically processed or stored."
  },
  {
   "d": 5,
-  "q": "A security review finds that prompts may contain customer PII that shouldn't reach the model. Which layered response is soundest?",
+  "q": "A finance team is alarmed by an unexpectedly large bill from a generative AI feature and wants ongoing visibility into how much each workload is spending. Which AWS capability most directly gives them this?",
   "o": [
-   "Ignore the finding, since foundation models do not store the data sent to them and pose no risk",
-   "Redact or filter PII (e.g., Guardrails), restrict access with IAM, and audit activity with CloudTrail",
-   "Only rename the S3 bucket holding the prompts so the sensitive customer PII is harder to locate",
-   "Only increase the request token limit so that longer prompts containing the PII are not truncated"
+   "Raising the model's temperature so that each response consumes a more predictable amount of spend",
+   "Cost monitoring and budget alerts that track AI service spend and warn when thresholds are crossed",
+   "Increasing the token limit so that fewer requests are needed and the total bill automatically drops",
+   "Enabling guardrails so that disallowed prompts are blocked before they can add to the invoice"
   ],
   "a": 1,
-  "e": "A layered response — filtering/redacting PII, restricting access with IAM, and auditing with CloudTrail — addresses the risk in depth. Assuming no storage is unsafe, and bucket renaming or token limits don't protect sensitive data."
+  "e": "Ongoing spend visibility and threshold warnings come from cost monitoring and budget alerts. Temperature doesn't govern cost, larger token limits tend to raise per-request cost, and guardrails address safety rather than billing visibility."
  }
 ];
 
