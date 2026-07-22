@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072204 -->
+<!-- build: 2026072205 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 2 (Intermediate to Advanced)</title>
@@ -67,9 +67,9 @@ window.AIF_BANK_SET2 = [
   "q": "A fraud team has millions of transactions but only ~0.3% are labeled fraudulent. A model trained on this data reports 99.7% accuracy yet misses almost all fraud. What is the core problem and a sound fix?",
   "o": [
    "Severe class imbalance is inflating accuracy; use metrics like recall/precision and rebalancing or class weighting",
-   "The model is underfitting; raise its complexity",
-   "The temperature is too low; increase it",
-   "The dataset is too small; the only fix is collecting labeled data for years"
+   "The model is underfitting; raising model complexity and training longer will fix the missed-fraud problem",
+   "The sampling temperature is set too low; increasing it will surface the fraudulent transactions being missed",
+   "The dataset is simply too small, and the only viable fix is spending years collecting more labeled fraud examples"
   ],
   "a": 0,
   "e": "With 0.3% positives, a model can hit 99.7% accuracy by predicting 'not fraud' every time — accuracy is misleading under class imbalance. The right response is to evaluate with recall/precision/F1 and address imbalance (resampling, class weights, thresholds). Temperature applies to generative sampling, not this classifier, and complexity alone won't fix a metric/imbalance problem."
@@ -90,10 +90,10 @@ window.AIF_BANK_SET2 = [
   "d": 1,
   "q": "During evaluation, a classifier shows high precision but low recall on the positive class. What does this indicate?",
   "o": [
-   "It labels almost everything positive",
-   "It is perfectly calibrated",
+   "It is labelling almost everything as positive, which is why the reported scores look the way they do",
+   "It is perfectly calibrated, so its predicted probabilities can be trusted directly without adjustment",
    "When it predicts positive it is usually right, but it misses many true positives",
-   "Its accuracy must also be high"
+   "Its overall accuracy on the dataset must therefore also be correspondingly high across both classes"
   ],
   "a": 2,
   "e": "High precision means positive predictions are usually correct; low recall means many actual positives are missed. Labeling everything positive would lower precision. Calibration and overall accuracy are separate properties."
@@ -115,9 +115,9 @@ window.AIF_BANK_SET2 = [
   "q": "An application must return answers strictly grounded in a fixed policy document and must minimize hallucination, but the policy changes weekly. Which design is most appropriate?",
   "o": [
    "Use RAG so the latest policy is retrieved at query time as grounding context",
-   "Fine-tune the model weekly on the policy",
-   "Increase temperature to encourage creative answers",
-   "Cache one answer and reuse it for all questions"
+   "Fine-tune the model on the policy document every week so the newest version is baked into its weights",
+   "Increase the sampling temperature to encourage more creative answers grounded in the current policy",
+   "Cache a single canonical answer and reuse it for all policy questions to guarantee consistency"
   ],
   "a": 0,
   "e": "RAG retrieves the current policy at query time, so weekly changes are reflected without retraining and answers stay grounded — reducing hallucination. Weekly fine-tuning is slow and costly for frequently changing text, higher temperature increases variability, and caching a single answer ignores question variety."
@@ -138,10 +138,10 @@ window.AIF_BANK_SET2 = [
   "d": 2,
   "q": "Two teams debate embeddings. Which statement is correct?",
   "o": [
-   "Embeddings are encrypted copies of the prompt",
-   "Embeddings disable a model's safety filters",
+   "Embeddings are encrypted copies of the prompt, used to secure the text before it is sent to the model",
+   "Embeddings are a mechanism that disables a model's built-in safety filters for a given request",
    "Embeddings are numeric vector representations that capture semantic meaning, enabling similarity search",
-   "Embeddings are the model's billing tokens"
+   "Embeddings are the billing tokens the model uses to meter and charge for each request that is processed"
   ],
   "a": 2,
   "e": "Embeddings map text (or other data) into numeric vectors whose distances reflect semantic similarity, powering search and retrieval. They are not encrypted prompts, safety controls, or billing units."
@@ -150,9 +150,9 @@ window.AIF_BANK_SET2 = [
   "d": 2,
   "q": "A startup wants lower latency and cost for a high-volume chat feature and is willing to accept a smaller model if quality stays acceptable. Which selection factor set is most relevant?",
   "o": [
-   "Only the model's release date",
-   "The color of the console theme",
-   "The number of AWS Regions in the world",
+   "Only the model's release date, since newer models are always the better choice for any workload",
+   "The console theme colour and interface layout the team prefers when working with the model",
+   "The total number of AWS Regions in the world, since broader coverage makes the model a better fit",
    "Model size/capability, latency, and cost trade-offs for the use case"
   ],
   "a": 3,
@@ -186,10 +186,10 @@ window.AIF_BANK_SET2 = [
   "d": 3,
   "q": "A RAG chatbot returns fluent answers that are often unrelated to the retrieved passages. Which is the MOST likely cause to investigate first?",
   "o": [
-   "The IAM policy is too permissive",
-   "The S3 bucket is in the wrong Region",
+   "The IAM policy attached to the application is too permissive, which is corrupting the generated answers",
+   "The source S3 bucket holding the documents is deployed in the wrong Region, causing off-topic responses",
    "Poor retrieval relevance/chunking so the model isn't grounded in the right context",
-   "The model's temperature is set to 0"
+   "The model's sampling temperature is set to 0, which is why the answers drift away from the retrieved passages"
   ],
   "a": 2,
   "e": "When answers ignore the source, the retrieval stage is the prime suspect — poor chunking, embeddings, or relevance means the right context never reaches the model. IAM and bucket Region wouldn't cause off-topic-but-fluent answers, and temperature 0 makes output more deterministic, not less grounded."
@@ -198,9 +198,9 @@ window.AIF_BANK_SET2 = [
   "d": 3,
   "q": "An enterprise needs an agent that plans multi-step tasks, calls internal APIs, retains session context, and must scale securely in production. Which approach best fits current AWS tooling?",
   "o": [
-   "A single static prompt with no tools",
-   "A CloudWatch dashboard",
-   "An S3 lifecycle policy",
+   "A single static prompt with no tool access, relying on the base model alone to complete every step",
+   "A CloudWatch dashboard configured to monitor the metrics emitted during the multi-step task execution",
+   "An S3 lifecycle policy that transitions the task's intermediate data between storage classes over time",
    "Bedrock Agents (with AgentCore capabilities) to orchestrate tool calls, memory, and secure execution"
   ],
   "a": 3,
@@ -211,9 +211,9 @@ window.AIF_BANK_SET2 = [
   "q": "A team must decide between fine-tuning and RAG for a bot that needs up-to-date factual answers from frequently updated internal wikis. Which choice and reason is soundest?",
   "o": [
    "RAG, because it grounds answers in current retrieved documents without retraining on every update",
-   "Fine-tuning, because it injects live facts at query time",
-   "Fine-tuning, because it is always cheaper than RAG",
-   "RAG, because it changes the model's internal weights"
+   "Fine-tuning, because it injects the latest wiki facts into the model live at query time on every request",
+   "Fine-tuning, because it is always cheaper than retrieval and avoids the cost of maintaining a search index",
+   "RAG, because it continuously updates the model's internal weights to reflect each change made to the wikis"
   ],
   "a": 0,
   "e": "RAG suits frequently changing factual knowledge — it retrieves current documents at query time without retraining. Fine-tuning bakes knowledge into weights (not live facts) and is costly to repeat on every wiki edit. RAG does not alter model weights."
@@ -222,10 +222,10 @@ window.AIF_BANK_SET2 = [
   "d": 3,
   "q": "A prompt keeps producing inconsistent JSON that breaks a downstream parser. Which prompt-engineering adjustment most directly improves structural reliability?",
   "o": [
-   "Increase temperature and top-p",
+   "Increase the sampling temperature and top-p so the model has more freedom to format the JSON response",
    "Specify an explicit output schema/format with an example and constrain the response",
-   "Ask the model to be more creative",
-   "Remove all instructions to keep the prompt short"
+   "Instruct the model to be more creative and expressive when composing the structured JSON it returns",
+   "Remove all formatting instructions to keep the prompt as short as possible and let the model decide the shape"
   ],
   "a": 1,
   "e": "Giving an explicit format/schema plus an example (and lowering randomness) makes structured output far more reliable. Raising temperature/top-p or asking for creativity increases variability, and stripping instructions removes the guidance the parser depends on."
@@ -246,11 +246,11 @@ window.AIF_BANK_SET2 = [
   "d": 3,
   "q": "An agent occasionally emits disallowed content and also leaks a customer's PII from context. Which layered controls address BOTH issues?",
   "o": [
-   "Only raise the token limit",
-   "Only lower the temperature",
-   "Only enable CloudTrail",
+   "Only raise the maximum token limit so the model has room to complete its responses without truncation",
+   "Only lower the sampling temperature so the model produces more deterministic and predictable output",
+   "Only enable CloudTrail so that every request and response is recorded for later review by the security team",
    "Apply Bedrock Guardrails for content/topic and sensitive-information (PII) filtering across prompts and responses",
-   "Switch Regions"
+   "Switch the workload to a different AWS Region where the disallowed content and PII leakage will not occur"
   ],
   "a": 3,
   "e": "Guardrails can filter harmful/disallowed content AND detect/redact sensitive information such as PII on both input and output — covering both problems. Token limits and temperature don't enforce policy, and CloudTrail only audits API calls after the fact."
@@ -260,9 +260,9 @@ window.AIF_BANK_SET2 = [
   "q": "A team fine-tunes a model on 40 examples and it now parrots those examples but fails on anything slightly different. What happened and what's a reasonable fix?",
   "o": [
    "Overfitting to a tiny dataset; add more diverse examples or prefer RAG/prompting for this need",
-   "Underfitting; reduce data further",
-   "Tokenization error; change Regions",
-   "Guardrail misconfiguration; disable guardrails"
+   "Underfitting on the task; the fix is to reduce the training data further so the model generalizes better",
+   "A tokenization error introduced during training; the fix is to move the workload to a different Region",
+   "A guardrail misconfiguration is causing the behaviour; the fix is to disable guardrails on the model"
   ],
   "a": 0,
   "e": "A model that memorizes a tiny tuning set and fails to generalize is overfitting; expanding and diversifying data — or using RAG/prompting instead of tuning — is the sensible path. Reducing data worsens it, and the issue is unrelated to Regions or guardrails."
@@ -271,10 +271,10 @@ window.AIF_BANK_SET2 = [
   "d": 4,
   "q": "A generative feature must be launched responsibly. Which combination best reflects responsible-AI practice before and after launch?",
   "o": [
-   "Ship fast, add oversight only if users complain",
+   "Ship the feature quickly and add oversight or review only later, if and when users actually complain",
    "Assess bias/fairness, document limitations, add guardrails and human review for high-risk paths, and monitor after release",
-   "Disable logging to protect privacy and skip evaluation",
-   "Maximize temperature to seem more human"
+   "Disable all logging to protect user privacy and skip pre-launch evaluation to accelerate the release",
+   "Maximize the sampling temperature so the generated output feels more human and natural to end users"
   ],
   "a": 1,
   "e": "Responsible deployment means evaluating fairness, documenting limits, adding guardrails and human-in-the-loop for risky decisions, and monitoring in production. Shipping without oversight, disabling logging (which harms accountability), or tuning for 'human-ness' are not responsible-AI controls."
@@ -283,10 +283,10 @@ window.AIF_BANK_SET2 = [
   "d": 4,
   "q": "An image model produces lower-quality results for certain skin tones, traced to unrepresentative training data. Which term and remedy pair is correct?",
   "o": [
-   "Overfitting; raise temperature",
-   "Latency; add caching",
+   "Overfitting to the training set; the remedy is to raise the sampling temperature during generation",
+   "A latency problem in the pipeline; the remedy is to add caching so results are returned more quickly",
    "Data/representation bias; improve dataset diversity and evaluate fairness across groups",
-   "Prompt injection; rotate API keys"
+   "A prompt-injection security issue; the remedy is to rotate the API keys used to call the image model"
   ],
   "a": 2,
   "e": "Unequal performance stemming from unrepresentative data is representation bias; the remedy is more diverse data plus fairness evaluation across groups. It is not overfitting, latency, or a prompt-injection security issue."
@@ -295,9 +295,9 @@ window.AIF_BANK_SET2 = [
   "d": 4,
   "q": "For an AI system that denies or approves benefits, which capability most improves accountability to affected individuals?",
   "o": [
-   "Storing prompts in Glacier",
-   "Higher top-p sampling",
-   "More Availability Zones",
+   "Storing every prompt and response in Amazon S3 Glacier so a long-term archived record is retained",
+   "Configuring higher top-p sampling so the system's decisions are expressed more clearly to reviewers",
+   "Deploying across more Availability Zones so the decision service is more resilient and highly available",
    "Explainability of decisions plus documented model cards and human review"
   ],
   "a": 3,
@@ -308,9 +308,9 @@ window.AIF_BANK_SET2 = [
   "q": "A team wants to reduce toxic or biased generations at inference without retraining. Which is the most direct, responsible control on AWS?",
   "o": [
    "Amazon Bedrock Guardrails content filters and denied topics",
-   "Amazon EBS snapshots",
-   "AWS Cost Explorer",
-   "Amazon Route 53 routing"
+   "Amazon EBS snapshots taken on a schedule to capture the model's state and reduce toxic output",
+   "AWS Cost Explorer analysis to identify and reduce the spend associated with biased generations",
+   "Amazon Route 53 routing rules that direct requests away from prompts likely to produce toxic output"
   ],
   "a": 0,
   "e": "Bedrock Guardrails apply content filters and topic denials at inference to curb toxic/biased output without retraining. Snapshots, cost analysis, and DNS routing are unrelated to output safety."
@@ -319,10 +319,10 @@ window.AIF_BANK_SET2 = [
   "d": 5,
   "q": "An enterprise requires that data sent to Bedrock never traverse the public internet. Which approach meets this?",
   "o": [
-   "Use a public endpoint with a strong password",
+   "Use the public Bedrock endpoint but protect it with a strong password so traffic stays private in transit",
    "Access Bedrock over a VPC interface endpoint (AWS PrivateLink) to keep traffic on the AWS network",
-   "Raise the temperature",
-   "Store prompts in a public S3 bucket"
+   "Raise the model's sampling temperature so that requests are handled without leaving the AWS network",
+   "Store all prompts and responses in a public S3 bucket so the data path never touches the public internet"
   ],
   "a": 1,
   "e": "A VPC interface endpoint (PrivateLink) lets traffic to Bedrock stay on the AWS private network rather than the public internet. Passwords on public endpoints, temperature, and public buckets do not satisfy the private-networking requirement."
@@ -331,10 +331,10 @@ window.AIF_BANK_SET2 = [
   "d": 5,
   "q": "To follow least-privilege for a team that should only invoke one specific Bedrock model, what is the best practice?",
   "o": [
-   "Grant full administrator access for convenience",
-   "Share one root account among the team",
+   "Grant the team full administrator access for convenience so they are never blocked while invoking the model",
+   "Share a single root account across the whole team so everyone invokes the model with the same credentials",
    "Write a scoped IAM policy allowing only the required Bedrock invoke action on that model resource",
-   "Disable IAM entirely"
+   "Disable IAM entirely for the workload so that access to the specific model is never unintentionally blocked"
   ],
   "a": 2,
   "e": "Least privilege means granting only the specific action on the specific resource via a scoped IAM policy. Admin access, shared root accounts, and disabling IAM all violate security best practice."
@@ -344,11 +344,11 @@ window.AIF_BANK_SET2 = [
   "q": "A regulated firm must prove which users invoked which models and when, for an audit. Which combination provides this governance evidence?",
   "o": [
    "CloudTrail for API activity plus IAM identities, with logs retained per policy",
-   "Increasing max tokens",
-   "A larger EC2 instance",
-   "Only the Bedrock Playground history"
+   "Increasing the maximum token limit so that every request and its full response are captured for audit",
+   "Provisioning a larger EC2 instance so the platform can retain a complete record of who invoked what",
+   "Relying only on the Bedrock Playground history to show which users invoked which models and when"
   ],
-  "a": 3,
+  "a": 0,
   "e": "CloudTrail records API calls tied to IAM identities, and retaining those logs provides the audit trail regulators expect. Playground history, token limits, and instance sizing don't constitute governance evidence."
  },
  {
@@ -367,10 +367,10 @@ window.AIF_BANK_SET2 = [
   "d": 5,
   "q": "During a security review, a team finds prompts may contain customer PII that shouldn't reach the model. Which layered response is soundest?",
   "o": [
-   "Ignore it; models don't store data",
+   "Ignore the finding, since foundation models do not store the data sent to them and the PII poses no risk",
    "Redact/filter PII (e.g., Guardrails sensitive-info filters) AND restrict access via IAM AND audit with CloudTrail",
-   "Only rename the S3 bucket",
-   "Only increase the token limit"
+   "Only rename the S3 bucket holding the prompts so the sensitive customer PII is harder for others to locate",
+   "Only increase the request token limit so that longer prompts containing the customer PII are not truncated"
   ],
   "a": 1,
   "e": "A layered response — filtering/redacting PII, restricting access with IAM, and auditing with CloudTrail — addresses the risk in depth. Assuming no storage is unsafe, and bucket renaming or token limits don't protect sensitive data."
