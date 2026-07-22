@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<!-- build: 2026072207 -->
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIF-C01 Prep — Set 3 (Expert · Applied ML & LLM scenarios)</title>
+<style>
+:root{--blue:#1a6eb5;--blue-d:#12507f;--ink:#1a2733;--mut:#5a6b7a;--line:#e2e8ef;--ok:#127a3e;--no:#b5341a;--amber:#8a5a00;--amber-bg:#fff6e0;--bg:#f5f8fb;}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+.aif-wrap{max-width:760px;margin:0 auto;padding:28px 20px 60px}
+.aif-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:16px;font-weight:600}
+.aif-back:hover{text-decoration:underline}
+.aif-head{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.aif-badge{background:var(--blue);color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:20px;letter-spacing:.3px}
+.aif-head small{color:var(--mut)}
+.aif-user{margin-left:auto;font-size:12.5px;color:var(--mut)}
+.aif-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:0 1px 3px rgba(20,50,80,.05)}
+h1{font-size:22px;margin:0 0 6px}
+.aif-sub{color:var(--mut);margin:0 0 18px}
+.aif-meta{list-style:none;padding:0;margin:0 0 22px}
+.aif-meta li{padding:8px 0;border-bottom:1px solid var(--line);color:var(--mut);font-size:14px}
+.aif-topbar{display:flex;justify-content:space-between;font-size:13px;color:var(--mut);margin-bottom:10px;font-weight:600}
+.aif-progress{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:18px}
+.aif-progress-fill{height:100%;background:var(--blue);transition:width .3s}
+.aif-domain{display:inline-block;font-size:12px;font-weight:700;color:var(--blue-d);background:#eaf3fb;padding:3px 10px;border-radius:12px;margin-bottom:12px}
+.aif-annot{background:var(--amber-bg);border:1px solid #f0d488;color:var(--amber);padding:10px 12px;border-radius:8px;font-size:13.5px;margin-bottom:14px}
+.aif-q{font-size:16.5px;font-weight:600;margin-bottom:18px}
+.aif-opts{display:flex;flex-direction:column;gap:10px}
+.aif-opt{display:flex;align-items:flex-start;gap:10px;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:13px 14px;font-size:14.5px;cursor:pointer;transition:.15s;color:var(--ink);font-family:inherit}
+.aif-opt:hover:not(.locked){border-color:var(--blue);background:#f7fbff}
+.aif-letter{background:var(--bg);border:1px solid var(--line);border-radius:6px;min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.aif-opt.correct{border-color:var(--ok);background:#eefaf1}
+.aif-opt.correct .aif-letter{background:var(--ok);color:#fff;border-color:var(--ok)}
+.aif-opt.wrong{border-color:var(--no);background:#fdeeeb}
+.aif-opt.wrong .aif-letter{background:var(--no);color:#fff;border-color:var(--no)}
+.aif-opt.locked{cursor:default}
+.aif-expl{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px}
+.aif-expl.ok{background:#eefaf1;border:1px solid #bfe6cc}
+.aif-expl.no{background:#fdeeeb;border:1px solid #f2c6bd}
+.aif-nav{margin-top:18px}
+.aif-next{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.aif-next:hover{background:var(--blue-d)}
+.aif-next:disabled{background:#b9c6d2;cursor:not-allowed}
+.aif-reset{display:block;margin-top:14px;background:none;border:0;color:var(--mut);font-size:13px;cursor:pointer;text-decoration:underline;font-family:inherit}
+.aif-result{text-align:center}
+.aif-score{font-size:44px;font-weight:800;color:var(--blue)}
+.aif-pct{font-size:18px;color:var(--mut);margin-bottom:8px}
+.aif-verdict{font-size:14.5px;margin:12px 0 20px;color:var(--ink)}
+.aif-break{text-align:left;background:var(--bg);border-radius:10px;padding:14px 16px;margin:18px 0}
+.aif-break-title{font-weight:700;font-size:13px;margin-bottom:8px;color:var(--blue-d)}
+.aif-break-row{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0;border-bottom:1px solid var(--line)}
+.aif-break-row:last-child{border-bottom:0}
+.aif-foot{text-align:center;color:var(--mut);font-size:12px;margin-top:24px}
+</style></head>
+<body><div class="aif-wrap">
+<a class="aif-back" href="https://sflearningdevelopment.github.io/AWS-AIF-C01-Prep/index.html?v=2026072201">&larr; Back to dashboard</a>
+<div class="aif-head"><span class="aif-badge">AIF-C01 · SET 3</span><small>Expert · Applied ML & LLM scenarios · AWS Certified AI Practitioner readiness</small><span class="aif-user" id="aif3-user"></span></div>
+<div class="aif-card"><div id="aif3"></div></div>
+<div class="aif-foot">Original practice items aligned to the AIF-C01 exam domains. Not affiliated with or endorsed by AWS. For internal SF Knowledge Hub prep only.</div>
+</div>
+<script>
+// AIF-C01 Prep — Set 3 (Expert · Applied ML & LLM scenarios)
+// Original scenario-first MCQs, blueprint-weighted. Foundational depth (selection/application/trade-offs).
+// Distractors length-matched; answer positions balanced across A-D.
+// domains: 1=Fundamentals AI/ML, 2=Fundamentals GenAI, 3=Applications of FMs, 4=Responsible AI, 5=Security/Compliance/Governance
+window.AIF_BANK_SET3 = [
+ {
+  "d": 1,
+  "q": "A team must predict next month's revenue as a continuous dollar amount from historical sales features. Which category of ML algorithm fits this problem?",
+  "o": [
+   "A regression algorithm, which predicts a continuous numeric target from input features",
+   "A classification algorithm, which assigns each input to one of several discrete labels",
+   "A clustering algorithm, which groups unlabeled records by similarity without a target",
+   "A reinforcement algorithm, which learns a policy of actions by maximizing a reward signal"
+  ],
+  "a": 0,
+  "e": "Predicting a continuous number (dollar amount) is a regression task. Classification produces discrete labels, clustering finds groups in unlabeled data, and reinforcement learning optimizes sequential actions via rewards — none predict a continuous value."
+ },
+ {
+  "d": 1,
+  "q": "A model separates customers into 'will churn' vs 'will not churn.' The business cares most about catching as many true churners as possible, even at the cost of some false alarms. Which metric should they prioritize?",
+  "o": [
+   "Precision, which measures how many predicted churners were actually churners",
+   "Recall, which measures how many actual churners the model successfully caught",
+   "Training accuracy, which measures performance on the data used to fit the model",
+   "Inference latency, which measures how quickly the model returns each prediction"
+  ],
+  "a": 1,
+  "e": "Catching as many actual churners as possible is recall (true positives found ÷ all actual positives). Precision optimizes the opposite trade-off (avoiding false alarms), training accuracy can be misleading, and latency is a performance measure, not a fairness-of-capture one."
+ },
+ {
+  "d": 1,
+  "q": "A team has a large set of product reviews with no labels and wants to discover natural groupings of similar reviews before deciding what to do next. Which approach fits?",
+  "o": [
+   "Supervised classification, training on labeled examples of each predefined review category",
+   "A regression model, which would output a continuous score for each individual review",
+   "Unsupervised clustering, which groups the unlabeled reviews by similarity into segments",
+   "Reinforcement learning, which would learn review-handling actions through reward feedback"
+  ],
+  "a": 2,
+  "e": "Discovering groupings in unlabeled data is unsupervised clustering. Supervised classification needs labels, regression outputs continuous numbers, and reinforcement learning optimizes actions — none discover natural segments in unlabeled text."
+ },
+ {
+  "d": 1,
+  "q": "A model scores 98% on the data it was trained on but only 71% on a held-out test set. What does this gap most directly indicate, and what is a reasonable response?",
+  "o": [
+   "Underfitting; the model is too simple, so the team should add more features or complexity",
+   "Data leakage; the target variable is present in the input, so predictions are trivially correct",
+   "Class imbalance; one class dominates, so accuracy alone overstates the model's real skill",
+   "Overfitting; the model memorized training noise, so the team should simplify it or add data"
+  ],
+  "a": 3,
+  "e": "High training accuracy with a large drop on unseen data is the classic signature of overfitting. Underfitting shows poor performance on both sets, leakage inflates both scores together, and imbalance is about class proportions — the train-vs-test gap points to overfitting."
+ },
+ {
+  "d": 1,
+  "q": "A company wants a managed AWS service to build, train, and deploy a custom ML model end to end, rather than call a pre-built AI API. Which service fits?",
+  "o": [
+   "Amazon SageMaker AI, a platform for building, training, and deploying custom ML models",
+   "Amazon Rekognition, a pre-trained service that analyzes images and video out of the box",
+   "Amazon Comprehend, a pre-trained service that extracts insights and entities from text",
+   "Amazon Textract, a pre-trained service that extracts text and data from scanned documents"
+  ],
+  "a": 0,
+  "e": "SageMaker AI is the end-to-end custom-model platform. Rekognition, Comprehend, and Textract are pre-trained AI services for fixed tasks (vision, NLP, document extraction), not general model-building."
+ },
+ {
+  "d": 2,
+  "q": "An application sends the same long reference document as a prefix on thousands of LLM requests and wants to cut the repeated cost and latency of reprocessing it. Which capability helps most?",
+  "o": [
+   "Raising the temperature, which increases the randomness and variety of generated output",
+   "Prompt caching, which reuses computation for a repeated prompt prefix across many calls",
+   "Increasing the max token limit, which allows the model to return longer completions",
+   "Adding more few-shot examples, which shows the model additional input-output patterns"
+  ],
+  "a": 1,
+  "e": "Prompt caching reuses the computed representation of a repeated prefix, cutting latency and cost on later calls. Temperature and token limits affect output character, and adding examples increases prompt size rather than reducing repeated cost."
+ },
+ {
+  "d": 2,
+  "q": "A summarization feature returns wildly different summaries each time it runs on the same input, and the team wants more consistent, repeatable output. Which inference setting change is most direct?",
+  "o": [
+   "Raise the temperature so the model samples from a wider range of possible next tokens",
+   "Increase top-p so a larger pool of candidate tokens is considered at each step",
+   "Lower the temperature so the model's sampling becomes more focused and deterministic",
+   "Increase the maximum token limit so the model has room to produce fuller summaries"
+  ],
+  "a": 2,
+  "e": "Lower temperature makes sampling more deterministic and repeatable. Raising temperature or top-p increases variability, and the token limit affects length, not consistency."
+ },
+ {
+  "d": 2,
+  "q": "A team wants to represent thousands of support articles so they can find the ones most semantically similar to a user's question. Which concept underpins this?",
+  "o": [
+   "Tokens, the sub-word units a model reads and generates when processing any given text",
+   "Guardrails, configurable policies that filter harmful or disallowed prompts and responses",
+   "Temperature, the setting that controls how random or focused generated output will be",
+   "Embeddings, numeric vectors capturing semantic meaning so similarity can be measured"
+  ],
+  "a": 3,
+  "e": "Embeddings map text to vectors whose distances reflect semantic similarity, enabling nearest-match search. Tokens are text units, guardrails enforce safety, and temperature controls randomness — none provide semantic similarity search."
+ },
+ {
+  "d": 2,
+  "q": "A startup needs a high-volume chat feature and will accept a smaller, cheaper foundation model if quality stays acceptable. Which set of factors should drive the model choice?",
+  "o": [
+   "Model capability, latency, and cost weighed against the quality the use case requires",
+   "Only the model's release date, since the most recently released model is always best",
+   "Only the size of the model's context window, since larger context is always preferable",
+   "Only the number of languages the model supports, regardless of the actual workload"
+  ],
+  "a": 0,
+  "e": "Model selection balances capability, latency, and cost against the quality the use case needs — a smaller cheaper model can win if quality suffices. Release date, context window, or language count alone are not sufficient selection criteria."
+ },
+ {
+  "d": 2,
+  "q": "A model produces fluent text that confidently states facts which turn out to be false. What is this behaviour called, and what design choice most reduces it for factual answers?",
+  "o": [
+   "Tokenization; switching to a different sub-word vocabulary removes the fabricated statements",
+   "Hallucination; grounding answers in retrieved source documents (RAG) reduces fabricated facts",
+   "Overfitting; collecting a larger pre-training corpus eliminates all incorrect factual claims",
+   "Latency; provisioning faster inference hardware prevents the model from inventing details"
+  ],
+  "a": 1,
+  "e": "Confident but false output is hallucination; grounding responses in retrieved sources (RAG) is the standard mitigation for factual tasks. Tokenization, pre-training size, and hardware speed don't address factual grounding."
+ },
+ {
+  "d": 2,
+  "q": "A team wants a managed, repeatable way to compare two foundation models' output quality on their own dataset before choosing one. Which Amazon Bedrock capability fits?",
+  "o": [
+   "Bedrock Guardrails, which apply content and topic policies to prompts and responses",
+   "Bedrock Playgrounds, which let you try individual prompts manually one at a time in the console",
+   "Bedrock Model Evaluation, which scores and compares models on your data automatically or with humans",
+   "Bedrock Prompt Management, which stores, versions, and reuses tested prompts across teams"
+  ],
+  "a": 2,
+  "e": "Bedrock Model Evaluation provides managed, repeatable scoring to compare models on your data. Guardrails enforce safety, Playgrounds are for ad-hoc manual trials, and Prompt Management versions prompts — none systematically compare model quality."
+ },
+ {
+  "d": 3,
+  "q": "A support bot must answer strictly from internal policy documents that change weekly, while minimizing fabricated answers. Which approach is soundest and why?",
+  "o": [
+   "Fine-tune the model weekly, because retraining is the only way to reflect updated policy text",
+   "Raise the temperature, because more creative sampling produces more helpful policy answers",
+   "Cache one canonical answer, because reusing a single response guarantees perfect consistency",
+   "Use RAG, because it retrieves the current policy at query time so answers stay grounded and current"
+  ],
+  "a": 3,
+  "e": "RAG retrieves the latest policy at query time, keeping answers current and grounded without constant retraining — ideal for frequently changing text. Weekly fine-tuning is costly and slow, higher temperature adds variability, and a single cached answer ignores question variety."
+ },
+ {
+  "d": 3,
+  "q": "A RAG assistant returns fluent answers that frequently ignore the retrieved passages entirely. Which cause should the team investigate first?",
+  "o": [
+   "Retrieval relevance or chunking is poor, so the right context never reaches the model to ground it",
+   "The IAM policy is overly permissive, which is corrupting the text of the generated answers",
+   "The S3 bucket is in the wrong Region, which is causing the answers to drift off the source",
+   "The temperature is set to zero, which is why the answers no longer match the source passages"
+  ],
+  "a": 0,
+  "e": "Fluent-but-ungrounded answers point to the retrieval stage — poor chunking, embeddings, or relevance means the right context isn't supplied. IAM, bucket Region, and temperature-zero wouldn't cause off-topic-yet-fluent output."
+ },
+ {
+  "d": 3,
+  "q": "An enterprise needs an assistant that plans a multi-step task, calls internal APIs, retains session context, and runs securely in production. Which AWS approach fits best?",
+  "o": [
+   "A single static prompt with no tool access, relying on the base model to complete every step alone",
+   "Bedrock Agents with AgentCore capabilities, to orchestrate tool calls, memory, and secure execution",
+   "A CloudWatch dashboard, configured to monitor the metrics emitted during the task's execution",
+   "An S3 lifecycle policy, which transitions the task's intermediate data between storage classes"
+  ],
+  "a": 1,
+  "e": "Bedrock Agents (with AgentCore) plan multi-step tasks, invoke tools/APIs, manage memory, and run securely — exactly this need. A static prompt can't call tools, and CloudWatch and S3 lifecycle are monitoring and storage features."
+ },
+ {
+  "d": 3,
+  "q": "A team must choose between fine-tuning and RAG for a bot answering from frequently updated internal wikis. Which choice and reasoning is soundest?",
+  "o": [
+   "Fine-tuning, because it injects the newest wiki facts into the model live at each query",
+   "Fine-tuning, because it is always cheaper than retrieval and needs no search index to maintain",
+   "RAG, because it grounds answers in currently retrieved documents without retraining on every edit",
+   "RAG, because it continuously rewrites the model's internal weights to match each wiki change"
+  ],
+  "a": 2,
+  "e": "RAG suits frequently changing facts: it retrieves current documents at query time, no retraining per edit. Fine-tuning bakes knowledge into weights (not live facts) and is costly to repeat; RAG does not alter weights."
+ },
+ {
+  "d": 3,
+  "q": "A prompt keeps returning inconsistently formatted JSON that breaks a downstream parser. Which prompt-engineering change most directly improves structural reliability?",
+  "o": [
+   "Increase temperature and top-p so the model has more freedom when formatting the JSON output",
+   "Ask the model to be more creative and expressive when composing the structured JSON it returns",
+   "Remove the formatting instructions to keep the prompt short and let the model choose the shape",
+   "Specify an explicit output schema with an example and constrain the response to that format"
+  ],
+  "a": 3,
+  "e": "Giving an explicit schema plus an example (and reducing randomness) makes structured output far more reliable. Raising temperature/top-p or asking for creativity increases variability, and removing instructions strips the guidance the parser needs."
+ },
+ {
+  "d": 3,
+  "q": "A team fine-tunes a model on just 40 examples; it now repeats those examples well but fails on anything slightly different. What happened, and what is a reasonable fix?",
+  "o": [
+   "Overfitting to a tiny dataset; add more diverse examples, or prefer RAG or prompting for this need",
+   "Underfitting on the task; the fix is to reduce the training data further so it generalizes better",
+   "A tokenization error during training; the fix is to move the workload to a different AWS Region",
+   "A guardrail misconfiguration causing the behaviour; the fix is to disable guardrails on the model"
+  ],
+  "a": 0,
+  "e": "Memorizing a tiny tuning set and failing to generalize is overfitting; expand and diversify the data, or use RAG/prompting instead. Reducing data worsens it, and the issue is unrelated to Regions or guardrails."
+ },
+ {
+  "d": 3,
+  "q": "A team wants to add enforceable rules that block a foundation model from returning disallowed topics and from leaking PII, on both input and output. Which Bedrock capability fits?",
+  "o": [
+   "Bedrock Knowledge Bases, which ingest and index documents so the model can answer from them",
+   "Bedrock Guardrails, which filter harmful content and sensitive information across prompts and responses",
+   "Bedrock Playgrounds, which provide a console to try prompts and compare responses manually",
+   "Bedrock Prompt Management, which stores and versions tested prompts for reuse across teams"
+  ],
+  "a": 1,
+  "e": "Bedrock Guardrails enforce content/topic policies and detect or redact sensitive information such as PII on input and output. Knowledge Bases add retrieval, Playgrounds are for testing, and Prompt Management versions prompts."
+ },
+ {
+  "d": 3,
+  "q": "A company wants a foundation model to answer questions using its own product manuals without retraining the model. Which managed Bedrock capability provides this?",
+  "o": [
+   "Amazon Polly, which converts written text into natural-sounding speech audio for playback",
+   "Amazon Transcribe, which converts recorded or streaming speech audio into written text",
+   "Bedrock Knowledge Bases, which provide managed retrieval so models answer from your documents",
+   "AWS Glue, which extracts, transforms, and loads data between stores for analytics pipelines"
+  ],
+  "a": 2,
+  "e": "Bedrock Knowledge Bases provide managed RAG so a model answers from your documents without retraining. Polly is text-to-speech, Transcribe is speech-to-text, and Glue is ETL — none provide document-grounded answering."
+ },
+ {
+  "d": 4,
+  "q": "An image model gives lower-quality results for certain skin tones, traced to unrepresentative training data. What is this, and what is the appropriate remedy?",
+  "o": [
+   "Overfitting; the remedy is to raise the sampling temperature during generation to smooth results",
+   "A latency problem; the remedy is to add caching so results are returned to users more quickly",
+   "A prompt-injection attack; the remedy is to rotate the API keys used to call the image model",
+   "Representation bias; improve dataset diversity and evaluate fairness across the affected groups"
+  ],
+  "a": 3,
+  "e": "Unequal performance from unrepresentative data is representation bias; the remedy is more diverse data plus fairness evaluation across groups. It is not overfitting, latency, or a prompt-injection security issue."
+ },
+ {
+  "d": 4,
+  "q": "A generative feature is about to launch in a customer-facing product. Which combination best reflects responsible-AI practice before and after release?",
+  "o": [
+   "Assess fairness, document limitations, add guardrails and human review for risky paths, then monitor",
+   "Ship it quickly and add oversight or review only later, if and when users actually complain",
+   "Disable all logging to protect user privacy and skip pre-launch evaluation to speed the release",
+   "Maximize the sampling temperature so the generated output feels more human and natural to users"
+  ],
+  "a": 0,
+  "e": "Responsible deployment means evaluating fairness, documenting limits, adding guardrails and human-in-the-loop for risky paths, and monitoring after launch. Shipping without oversight, disabling logging, or tuning for 'human-ness' are not responsible-AI controls."
+ },
+ {
+  "d": 4,
+  "q": "For an AI system that approves or denies loan applications, which capability most improves accountability to the people affected by its decisions?",
+  "o": [
+   "Storing every prompt and response in Amazon S3 Glacier so a long-term archived record exists",
+   "Explainability of decisions, together with documented model cards and human review of outcomes",
+   "Configuring higher top-p sampling so the system's decisions are expressed more clearly to reviewers",
+   "Deploying across more Availability Zones so the decision service stays resilient and highly available"
+  ],
+  "a": 1,
+  "e": "Accountability comes from explainable decisions, documented intended use and limits (model cards), and human review. Archival storage, sampling parameters, and infrastructure redundancy don't make individual decisions explainable."
+ },
+ {
+  "d": 4,
+  "q": "Why is keeping a human in the loop valuable for higher-risk AI decisions that affect people?",
+  "o": [
+   "It removes the need for any ongoing monitoring, since a person has already checked the system once",
+   "It guarantees the model will never make errors, because a person signs off on every prediction",
+   "It lets a person review or override the model's output before a harmful action is actually taken",
+   "It eliminates the need for quality training data, since a reviewer compensates for any data gaps"
+  ],
+  "a": 2,
+  "e": "Human-in-the-loop adds oversight so a person can catch and correct problematic output before impact. It doesn't remove monitoring, guarantee perfection, or eliminate the need for good data."
+ },
+ {
+  "d": 5,
+  "q": "An enterprise requires that data sent to Amazon Bedrock never traverse the public internet. Which approach meets this requirement?",
+  "o": [
+   "Use the public Bedrock endpoint but protect it with a strong password so the traffic stays private",
+   "Raise the model's sampling temperature so that requests are handled without leaving the AWS network",
+   "Store all prompts and responses in a public S3 bucket so the data path avoids the public internet",
+   "Access Bedrock over a VPC interface endpoint (AWS PrivateLink) to keep traffic on the AWS network"
+  ],
+  "a": 3,
+  "e": "A VPC interface endpoint (PrivateLink) keeps traffic to Bedrock on the AWS private network. Passwords on public endpoints, temperature, and public buckets do not satisfy a private-networking requirement."
+ },
+ {
+  "d": 5,
+  "q": "A regulated firm must produce an audit trail proving which users invoked which models and when. Which combination provides this governance evidence?",
+  "o": [
+   "AWS CloudTrail recording API activity tied to IAM identities, with those logs retained per policy",
+   "Relying only on the Bedrock Playground history to show which users invoked which models and when",
+   "Increasing the maximum token limit so each request and its full response are captured for audit",
+   "Provisioning a larger EC2 instance so the platform can retain a complete record of every invocation"
+  ],
+  "a": 0,
+  "e": "CloudTrail records API calls tied to IAM identities, and retaining those logs provides the audit trail regulators expect. Playground history, token limits, and instance sizing don't constitute governance evidence."
+ },
+ {
+  "d": 5,
+  "q": "A security review finds that prompts may contain customer PII that shouldn't reach the model. Which layered response is soundest?",
+  "o": [
+   "Ignore the finding, since foundation models do not store the data sent to them and pose no risk",
+   "Redact or filter PII (e.g., Guardrails), restrict access with IAM, and audit activity with CloudTrail",
+   "Only rename the S3 bucket holding the prompts so the sensitive customer PII is harder to locate",
+   "Only increase the request token limit so that longer prompts containing the PII are not truncated"
+  ],
+  "a": 1,
+  "e": "A layered response — filtering/redacting PII, restricting access with IAM, and auditing with CloudTrail — addresses the risk in depth. Assuming no storage is unsafe, and bucket renaming or token limits don't protect sensitive data."
+ }
+];
+
+</script>
+<script>/* AIF-C01 Eval Engine — SAP-C02-style attempt model.
+   - Three unique attempts of ATTEMPT_SIZE questions drawn from the bank without
+     cross-attempt repeat (until the bank is exhausted).
+   - Attempt 3+ leads with questions the learner previously answered wrong.
+   - Per-question amber banner when a question was previously answered wrong.
+   - Full explanation shown after each answer.
+   Progress is kept in-memory + localStorage keyed by SET_KEY. No backend calls;
+   swap persistState/loadState for Firestore to wire into the platform.
+*/
+(function () {
+  const DOMAIN_NAMES = {
+    1: "Fundamentals of AI & ML",
+    2: "Fundamentals of Generative AI",
+    3: "Applications of Foundation Models",
+    4: "Guidelines for Responsible AI",
+    5: "Security, Compliance & Governance"
+  };
+  const ATTEMPT_SIZE = 8;
+  const MAX_ATTEMPTS = 3;
+
+  function loadState(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || {}; }
+    catch (e) { return {}; }
+  }
+  function persistState(key, s) {
+    try { localStorage.setItem(key, JSON.stringify(s)); } catch (e) {}
+  }
+
+  // ── Firestore persistence (aifPrepResults collection) ──────────────────────
+  // Results live at aifPrepResults/{setKey}, where setKey already embeds the
+  // signed-in user's safe email (aif_set3_expert_v1__{safeEmail}). Firestore is
+  // the source of truth so results follow the user across browsers/devices;
+  // localStorage remains a fallback when Firestore is unavailable.
+  let _fsMod = null, _fsDb = null;
+  async function fsInit() {
+    if (_fsDb) return _fsDb;
+    try {
+      const app = (window.SFAuth && window.SFAuth.getApp) ? window.SFAuth.getApp() : null;
+      if (!app) return null;
+      _fsMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      _fsDb = _fsMod.getFirestore(app);
+      return _fsDb;
+    } catch (e) { console.log("[aifPrepResults] Firestore init failed:", e && e.message); return null; }
+  }
+  async function fsLoad(setKey) {
+    try {
+      const db = await fsInit(); if (!db) return null;
+      const snap = await _fsMod.getDoc(_fsMod.doc(db, "aifPrepResults", setKey));
+      if (snap.exists()) { console.log("[aifPrepResults] loaded from Firestore:", setKey); return snap.data(); }
+      return null;
+    } catch (e) { console.log("[aifPrepResults] Firestore load failed:", e && e.message); return null; }
+  }
+  async function fsSave(setKey, state, email) {
+    try {
+      const db = await fsInit(); if (!db) return;
+      await _fsMod.setDoc(_fsMod.doc(db, "aifPrepResults", setKey), Object.assign({}, state, {
+        email: email || "", setKey: setKey, updatedAt: Date.now()
+      }));
+      console.log("[aifPrepResults] saved to Firestore:", setKey);
+    } catch (e) { console.log("[aifPrepResults] Firestore save failed:", e && e.message); }
+  }
+  async function fsClear(setKey) {
+    try {
+      const db = await fsInit(); if (!db) return;
+      await _fsMod.deleteDoc(_fsMod.doc(db, "aifPrepResults", setKey));
+      console.log("[aifPrepResults] cleared Firestore doc:", setKey);
+    } catch (e) { console.log("[aifPrepResults] Firestore clear failed:", e && e.message); }
+  }
+
+  // Deterministic shuffle so a given attempt is reproducible per seed.
+  function seededShuffle(arr, seed) {
+    const a = arr.slice(); let s = seed || 1;
+    for (let i = a.length - 1; i > 0; i--) {
+      s = (s * 9301 + 49297) % 233280;
+      const j = Math.floor((s / 233280) * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Build the question list for a given attempt number (1-based).
+  function buildAttempt(bank, state, attemptNo) {
+    const used = new Set((state.usedIds || []));
+    const wrong = new Set((state.wrongIds || []));
+    const withIdx = bank.map((q, i) => Object.assign({ _id: i }, q));
+
+    let pool = withIdx.filter(q => !used.has(q._id));
+    // If the unused pool can't fill an attempt, allow reuse (bank exhausted).
+    if (pool.length < ATTEMPT_SIZE) pool = withIdx.slice();
+
+    let ordered = seededShuffle(pool, attemptNo * 17 + 3);
+
+    // Attempt 3+ : lead with previously-wrong questions.
+    if (attemptNo >= 3) {
+      const lead = ordered.filter(q => wrong.has(q._id));
+      const rest = ordered.filter(q => !wrong.has(q._id));
+      ordered = lead.concat(rest);
+    }
+
+    // Try to spread domains across the selection.
+    const picked = [], seenDomainCount = {};
+    for (const q of ordered) {
+      if (picked.length >= ATTEMPT_SIZE) break;
+      const dc = seenDomainCount[q.d] || 0;
+      if (dc < 2 || picked.length >= ATTEMPT_SIZE - 2) {
+        picked.push(q); seenDomainCount[q.d] = dc + 1;
+      }
+    }
+    let idx = 0;
+    while (picked.length < ATTEMPT_SIZE && idx < ordered.length) {
+      if (!picked.includes(ordered[idx])) picked.push(ordered[idx]);
+      idx++;
+    }
+    return picked.slice(0, ATTEMPT_SIZE);
+  }
+
+  function AifEval(opts) {
+    const bank = opts.bank;
+    const SET_KEY = opts.setKey;
+    const mount = opts.mount;
+    const title = opts.title;
+    const subtitle = opts.subtitle;
+    const email = opts.email || "";
+
+    let state = loadState(SET_KEY);
+    state.usedIds = state.usedIds || [];
+    state.wrongIds = state.wrongIds || [];
+    state.attemptNo = state.attemptNo || 0;
+    state.history = state.history || []; // [{attempt, score, total, ts}]
+
+    let current = null; // {questions, answers[], pos}
+
+    // Firestore is source of truth: if a doc exists, adopt it and refresh
+    // localStorage from it; otherwise keep the localStorage state we loaded.
+    (async () => {
+      const remote = await fsLoad(SET_KEY);
+      if (remote && Array.isArray(remote.history)) {
+        state.usedIds = remote.usedIds || [];
+        state.wrongIds = remote.wrongIds || [];
+        state.attemptNo = remote.attemptNo || 0;
+        state.history = remote.history || [];
+        persistState(SET_KEY, state);
+        if (!current) renderStart();
+      }
+    })();
+
+    function startAttempt() {
+      if (state.attemptNo >= MAX_ATTEMPTS) { renderExhausted(); return; }
+      const attemptNo = state.attemptNo + 1;
+      // One attempt walks ALL bank questions, grouped into domain sections in
+      // ascending domain order. Option order is shuffled per question each
+      // attempt so retakes don't preserve the A/B/C/D sequence; the correct
+      // index is remapped so correctness is preserved. Domain/question order
+      // stays fixed.
+      const questions = bank
+        .map((q, i) => Object.assign({ _id: i }, q))
+        .sort((a, b) => (a.d - b.d) || (a._id - b._id))
+        .map((q) => {
+          const idx = q.o.map((_, i) => i);
+          for (let k = idx.length - 1; k > 0; k--) {
+            const j = Math.floor(Math.random() * (k + 1));
+            [idx[k], idx[j]] = [idx[j], idx[k]];
+          }
+          const shuffledO = idx.map(i => q.o[i]);
+          const newA = idx.indexOf(q.a);
+          return Object.assign({}, q, { o: shuffledO, a: newA });
+        });
+      current = { attemptNo, questions, answers: new Array(questions.length).fill(null), pos: 0 };
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = current.questions[current.pos];
+      const wasWrong = state.wrongIds.includes(q._id);
+      const answered = current.answers[current.pos];
+      // Domain section context
+      const domainQs = current.questions.filter(x => x.d === q.d);
+      const posInDomain = domainQs.findIndex(x => x._id === q._id) + 1;
+      const domainNo = Array.from(new Set(current.questions.map(x => x.d))).sort((a,b)=>a-b).indexOf(q.d) + 1;
+      const totalDomains = new Set(current.questions.map(x => x.d)).size;
+      let html = "";
+      html += `<div class="aif-topbar"><span>Attempt ${current.attemptNo} of ${MAX_ATTEMPTS} · Domain ${domainNo} of ${totalDomains}</span>`;
+      html += `<span>Question ${posInDomain} of ${domainQs.length}</span></div>`;
+      html += `<div class="aif-progress"><div class="aif-progress-fill" style="width:${((current.pos) / current.questions.length) * 100}%"></div></div>`;
+      html += `<div class="aif-domain">${DOMAIN_NAMES[q.d]}</div>`;
+      if (wasWrong) {
+        html += `<div class="aif-annot">⚠ You answered this incorrectly on a previous attempt — read carefully.</div>`;
+      }
+      html += `<div class="aif-q">${q.q}</div>`;
+      html += `<div class="aif-opts">`;
+      q.o.forEach((opt, i) => {
+        let cls = "aif-opt";
+        if (answered !== null) {
+          if (i === q.a) cls += " correct";
+          else if (i === answered) cls += " wrong";
+          cls += " locked";
+        }
+        html += `<button class="${cls}" data-i="${i}" ${answered !== null ? "disabled" : ""}>`;
+        html += `<span class="aif-letter">${String.fromCharCode(65 + i)}</span>${opt}</button>`;
+      });
+      html += `</div>`;
+      if (answered !== null) {
+        const right = answered === q.a;
+        html += `<div class="aif-expl ${right ? "ok" : "no"}">`;
+        html += `<strong>${right ? "Correct." : "Not quite."}</strong> ${q.e}</div>`;
+        const isLast = current.pos === current.questions.length - 1;
+        const nextDifferentDomain = !isLast && current.questions[current.pos + 1].d !== q.d;
+        let label = "Next question";
+        if (isLast) label = "See results";
+        else if (nextDifferentDomain) label = "Move to next domain";
+        html += `<div class="aif-nav"><button class="aif-next" id="aif-next">${label}</button></div>`;
+      }
+      mount.innerHTML = html;
+
+      mount.querySelectorAll(".aif-opt").forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (current.answers[current.pos] !== null) return;
+          const i = parseInt(btn.getAttribute("data-i"), 10);
+          current.answers[current.pos] = i;
+          if (i !== q.a && !state.wrongIds.includes(q._id)) state.wrongIds.push(q._id);
+          if (i === q.a) state.wrongIds = state.wrongIds.filter(id => id !== q._id);
+          renderQuestion();
+        });
+      });
+      const next = mount.querySelector("#aif-next");
+      if (next) next.addEventListener("click", () => {
+        if (current.pos < current.questions.length - 1) { current.pos++; renderQuestion(); }
+        else finishAttempt();
+      });
+    }
+
+    function finishAttempt() {
+      let score = 0;
+      current.questions.forEach((q, i) => { if (current.answers[i] === q.a) score++; });
+      current.questions.forEach(q => { if (!state.usedIds.includes(q._id)) state.usedIds.push(q._id); });
+      state.attemptNo = current.attemptNo;
+      state.history.push({ attempt: current.attemptNo, score, total: current.questions.length, ts: Date.now() });
+      persistState(SET_KEY, state);
+      fsSave(SET_KEY, state, email);
+      renderResults(score, current.questions.length);
+    }
+
+    function renderResults(score, total) {
+      const pct = Math.round((score / total) * 100);
+      // Domain breakdown for this attempt
+      const dTotals = {}, dRight = {};
+      current.questions.forEach((q, i) => {
+        dTotals[q.d] = (dTotals[q.d] || 0) + 1;
+        if (current.answers[i] === q.a) dRight[q.d] = (dRight[q.d] || 0) + 1;
+      });
+      let html = `<div class="aif-result"><div class="aif-score">${score}/${total}</div>`;
+      html += `<div class="aif-pct">${pct}%</div>`;
+      html += `<div class="aif-verdict">${pct >= 70 ? "On track — 70%+ suggests readiness on this set." : "Keep practicing — aim for 70%+ before exam day."}</div>`;
+      html += `<div class="aif-break"><div class="aif-break-title">By domain (this attempt)</div>`;
+      Object.keys(dTotals).sort().forEach(d => {
+        const r = dRight[d] || 0, t = dTotals[d];
+        html += `<div class="aif-break-row"><span>${DOMAIN_NAMES[d]}</span><span>${r}/${t}</span></div>`;
+      });
+      html += `</div>`;
+      if (state.attemptNo < MAX_ATTEMPTS) {
+        html += `<button class="aif-next" id="aif-again">Start attempt ${state.attemptNo + 1}</button>`;
+      } else {
+        html += `<div class="aif-verdict">All ${MAX_ATTEMPTS} attempts complete.</div>`;
+      }
+      html += `<button class="aif-reset" id="aif-reset">Reset all progress</button></div>`;
+      mount.innerHTML = html;
+      const again = mount.querySelector("#aif-again");
+      if (again) again.addEventListener("click", startAttempt);
+      mount.querySelector("#aif-reset").addEventListener("click", () => {
+        localStorage.removeItem(SET_KEY);
+        fsClear(SET_KEY);
+        state = { usedIds: [], wrongIds: [], attemptNo: 0, history: [] };
+        renderStart();
+      });
+    }
+
+    function renderExhausted() { renderResults(0, ATTEMPT_SIZE); }
+
+    function renderStart() {
+      let html = `<div class="aif-start"><h1>${title}</h1><p class="aif-sub">${subtitle}</p>`;
+      html += `<ul class="aif-meta"><li>${MAX_ATTEMPTS} attempts · all questions across five domain sections</li>`;
+      html += `<li>One section per AIF-C01 domain, in order</li>`;
+      html += `<li>Full explanation after every question</li></ul>`;
+      if (state.history.length) {
+        html += `<div class="aif-break"><div class="aif-break-title">Your attempts so far</div>`;
+        state.history.forEach(h => {
+          html += `<div class="aif-break-row"><span>Attempt ${h.attempt}</span><span>${h.score}/${h.total}</span></div>`;
+        });
+        html += `</div>`;
+      }
+      const label = state.attemptNo >= MAX_ATTEMPTS ? "All attempts used"
+        : state.attemptNo > 0 ? `Start attempt ${state.attemptNo + 1}` : "Start attempt 1";
+      html += `<button class="aif-next" id="aif-begin" ${state.attemptNo >= MAX_ATTEMPTS ? "disabled" : ""}>${label}</button>`;
+      if (state.attemptNo > 0) html += `<button class="aif-reset" id="aif-reset2">Reset all progress</button>`;
+      html += `</div>`;
+      mount.innerHTML = html;
+      const begin = mount.querySelector("#aif-begin");
+      if (begin) begin.addEventListener("click", startAttempt);
+      const r2 = mount.querySelector("#aif-reset2");
+      if (r2) r2.addEventListener("click", () => {
+        localStorage.removeItem(SET_KEY);
+        fsClear(SET_KEY);
+        state = { usedIds: [], wrongIds: [], attemptNo: 0, history: [] };
+        renderStart();
+      });
+    }
+
+    renderStart();
+  }
+
+  window.AifEval = AifEval;
+})();
+</script>
+<script>/* SF auth gate — Google SSO (hd: sourcefuse.com) + email/password fallback.
+   Reuses the sfcertification-grafana Firebase project. Firebase v10 modular SDK
+   loaded via CDN in the page. Exposes window.SFAuth.mount(onReady) which shows
+   the overlay and calls onReady(email) once a valid @sourcefuse.com user is in.
+   NOTE: paste the real sfcertification-grafana firebaseConfig values below —
+   left as clearly-marked placeholders per the golden rule (never invent config). */
+(function () {
+  const firebaseConfig = {
+    apiKey: "AIzaSyC-I-IOCq2fCwa471fsD5xOn6SYQSBDp7Q",
+    authDomain: "sfcertification-grafana.firebaseapp.com",
+    projectId: "sfcertification-grafana",
+    storageBucket: "sfcertification-grafana.firebasestorage.app",
+    messagingSenderId: "227322696511",
+    appId: "1:227322696511:web:12e7ced7dd3d45fa06798a"
+  };
+  const ALLOWED_DOMAIN = "sourcefuse.com";
+  const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
+
+  let app, auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn;
+  let readyCb = null;
+
+  async function initFirebase() {
+    const appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    // Reuse default app if the host page already initialized it.
+    app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(firebaseConfig);
+    auth = authMod.getAuth(app);
+    GoogleProvider = authMod.GoogleAuthProvider;
+    signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    getRedirect = () => authMod.getRedirectResult(auth);
+    signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
+    onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
+    signOutFn = () => authMod.signOut(auth);
+  }
+
+  function overlayHTML() {
+    return `
+    <div class="sf-auth-backdrop" id="sf-auth">
+      <div class="sf-auth-card">
+        <div class="sf-auth-badge">SF Knowledge Hub</div>
+        <h2>Sign in to start</h2>
+        <p class="sf-auth-sub">Use your SourceFuse account to save your attempts.</p>
+        <button class="sf-google" id="sf-google">
+          <span class="sf-g">G</span> Sign in with Google
+        </button>
+        <div class="sf-or"><span>or</span></div>
+        <label class="sf-lbl">Email</label>
+        <input class="sf-inp" id="sf-email" type="email" placeholder="you@sourcefuse.com" autocomplete="username">
+        <label class="sf-lbl">Password</label>
+        <input class="sf-inp" id="sf-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        <button class="sf-signin" id="sf-signin">Sign in</button>
+        <div class="sf-err" id="sf-err"></div>
+      </div>
+    </div>`;
+  }
+
+  function styleTag() {
+    return `<style>
+    .sf-auth-backdrop{position:fixed;inset:0;background:rgba(16,38,60,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .sf-auth-card{background:#fff;border-radius:16px;padding:30px 28px;width:100%;max-width:380px;box-shadow:0 12px 40px rgba(10,30,55,.25);font-family:inherit}
+    .sf-auth-badge{display:inline-block;background:var(--blue,#1a6eb5);color:#fff;font-weight:700;font-size:12px;padding:4px 11px;border-radius:14px;margin-bottom:14px}
+    .sf-auth-card h2{margin:0 0 4px;font-size:20px;color:#1a2733}
+    .sf-auth-sub{margin:0 0 20px;color:#5a6b7a;font-size:14px}
+    .sf-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #dbe3ec;border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:#1a2733;cursor:pointer;font-family:inherit}
+    .sf-google:hover{background:#f7fbff;border-color:var(--blue,#1a6eb5)}
+    .sf-g{background:conic-gradient(from -45deg,#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0);color:#fff;font-weight:800;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .sf-or{display:flex;align-items:center;text-align:center;color:#93a1af;font-size:12px;margin:18px 0}
+    .sf-or::before,.sf-or::after{content:"";flex:1;height:1px;background:#e2e8ef}
+    .sf-or span{padding:0 12px}
+    .sf-lbl{display:block;font-size:12.5px;font-weight:600;color:#5a6b7a;margin-bottom:5px}
+    .sf-inp{width:100%;border:1.5px solid #dbe3ec;border-radius:9px;padding:11px 12px;font-size:14.5px;margin-bottom:14px;font-family:inherit}
+    .sf-inp:focus{outline:none;border-color:var(--blue,#1a6eb5)}
+    .sf-signin{width:100%;background:var(--blue,#1a6eb5);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+    .sf-signin:hover{background:var(--blue-d,#12507f)}
+    .sf-err{color:#b5341a;font-size:13px;margin-top:12px;min-height:16px}
+    </style>`;
+  }
+
+  function fail(msg) { const e = document.getElementById("sf-err"); if (e) e.textContent = msg; }
+
+  function validDomain(email) {
+    if (typeof email !== "string") return false;
+    const e = email.toLowerCase();
+    return e.endsWith("@" + ALLOWED_DOMAIN) || ALLOWED_EXTRA.includes(e);
+  }
+
+  function proceed(email) {
+    const el = document.getElementById("sf-auth");
+    if (el) el.remove();
+    if (readyCb) readyCb(email);
+  }
+
+  async function wireOverlay() {
+    document.getElementById("sf-google").addEventListener("click", async () => {
+      fail("");
+      if (!signInRedirect) return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      try {
+        const provider = new GoogleProvider();
+        provider.setCustomParameters({ hd: ALLOWED_DOMAIN, prompt: "select_account" });
+        // Redirect leaves the page and returns to it; result is picked up on load
+        // by handleRedirectResult(). This works inside the LMS iframe, unlike popup.
+        await signInRedirect(provider);
+      } catch (err) {
+        fail("Google sign-in couldn't start. Use email/password below.");
+      }
+    });
+    document.getElementById("sf-signin").addEventListener("click", async () => {
+      fail("");
+      const email = (document.getElementById("sf-email").value || "").trim();
+      const pass = document.getElementById("sf-pass").value || "";
+      if (!validDomain(email)) return fail("Email must be an @sourcefuse.com address.");
+      if (!pass) return fail("Enter your password.");
+      try {
+        const res = await signInEmail(email, pass);
+        const e = (res.user && res.user.email) || email;
+        proceed(e);
+      } catch (err) { fail("Incorrect email or password."); }
+    });
+  }
+
+  async function mount(onReady) {
+    readyCb = onReady;
+    document.head.insertAdjacentHTML("beforeend", styleTag());
+    document.body.insertAdjacentHTML("beforeend", overlayHTML());
+    try {
+      await initFirebase();
+    } catch (e) {
+      // If Firebase can't load (e.g. local file://), keep overlay but let email/password
+      // at least validate domain so the page is testable; real auth needs https host.
+      fail("Auth service loading… (Google SSO needs the deployed https host).");
+    }
+    // Handle the return leg of signInWithRedirect: when the user comes back from
+    // Google, getRedirectResult() resolves with their credential.
+    if (getRedirect) {
+      try {
+        const res = await getRedirect();
+        if (res && res.user) {
+          const email = res.user.email;
+          if (!validDomain(email)) { await signOutFn(); fail("Please use your @sourcefuse.com account."); }
+          else { proceed(email); return; }
+        }
+      } catch (err) {
+        fail("Google sign-in didn't complete. Try again or use email/password.");
+      }
+    }
+    // If a session already exists (redirect just completed, or prior session), skip the overlay.
+    if (onAuth) {
+      onAuth((user) => {
+        if (user && validDomain(user.email)) proceed(user.email);
+      });
+    }
+    wireOverlay();
+  }
+
+  window.SFAuth = { mount, getApp: () => app };
+})();
+</script>
+<script>
+(function(){
+  var mountId="aif3";
+  document.getElementById(mountId).innerHTML='<p class="aif-sub">Sign in to begin…</p>';
+  window.SFAuth.mount(function(email){
+    var badge=document.getElementById(mountId+"-user");
+    if(badge) badge.textContent=email;
+    // localStorage key is namespaced per signed-in email so attempts are per-user;
+    // swap loadState/persistState in the engine for courseExamResults later.
+    var safe=email.replace(/[^a-z0-9]/gi,"_").toLowerCase();
+    AifEval({
+      bank: window.AIF_BANK_SET3,
+      setKey: "aif_set3_expert_v1__"+safe,
+      email: email,
+      mount: document.getElementById(mountId),
+      title: "AIF-C01 Prep — Set 3 (Expert · Applied ML & LLM scenarios)",
+      subtitle: "Applied ML and LLM scenarios across all five AIF-C01 domains, at the harder end."
+    });
+  });
+})();
+</script>
+</body></html>
