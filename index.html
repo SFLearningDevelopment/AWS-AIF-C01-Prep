@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!-- build: 2026072201 -->
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AWS AIF-C01 Prep — SF Knowledge Hub</title>
+<style>
+:root{--blue:#1a6eb5;--blue-d:#12507f;--ink:#1a2733;--mut:#5a6b7a;--line:#e2e8ef;--ok:#127a3e;--no:#b5341a;--amber:#8a5a00;--amber-bg:#fff6e0;--bg:#f5f8fb;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding:28px 20px 60px}
+.head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.badge{background:var(--blue);color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:20px;letter-spacing:.3px}
+.head small{color:var(--mut)}
+.user{margin-left:auto;font-size:12.5px;color:var(--mut);display:flex;align-items:center;gap:10px}
+.signout{background:none;border:0;color:var(--blue);font-size:12.5px;cursor:pointer;text-decoration:underline;font-family:inherit;padding:0}
+.hero{margin:14px 0 26px}
+.hero h1{font-size:24px;margin:0 0 6px}
+.hero p{color:var(--mut);margin:0;font-size:14.5px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:680px){.grid{grid-template-columns:1fr}}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 3px rgba(20,50,80,.05);display:flex;flex-direction:column}
+.box-tag{display:inline-block;align-self:flex-start;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:12px;margin-bottom:10px}
+.tag-basic{color:var(--blue-d);background:#eaf3fb}
+.tag-adv{color:#6a3d00;background:#fdf0da}
+.box h2{font-size:17px;margin:0 0 4px}
+.box .desc{color:var(--mut);font-size:13.5px;margin:0 0 16px}
+.stats{background:var(--bg);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.stats-empty{color:var(--mut);font-size:13.5px;text-align:center;padding:8px 0}
+.stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.stat-row:last-child{border-bottom:0}
+.stat-row .pct{font-weight:700}
+.pct.good{color:var(--ok)}.pct.mid{color:var(--amber)}.pct.low{color:var(--no)}
+.summary{display:flex;gap:14px;margin-bottom:14px}
+.summary .card{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;text-align:center}
+.summary .n{font-size:22px;font-weight:800;color:var(--blue)}
+.summary .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
+.best{font-size:12.5px;color:var(--mut);margin-bottom:14px}
+.launch{margin-top:auto;background:var(--blue);color:#fff;border:0;border-radius:10px;padding:12px;font-size:14.5px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;display:block}
+.launch:hover{background:var(--blue-d)}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:28px}
+.reset-all{background:none;border:0;color:var(--mut);font-size:12px;cursor:pointer;text-decoration:underline;font-family:inherit;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <span class="badge">AWS AIF-C01</span>
+    <small>Certified AI Practitioner · Practice</small>
+    <span class="user" id="user"></span>
+  </div>
+  <div class="hero">
+    <h1>Your Practice Dashboard</h1>
+    <p>Two practice sets aligned to the AWS Certified AI Practitioner exam domains. Your attempt results are shown below.</p>
+  </div>
+  <div class="grid" id="grid">
+    <p class="stats-empty">Sign in to see your results…</p>
+  </div>
+  <div class="foot">
+    Original practice items aligned to the AIF-C01 exam domains. Not affiliated with or endorsed by AWS. For internal SF Knowledge Hub prep only.
+  </div>
+</div>
+
+<!-- Auth gate (Google SSO via redirect + email/password), same as prep pages -->
+<script>
+/* SF auth gate — Google SSO (hd: sourcefuse.com, redirect) + email/password.
+   Reuses sfcertification-grafana. PASTE the live config below per the golden rule. */
+(function () {
+  const firebaseConfig = {
+    apiKey: "PASTE_API_KEY",
+    authDomain: "sfcertification-grafana.firebaseapp.com",
+    projectId: "sfcertification-grafana",
+    storageBucket: "sfcertification-grafana.appspot.com",
+    messagingSenderId: "PASTE_SENDER_ID",
+    appId: "PASTE_APP_ID"
+  };
+  const ALLOWED_DOMAIN = "sourcefuse.com";
+  let auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn, appMod;
+  let readyCb = null;
+
+  async function initFirebase() {
+    appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    const app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(firebaseConfig);
+    auth = authMod.getAuth(app);
+    GoogleProvider = authMod.GoogleAuthProvider;
+    signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    getRedirect = () => authMod.getRedirectResult(auth);
+    signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
+    onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
+    signOutFn = () => authMod.signOut(auth);
+  }
+  function styleTag(){return `<style>
+    .sf-auth-backdrop{position:fixed;inset:0;background:rgba(16,38,60,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .sf-auth-card{background:#fff;border-radius:16px;padding:30px 28px;width:100%;max-width:380px;box-shadow:0 12px 40px rgba(10,30,55,.25)}
+    .sf-auth-badge{display:inline-block;background:var(--blue,#1a6eb5);color:#fff;font-weight:700;font-size:12px;padding:4px 11px;border-radius:14px;margin-bottom:14px}
+    .sf-auth-card h2{margin:0 0 4px;font-size:20px;color:#1a2733}
+    .sf-auth-sub{margin:0 0 20px;color:#5a6b7a;font-size:14px}
+    .sf-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #dbe3ec;border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:#1a2733;cursor:pointer;font-family:inherit}
+    .sf-google:hover{background:#f7fbff;border-color:var(--blue,#1a6eb5)}
+    .sf-g{background:conic-gradient(from -45deg,#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0);color:#fff;font-weight:800;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .sf-or{display:flex;align-items:center;text-align:center;color:#93a1af;font-size:12px;margin:18px 0}
+    .sf-or::before,.sf-or::after{content:"";flex:1;height:1px;background:#e2e8ef}
+    .sf-or span{padding:0 12px}
+    .sf-lbl{display:block;font-size:12.5px;font-weight:600;color:#5a6b7a;margin-bottom:5px}
+    .sf-inp{width:100%;border:1.5px solid #dbe3ec;border-radius:9px;padding:11px 12px;font-size:14.5px;margin-bottom:14px;font-family:inherit}
+    .sf-inp:focus{outline:none;border-color:var(--blue,#1a6eb5)}
+    .sf-signin{width:100%;background:var(--blue,#1a6eb5);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+    .sf-signin:hover{background:var(--blue-d,#12507f)}
+    .sf-err{color:#b5341a;font-size:13px;margin-top:12px;min-height:16px}
+  </style>`;}
+  function overlayHTML(){return `
+    <div class="sf-auth-backdrop" id="sf-auth"><div class="sf-auth-card">
+      <div class="sf-auth-badge">SF Knowledge Hub</div>
+      <h2>Sign in</h2>
+      <p class="sf-auth-sub">Use your SourceFuse account to view your results.</p>
+      <button class="sf-google" id="sf-google"><span class="sf-g">G</span> Sign in with Google</button>
+      <div class="sf-or"><span>or</span></div>
+      <label class="sf-lbl">Email</label>
+      <input class="sf-inp" id="sf-email" type="email" placeholder="you@sourcefuse.com" autocomplete="username">
+      <label class="sf-lbl">Password</label>
+      <input class="sf-inp" id="sf-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+      <button class="sf-signin" id="sf-signin">Sign in</button>
+      <div class="sf-err" id="sf-err"></div>
+    </div></div>`;}
+  function fail(m){const e=document.getElementById("sf-err");if(e)e.textContent=m;}
+  function validDomain(x){return typeof x==="string"&&x.toLowerCase().endsWith("@"+ALLOWED_DOMAIN);}
+  function proceed(email){const el=document.getElementById("sf-auth");if(el)el.remove();if(readyCb)readyCb(email,signOutFn);}
+  function wireOverlay(){
+    document.getElementById("sf-google").addEventListener("click",async()=>{
+      fail("");
+      if(!signInRedirect)return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      try{const p=new GoogleProvider();p.setCustomParameters({hd:ALLOWED_DOMAIN,prompt:"select_account"});await signInRedirect(p);}
+      catch(e){fail("Google sign-in couldn't start. Use email/password below.");}
+    });
+    document.getElementById("sf-signin").addEventListener("click",async()=>{
+      fail("");
+      const email=(document.getElementById("sf-email").value||"").trim();
+      const pass=document.getElementById("sf-pass").value||"";
+      if(!validDomain(email))return fail("Email must be an @sourcefuse.com address.");
+      if(!pass)return fail("Enter your password.");
+      try{const r=await signInEmail(email,pass);proceed((r.user&&r.user.email)||email);}
+      catch(e){fail("Incorrect email or password.");}
+    });
+  }
+  async function mount(onReady){
+    readyCb=onReady;
+    document.head.insertAdjacentHTML("beforeend",styleTag());
+    document.body.insertAdjacentHTML("beforeend",overlayHTML());
+    try{await initFirebase();}catch(e){fail("Auth service loading… (Google SSO needs the deployed https host).");}
+    if(getRedirect){
+      try{const res=await getRedirect();
+        if(res&&res.user){const email=res.user.email;
+          if(!validDomain(email)){await signOutFn();fail("Please use your @sourcefuse.com account.");}
+          else{proceed(email);return;}}
+      }catch(e){fail("Google sign-in didn't complete. Try again or use email/password.");}
+    }
+    if(onAuth){onAuth((u)=>{if(u&&validDomain(u.email))proceed(u.email);});}
+    wireOverlay();
+  }
+  window.SFAuth={mount};
+})();
+</script>
+
+<!-- Dashboard: reads the prep pages' localStorage results for the signed-in user -->
+<script>
+(function(){
+  var BUILD="2026072201";
+  var SETS=[
+    { key:"aif_set1_basic_v1", tag:"BASIC", tagClass:"tag-basic",
+      name:"Practice results for Basic — Set 1",
+      desc:"Foundational readiness across all five AIF-C01 domains.",
+      file:"basic-prep.html", boxLabel:"Basic Set 1" },
+    { key:"aif_set2_adv_v1", tag:"INTERMEDIATE / ADVANCED", tagClass:"tag-adv",
+      name:"Practice results for Advanced — Set 2",
+      desc:"Scenario-driven questions with close distractors.",
+      file:"advanced-prep-2.html", boxLabel:"Advanced Set 2" }
+  ];
+  var BASE="https://sflearningdevelopment.github.io/AWS-AIF-C01-Prep/";
+
+  function safeEmail(email){return email.replace(/[^a-z0-9]/gi,"_").toLowerCase();}
+  function loadResult(setKey,email){
+    try{var raw=localStorage.getItem(setKey+"__"+safeEmail(email));return raw?JSON.parse(raw):null;}
+    catch(e){return null;}
+  }
+  function pctClass(p){return p>=70?"good":p>=50?"mid":"low";}
+
+  function boxHTML(set,email){
+    var st=loadResult(set.key,email);
+    var hist=(st&&st.history)||[];
+    var html="";
+    html+='<div class="box">';
+    html+='<span class="box-tag '+set.tagClass+'">'+set.tag+'</span>';
+    html+='<h2>'+set.name+'</h2>';
+    html+='<p class="desc">'+set.desc+'</p>';
+    if(!hist.length){
+      html+='<div class="stats"><div class="stats-empty">No attempts yet. Launch the set to begin.</div></div>';
+    }else{
+      var attempts=hist.length;
+      var best=Math.max.apply(null,hist.map(function(h){return Math.round(h.score/h.total*100);}));
+      var last=hist[hist.length-1];
+      var lastPct=Math.round(last.score/last.total*100);
+      html+='<div class="summary">';
+      html+='<div class="card"><div class="n">'+attempts+'</div><div class="l">Attempts</div></div>';
+      html+='<div class="card"><div class="n">'+best+'%</div><div class="l">Best</div></div>';
+      html+='<div class="card"><div class="n">'+lastPct+'%</div><div class="l">Latest</div></div>';
+      html+='</div>';
+      html+='<div class="stats">';
+      hist.forEach(function(h){
+        var p=Math.round(h.score/h.total*100);
+        var when=h.ts?new Date(h.ts).toLocaleDateString(undefined,{month:"short",day:"numeric"}):"";
+        html+='<div class="stat-row"><span>Attempt '+h.attempt+(when?' · '+when:'')+'</span>'
+             +'<span><span class="pct '+pctClass(p)+'">'+p+'%</span> &nbsp;'+h.score+'/'+h.total+'</span></div>';
+      });
+      html+='</div>';
+    }
+    html+='<a class="launch" href="'+BASE+set.file+'?v='+BUILD+'">'
+        +(hist.length?'Continue practicing':'Launch '+set.boxLabel)+' →</a>';
+    html+='</div>';
+    return html;
+  }
+
+  window.SFAuth.mount(function(email,signOut){
+    var u=document.getElementById("user");
+    u.innerHTML=email+' <button class="signout" id="signout">Sign out</button>';
+    var grid=document.getElementById("grid");
+    grid.innerHTML=SETS.map(function(s){return boxHTML(s,email);}).join("");
+    // optional reset-all under the grid
+    var reset=document.createElement("button");
+    reset.className="reset-all";reset.textContent="Clear my saved results on this browser";
+    reset.onclick=function(){
+      SETS.forEach(function(s){localStorage.removeItem(s.key+"__"+email.replace(/[^a-z0-9]/gi,"_").toLowerCase());});
+      grid.innerHTML=SETS.map(function(s){return boxHTML(s,email);}).join("");
+    };
+    grid.parentNode.insertBefore(reset,document.querySelector(".foot"));
+    var so=document.getElementById("signout");
+    if(so&&signOut)so.onclick=function(){signOut().then(function(){location.reload();});};
+  });
+})();
+</script>
+</body></html>
