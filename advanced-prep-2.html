@@ -621,6 +621,7 @@ window.AIF_BANK_SET2 = [
     appId: "PASTE_APP_ID"
   };
   const ALLOWED_DOMAIN = "sourcefuse.com";
+  const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
 
   let app, auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn;
   let readyCb = null;
@@ -685,7 +686,9 @@ window.AIF_BANK_SET2 = [
   function fail(msg) { const e = document.getElementById("sf-err"); if (e) e.textContent = msg; }
 
   function validDomain(email) {
-    return typeof email === "string" && email.toLowerCase().endsWith("@" + ALLOWED_DOMAIN);
+    if (typeof email !== "string") return false;
+    const e = email.toLowerCase();
+    return e.endsWith("@" + ALLOWED_DOMAIN) || ALLOWED_EXTRA.includes(e);
   }
 
   function proceed(email) {
