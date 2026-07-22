@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!-- build: 2026072201 -->
+<!-- build: 2026072203 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AIF-C01 Prep — Set 2 (Intermediate to Advanced)</title>
+<title>AIF-C01 Prep — Set 1 (Basic)</title>
 <style>
 :root{--blue:#1a6eb5;--blue-d:#12507f;--ink:#1a2733;--mut:#5a6b7a;--line:#e2e8ef;--ok:#127a3e;--no:#b5341a;--amber:#8a5a00;--amber-bg:#fff6e0;--bg:#f5f8fb;}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
@@ -10,6 +10,7 @@
 .aif-head{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .aif-badge{background:var(--blue);color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:20px;letter-spacing:.3px}
 .aif-head small{color:var(--mut)}
+.aif-user{margin-left:auto;font-size:12.5px;color:var(--mut)}
 .aif-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:0 1px 3px rgba(20,50,80,.05)}
 h1{font-size:22px;margin:0 0 6px}
 .aif-sub{color:var(--mut);margin:0 0 18px}
@@ -49,327 +50,328 @@ h1{font-size:22px;margin:0 0 6px}
 .aif-foot{text-align:center;color:var(--mut);font-size:12px;margin-top:24px}
 </style></head>
 <body><div class="aif-wrap">
-<div class="aif-head"><span class="aif-badge">AIF-C01 · SET 2</span><small>Intermediate to Advanced · AWS Certified AI Practitioner readiness</small></div>
-<div class="aif-card"><div id="aif2"></div></div>
+<div class="aif-head"><span class="aif-badge">AIF-C01 · SET 1</span><small>Basic · AWS Certified AI Practitioner readiness</small><span class="aif-user" id="aif1-user"></span></div>
+<div class="aif-card"><div id="aif1"></div></div>
 <div class="aif-foot">Original practice items aligned to the AIF-C01 exam domains. Not affiliated with or endorsed by AWS. For internal SF Knowledge Hub prep only.</div>
 </div>
 <script>
-// AIF-C01 Prep — Set 2 (Intermediate to Advanced)
+// AIF-C01 Prep — Set 1 (Basic)
 // Original scenario-based MCQs. Domain distribution mirrors AIF-C01 weightings.
 // Answer positions balanced across A-D to avoid position bias.
-window.AIF_BANK_SET2 = [
+// domains: 1=Fundamentals AI/ML, 2=Fundamentals GenAI, 3=Applications of FMs,
+//          4=Responsible AI, 5=Security/Compliance/Governance
+window.AIF_BANK_SET1 = [
  {
   "d": 1,
-  "q": "A fraud team has millions of transactions but only ~0.3% are labeled fraudulent. A model trained on this data reports 99.7% accuracy yet misses almost all fraud. What is the core problem and a sound fix?",
+  "q": "A logistics team wants a model to sort incoming parcels into one of five delivery zones based on address features. Which type of machine learning task is this?",
   "o": [
-   "Severe class imbalance is inflating accuracy; use metrics like recall/precision and rebalancing or class weighting",
-   "The model is underfitting; raise its complexity",
-   "The temperature is too low; increase it",
-   "The dataset is too small; the only fix is collecting labeled data for years"
+   "Multi-class classification",
+   "Linear regression",
+   "Dimensionality reduction",
+   "Reinforcement learning"
   ],
   "a": 0,
-  "e": "With 0.3% positives, a model can hit 99.7% accuracy by predicting 'not fraud' every time — accuracy is misleading under class imbalance. The right response is to evaluate with recall/precision/F1 and address imbalance (resampling, class weights, thresholds). Temperature applies to generative sampling, not this classifier, and complexity alone won't fix a metric/imbalance problem."
- },
- {
-  "d": 1,
-  "q": "A team must choose between a simple, highly interpretable model and a complex model with slightly higher accuracy for a regulated credit decision. Which trade-off is most relevant to weigh?",
-  "o": [
-   "Token cost vs. context window",
-   "Interpretability/explainability vs. marginal accuracy gain",
-   "Batch vs. real-time inference latency only",
-   "Supervised vs. unsupervised labeling cost only"
-  ],
-  "a": 1,
-  "e": "In regulated decisions affecting people, the interpretability-versus-accuracy trade-off is central: a small accuracy gain may not justify losing the ability to explain and justify decisions. The other trade-offs exist but are not the governing concern for a regulated credit decision."
+  "e": "Assigning each input to exactly one of several discrete labels (five zones) is multi-class classification. Regression predicts continuous numbers, dimensionality reduction compresses features, and reinforcement learning optimizes actions via rewards — none fit a fixed-label sorting task."
  },
  {
   "d": 1,
-  "q": "During evaluation, a classifier shows high precision but low recall on the positive class. What does this indicate?",
+  "q": "A retailer has years of sales records but none of them are labeled with any target outcome. They want to discover natural customer groupings. Which approach fits?",
   "o": [
-   "It labels almost everything positive",
-   "It is perfectly calibrated",
-   "When it predicts positive it is usually right, but it misses many true positives",
-   "Its accuracy must also be high"
+   "Supervised learning",
+   "Unsupervised learning",
+   "Semi-supervised transfer",
+   "Prompt engineering"
   ],
-  "a": 2,
-  "e": "High precision means positive predictions are usually correct; low recall means many actual positives are missed. Labeling everything positive would lower precision. Calibration and overall accuracy are separate properties."
+  "a": 1,
+  "e": "Finding structure or groupings in data that has no labels is unsupervised learning (e.g., clustering). Supervised learning needs labeled targets; the other two are unrelated to discovering groupings in unlabeled data."
  },
  {
   "d": 1,
-  "q": "A company wants a managed way to label a large image dataset using human annotators plus automation. Which SageMaker capability fits?",
+  "q": "Which statement best distinguishes machine learning from traditional rule-based programming?",
   "o": [
-   "SageMaker Model Monitor",
-   "SageMaker Neo",
-   "SageMaker Feature Store",
-   "SageMaker Ground Truth"
-  ],
-  "a": 3,
-  "e": "SageMaker Ground Truth manages data labeling workflows combining human labelers with automation. Model Monitor watches deployed models for drift, Neo compiles models for edge devices, and Feature Store manages features — none handle labeling."
- },
- {
-  "d": 2,
-  "q": "An application must return answers strictly grounded in a fixed policy document and must minimize hallucination, but the policy changes weekly. Which design is most appropriate?",
-  "o": [
-   "Use RAG so the latest policy is retrieved at query time as grounding context",
-   "Fine-tune the model weekly on the policy",
-   "Increase temperature to encourage creative answers",
-   "Cache one answer and reuse it for all questions"
-  ],
-  "a": 0,
-  "e": "RAG retrieves the current policy at query time, so weekly changes are reflected without retraining and answers stay grounded — reducing hallucination. Weekly fine-tuning is slow and costly for frequently changing text, higher temperature increases variability, and caching a single answer ignores question variety."
- },
- {
-  "d": 2,
-  "q": "A team compares two foundation models for a summarization feature and needs a repeatable, managed way to score quality on their own dataset. Which Bedrock capability is designed for this?",
-  "o": [
-   "Amazon Bedrock Guardrails",
-   "Amazon Bedrock Model Evaluation",
-   "Amazon Bedrock Playgrounds only",
-   "Amazon CloudWatch Logs"
-  ],
-  "a": 1,
-  "e": "Bedrock Model Evaluation provides managed, repeatable evaluation (automatic and human-based) to compare models on your data. Guardrails enforce safety policies, Playgrounds are for ad-hoc manual trials, and CloudWatch Logs record events rather than scoring model quality."
- },
- {
-  "d": 2,
-  "q": "Two teams debate embeddings. Which statement is correct?",
-  "o": [
-   "Embeddings are encrypted copies of the prompt",
-   "Embeddings disable a model's safety filters",
-   "Embeddings are numeric vector representations that capture semantic meaning, enabling similarity search",
-   "Embeddings are the model's billing tokens"
+   "ML requires the programmer to hand-code every decision path",
+   "ML cannot be used for prediction tasks",
+   "ML learns patterns from data rather than relying on explicitly written rules",
+   "ML only works on numeric data"
   ],
   "a": 2,
-  "e": "Embeddings map text (or other data) into numeric vectors whose distances reflect semantic similarity, powering search and retrieval. They are not encrypted prompts, safety controls, or billing units."
+  "e": "The defining trait of ML is that behavior is learned from data rather than explicitly coded as rules. Rule-based systems require hand-written logic; ML infers it. ML handles many data types and is widely used for prediction."
+ },
+ {
+  "d": 1,
+  "q": "A team notices their model performs almost perfectly on training data but poorly on new data. What is this called?",
+  "o": [
+   "Underfitting",
+   "Class imbalance",
+   "Feature scaling",
+   "Overfitting"
+  ],
+  "a": 3,
+  "e": "High training accuracy with poor generalization to unseen data is overfitting — the model memorized noise. Underfitting is poor performance on both. Class imbalance and feature scaling are data conditions, not this symptom."
+ },
+ {
+  "d": 1,
+  "q": "Which AWS service is designed to build, train, and deploy custom machine learning models end to end?",
+  "o": [
+   "Amazon SageMaker AI",
+   "Amazon Rekognition",
+   "Amazon Comprehend",
+   "Amazon Textract"
+  ],
+  "a": 0,
+  "e": "SageMaker AI is AWS's end-to-end platform for building, training, and deploying custom ML models. Rekognition, Comprehend, and Textract are pre-trained AI services for specific tasks (vision, NLP, document extraction), not general model-building platforms."
  },
  {
   "d": 2,
-  "q": "A startup wants lower latency and cost for a high-volume chat feature and is willing to accept a smaller model if quality stays acceptable. Which selection factor set is most relevant?",
+  "q": "In generative AI, what is a 'token'?",
   "o": [
-   "Only the model's release date",
-   "The color of the console theme",
-   "The number of AWS Regions in the world",
-   "Model size/capability, latency, and cost trade-offs for the use case"
+   "A security credential for the model API",
+   "A unit of text (such as a word fragment) the model processes",
+   "A billing unit unrelated to text",
+   "A trained copy of the model"
   ],
-  "a": 3,
-  "e": "Choosing a model means balancing capability against latency and cost for the specific workload — a smaller, cheaper, faster model can be the right pick if quality suffices. Release date alone, UI theme, and Region count are not selection criteria."
+  "a": 1,
+  "e": "A token is a chunk of text — often a word or sub-word fragment — that the model reads and generates. Model input/output length and often pricing are measured in tokens. It is not a credential or a model copy."
  },
  {
   "d": 2,
-  "q": "An organization wants to centrally store, version, and reuse tested prompts across teams in Bedrock. Which capability supports this?",
+  "q": "A company wants to access multiple foundation models (from different providers) through one managed AWS API without hosting infrastructure. Which service fits best?",
   "o": [
-   "Bedrock Prompt Management",
-   "Amazon S3 Glacier",
-   "AWS Trusted Advisor",
-   "Amazon EventBridge"
+   "Amazon EC2",
+   "AWS Lambda",
+   "Amazon Bedrock",
+   "Amazon S3"
   ],
-  "a": 0,
-  "e": "Bedrock Prompt Management lets teams create, version, and reuse prompts as managed resources. Glacier is archival storage, Trusted Advisor gives best-practice checks, and EventBridge routes events."
+  "a": 2,
+  "e": "Amazon Bedrock provides serverless access to foundation models from multiple providers through a single API. EC2 and Lambda are general compute, and S3 is storage — none provide managed multi-provider FM access."
  },
  {
   "d": 2,
-  "q": "A team wants to process mixed documents (PDFs, images, audio) into structured outputs to feed a generative workflow with minimal custom code. Which newer Bedrock capability targets this?",
+  "q": "What does a 'foundation model' refer to in generative AI?",
   "o": [
-   "Amazon Bedrock Guardrails",
-   "Amazon Bedrock Data Automation",
-   "Amazon Bedrock Playgrounds",
-   "Amazon SNS"
-  ],
-  "a": 1,
-  "e": "Bedrock Data Automation extracts and structures content from unstructured multimodal inputs (documents, images, audio, video) to feed downstream GenAI workflows. Guardrails enforce safety, Playgrounds are manual testing, and SNS is messaging."
- },
- {
-  "d": 3,
-  "q": "A RAG chatbot returns fluent answers that are often unrelated to the retrieved passages. Which is the MOST likely cause to investigate first?",
-  "o": [
-   "The IAM policy is too permissive",
-   "The S3 bucket is in the wrong Region",
-   "Poor retrieval relevance/chunking so the model isn't grounded in the right context",
-   "The model's temperature is set to 0"
-  ],
-  "a": 2,
-  "e": "When answers ignore the source, the retrieval stage is the prime suspect — poor chunking, embeddings, or relevance means the right context never reaches the model. IAM and bucket Region wouldn't cause off-topic-but-fluent answers, and temperature 0 makes output more deterministic, not less grounded."
- },
- {
-  "d": 3,
-  "q": "An enterprise needs an agent that plans multi-step tasks, calls internal APIs, retains session context, and must scale securely in production. Which approach best fits current AWS tooling?",
-  "o": [
-   "A single static prompt with no tools",
-   "A CloudWatch dashboard",
-   "An S3 lifecycle policy",
-   "Bedrock Agents (with AgentCore capabilities) to orchestrate tool calls, memory, and secure execution"
+   "A small model trained for one narrow task",
+   "A rule engine that validates outputs",
+   "A database of prompt templates",
+   "A large model pre-trained on broad data that can be adapted to many tasks"
   ],
   "a": 3,
-  "e": "Building production agents that plan, call tools/APIs, and manage memory/identity securely is what Bedrock Agents and AgentCore capabilities are for. A static prompt can't call tools or manage steps; CloudWatch and S3 lifecycle policies are monitoring and storage features."
+  "e": "A foundation model is a large model pre-trained on broad, diverse data that can be adapted (via prompting or tuning) to many downstream tasks. The other options describe narrow or non-generative components."
  },
  {
-  "d": 3,
-  "q": "A team must decide between fine-tuning and RAG for a bot that needs up-to-date factual answers from frequently updated internal wikis. Which choice and reason is soundest?",
+  "d": 2,
+  "q": "Raising the 'temperature' setting when generating text from a foundation model generally does what?",
   "o": [
-   "RAG, because it grounds answers in current retrieved documents without retraining on every update",
-   "Fine-tuning, because it injects live facts at query time",
-   "Fine-tuning, because it is always cheaper than RAG",
-   "RAG, because it changes the model's internal weights"
+   "Makes output more random and varied",
+   "Makes output more deterministic and repetitive",
+   "Reduces the number of tokens billed",
+   "Disables the model's safety filters"
   ],
   "a": 0,
-  "e": "RAG suits frequently changing factual knowledge — it retrieves current documents at query time without retraining. Fine-tuning bakes knowledge into weights (not live facts) and is costly to repeat on every wiki edit. RAG does not alter model weights."
+  "e": "Higher temperature increases randomness/creativity in the sampled output; lower temperature makes it more focused and deterministic. It does not change billing or disable safety controls."
  },
  {
-  "d": 3,
-  "q": "A prompt keeps producing inconsistent JSON that breaks a downstream parser. Which prompt-engineering adjustment most directly improves structural reliability?",
+  "d": 2,
+  "q": "Which is a realistic limitation of generative AI models that users should plan for?",
   "o": [
-   "Increase temperature and top-p",
-   "Specify an explicit output schema/format with an example and constrain the response",
-   "Ask the model to be more creative",
-   "Remove all instructions to keep the prompt short"
+   "They can never produce fluent text",
+   "They may produce confident but factually incorrect output (hallucination)",
+   "They cannot accept text prompts",
+   "They always cite sources automatically"
   ],
   "a": 1,
-  "e": "Giving an explicit format/schema plus an example (and lowering randomness) makes structured output far more reliable. Raising temperature/top-p or asking for creativity increases variability, and stripping instructions removes the guidance the parser depends on."
+  "e": "Generative models can 'hallucinate' — produce fluent, confident, but incorrect content. They do produce fluent text and accept prompts, and they do not automatically provide reliable citations without added grounding."
+ },
+ {
+  "d": 2,
+  "q": "A team wants a quick way to experiment with and compare foundation model responses in Amazon Bedrock without writing code. What can they use?",
+  "o": [
+   "Amazon CloudWatch",
+   "AWS CloudFormation",
+   "Bedrock Playgrounds",
+   "Amazon VPC"
+  ],
+  "a": 2,
+  "e": "Bedrock Playgrounds provide a no-code console interface to try prompts and compare model responses. CloudWatch is monitoring, CloudFormation is infrastructure-as-code, and VPC is networking."
  },
  {
   "d": 3,
-  "q": "A company wants to reduce repeated cost and latency when the same large context prefix is sent on many Bedrock requests. Which capability helps most?",
+  "q": "A support team wants a chatbot that answers using the company's own internal PDF manuals so replies stay accurate and current. Which technique fits best?",
   "o": [
-   "Guardrails",
-   "Model distillation at inference",
-   "Prompt caching",
-   "Cross-Region replication"
+   "Training a model from scratch",
+   "Increasing the temperature setting",
+   "Reducing the token limit",
+   "Retrieval-Augmented Generation (RAG)"
   ],
-  "a": 2,
-  "e": "Prompt caching reuses computation for a repeated context prefix, cutting latency and cost on subsequent calls. Guardrails enforce safety, distillation is a training-time technique, and cross-Region replication copies data, not prompt compute."
+  "a": 3,
+  "e": "RAG retrieves relevant passages from the company's documents and supplies them to the model as context, grounding answers in current internal knowledge without retraining. Training from scratch is costly and unnecessary; temperature and token limits don't add knowledge."
  },
  {
   "d": 3,
-  "q": "An agent occasionally emits disallowed content and also leaks a customer's PII from context. Which layered controls address BOTH issues?",
+  "q": "Which Amazon Bedrock capability lets you build a managed knowledge base so a model can answer from your documents?",
   "o": [
-   "Only raise the token limit",
-   "Only lower the temperature",
-   "Only enable CloudTrail",
-   "Apply Bedrock Guardrails for content/topic and sensitive-information (PII) filtering across prompts and responses",
-   "Switch Regions"
-  ],
-  "a": 3,
-  "e": "Guardrails can filter harmful/disallowed content AND detect/redact sensitive information such as PII on both input and output — covering both problems. Token limits and temperature don't enforce policy, and CloudTrail only audits API calls after the fact."
- },
- {
-  "d": 3,
-  "q": "A team fine-tunes a model on 40 examples and it now parrots those examples but fails on anything slightly different. What happened and what's a reasonable fix?",
-  "o": [
-   "Overfitting to a tiny dataset; add more diverse examples or prefer RAG/prompting for this need",
-   "Underfitting; reduce data further",
-   "Tokenization error; change Regions",
-   "Guardrail misconfiguration; disable guardrails"
-  ],
-  "a": 0,
-  "e": "A model that memorizes a tiny tuning set and fails to generalize is overfitting; expanding and diversifying data — or using RAG/prompting instead of tuning — is the sensible path. Reducing data worsens it, and the issue is unrelated to Regions or guardrails."
- },
- {
-  "d": 4,
-  "q": "A generative feature must be launched responsibly. Which combination best reflects responsible-AI practice before and after launch?",
-  "o": [
-   "Ship fast, add oversight only if users complain",
-   "Assess bias/fairness, document limitations, add guardrails and human review for high-risk paths, and monitor after release",
-   "Disable logging to protect privacy and skip evaluation",
-   "Maximize temperature to seem more human"
-  ],
-  "a": 1,
-  "e": "Responsible deployment means evaluating fairness, documenting limits, adding guardrails and human-in-the-loop for risky decisions, and monitoring in production. Shipping without oversight, disabling logging (which harms accountability), or tuning for 'human-ness' are not responsible-AI controls."
- },
- {
-  "d": 4,
-  "q": "An image model produces lower-quality results for certain skin tones, traced to unrepresentative training data. Which term and remedy pair is correct?",
-  "o": [
-   "Overfitting; raise temperature",
-   "Latency; add caching",
-   "Data/representation bias; improve dataset diversity and evaluate fairness across groups",
-   "Prompt injection; rotate API keys"
-  ],
-  "a": 2,
-  "e": "Unequal performance stemming from unrepresentative data is representation bias; the remedy is more diverse data plus fairness evaluation across groups. It is not overfitting, latency, or a prompt-injection security issue."
- },
- {
-  "d": 4,
-  "q": "For an AI system that denies or approves benefits, which capability most improves accountability to affected individuals?",
-  "o": [
-   "Storing prompts in Glacier",
-   "Higher top-p sampling",
-   "More Availability Zones",
-   "Explainability of decisions plus documented model cards and human review"
-  ],
-  "a": 3,
-  "e": "Accountability comes from being able to explain decisions, document intended use/limitations (model cards), and provide human review. Archival storage, sampling parameters, and infrastructure redundancy don't make individual decisions explainable."
- },
- {
-  "d": 4,
-  "q": "A team wants to reduce toxic or biased generations at inference without retraining. Which is the most direct, responsible control on AWS?",
-  "o": [
-   "Amazon Bedrock Guardrails content filters and denied topics",
-   "Amazon EBS snapshots",
-   "AWS Cost Explorer",
-   "Amazon Route 53 routing"
-  ],
-  "a": 0,
-  "e": "Bedrock Guardrails apply content filters and topic denials at inference to curb toxic/biased output without retraining. Snapshots, cost analysis, and DNS routing are unrelated to output safety."
- },
- {
-  "d": 5,
-  "q": "An enterprise requires that data sent to Bedrock never traverse the public internet. Which approach meets this?",
-  "o": [
-   "Use a public endpoint with a strong password",
-   "Access Bedrock over a VPC interface endpoint (AWS PrivateLink) to keep traffic on the AWS network",
-   "Raise the temperature",
-   "Store prompts in a public S3 bucket"
-  ],
-  "a": 1,
-  "e": "A VPC interface endpoint (PrivateLink) lets traffic to Bedrock stay on the AWS private network rather than the public internet. Passwords on public endpoints, temperature, and public buckets do not satisfy the private-networking requirement."
- },
- {
-  "d": 5,
-  "q": "To follow least-privilege for a team that should only invoke one specific Bedrock model, what is the best practice?",
-  "o": [
-   "Grant full administrator access for convenience",
-   "Share one root account among the team",
-   "Write a scoped IAM policy allowing only the required Bedrock invoke action on that model resource",
-   "Disable IAM entirely"
-  ],
-  "a": 2,
-  "e": "Least privilege means granting only the specific action on the specific resource via a scoped IAM policy. Admin access, shared root accounts, and disabling IAM all violate security best practice."
- },
- {
-  "d": 5,
-  "q": "A regulated firm must prove which users invoked which models and when, for an audit. Which combination provides this governance evidence?",
-  "o": [
-   "CloudTrail for API activity plus IAM identities, with logs retained per policy",
-   "Increasing max tokens",
-   "A larger EC2 instance",
-   "Only the Bedrock Playground history"
-  ],
-  "a": 3,
-  "e": "CloudTrail records API calls tied to IAM identities, and retaining those logs provides the audit trail regulators expect. Playground history, token limits, and instance sizing don't constitute governance evidence."
- },
- {
-  "d": 5,
-  "q": "A company wants to encrypt data at rest for their AI datasets and manage the keys with rotation and access control. Which service fits?",
-  "o": [
-   "AWS KMS",
-   "Amazon Lex",
+   "Bedrock Knowledge Bases",
    "Amazon Polly",
-   "AWS Ground Station"
+   "AWS Glue",
+   "Amazon Connect"
   ],
   "a": 0,
-  "e": "AWS KMS manages encryption keys — including rotation and access policies — for encrypting data at rest across AWS services. Lex, Polly, and Ground Station are unrelated to key management."
+  "e": "Bedrock Knowledge Bases provide managed RAG — ingesting and indexing your documents so models can retrieve and answer from them. Polly is text-to-speech, Glue is ETL, and Connect is a contact-center service."
+ },
+ {
+  "d": 3,
+  "q": "A team wants to add safety rules that block a foundation model from returning disallowed topics or profanity. Which Bedrock feature is designed for this?",
+  "o": [
+   "Bedrock Playgrounds",
+   "Bedrock Guardrails",
+   "Amazon Macie",
+   "AWS Config"
+  ],
+  "a": 1,
+  "e": "Bedrock Guardrails let you define policies that filter harmful content and restrict topics for both prompts and responses. Playgrounds are for testing, Macie is data-privacy scanning, and Config tracks resource configuration."
+ },
+ {
+  "d": 3,
+  "q": "Which best describes 'prompt engineering'?",
+  "o": [
+   "Retraining a model's internal weights",
+   "Encrypting the prompt before sending it",
+   "Crafting and structuring inputs to guide a model toward better outputs",
+   "Compressing the model to run on smaller hardware"
+  ],
+  "a": 2,
+  "e": "Prompt engineering is designing the wording, structure, and context of inputs to steer model output — no weight changes involved. Retraining, encryption, and model compression are different activities."
+ },
+ {
+  "d": 3,
+  "q": "Providing a few input-output examples inside the prompt so the model follows the pattern is known as:",
+  "o": [
+   "Zero-shot prompting",
+   "Fine-tuning",
+   "Model distillation",
+   "Few-shot prompting"
+  ],
+  "a": 3,
+  "e": "Including a handful of examples in the prompt is few-shot prompting. Zero-shot gives no examples, fine-tuning updates model weights with a dataset, and distillation trains a smaller model to mimic a larger one."
+ },
+ {
+  "d": 3,
+  "q": "A company wants a foundation model to specialize in their domain by continuing training on their labeled dataset. What is this called?",
+  "o": [
+   "Fine-tuning",
+   "Prompt caching",
+   "Tokenization",
+   "Load balancing"
+  ],
+  "a": 0,
+  "e": "Continuing training on a curated dataset to adapt a model to a specific domain is fine-tuning. Prompt caching reuses prompt computation, tokenization splits text into tokens, and load balancing distributes traffic."
+ },
+ {
+  "d": 3,
+  "q": "An enterprise wants an AI system that can break a goal into steps and call tools/APIs to complete a multi-step task. Which Bedrock capability supports this?",
+  "o": [
+   "Amazon Kendra",
+   "Bedrock Agents",
+   "Amazon Transcribe",
+   "AWS Batch"
+  ],
+  "a": 1,
+  "e": "Bedrock Agents orchestrate multi-step tasks, invoking APIs/tools and reasoning through steps to reach a goal. Kendra is enterprise search, Transcribe is speech-to-text, and Batch runs batch compute jobs."
+ },
+ {
+  "d": 4,
+  "q": "A hiring model consistently rates one demographic group lower for reasons unrelated to job performance. This is an example of:",
+  "o": [
+   "Low latency",
+   "High throughput",
+   "Model bias",
+   "Prompt injection"
+  ],
+  "a": 2,
+  "e": "Systematically unfair outcomes toward a group reflect bias in the model or its training data. Latency and throughput are performance measures, and prompt injection is a security attack, not a fairness issue."
+ },
+ {
+  "d": 4,
+  "q": "Which principle is central to responsible AI when a model makes decisions that affect people?",
+  "o": [
+   "Maximizing token count",
+   "Disabling all logging",
+   "Increasing temperature",
+   "Transparency and explainability"
+  ],
+  "a": 3,
+  "e": "Responsible AI emphasizes transparency and explainability so decisions can be understood and challenged. Token count and temperature are generation settings, and disabling logging would reduce accountability."
+ },
+ {
+  "d": 4,
+  "q": "A team wants to document a model's intended uses, limitations, and performance characteristics for stakeholders. Which artifact serves this purpose?",
+  "o": [
+   "A model card",
+   "A billing alarm",
+   "A load test",
+   "A VPC endpoint"
+  ],
+  "a": 0,
+  "e": "A model card summarizes a model's intended use, limitations, and performance to promote transparency. The other options are operational or cost tools unrelated to documenting model behavior."
+ },
+ {
+  "d": 4,
+  "q": "Why is keeping a 'human in the loop' valuable for higher-risk AI decisions?",
+  "o": [
+   "It removes the need for any monitoring",
+   "It lets a person review or override outputs before harmful action is taken",
+   "It guarantees the model never makes errors",
+   "It eliminates the need for training data"
+  ],
+  "a": 1,
+  "e": "Human-in-the-loop adds oversight so a person can catch and correct problematic outputs before impact. It does not remove monitoring needs, guarantee perfection, or eliminate the need for data."
  },
  {
   "d": 5,
-  "q": "During a security review, a team finds prompts may contain customer PII that shouldn't reach the model. Which layered response is soundest?",
+  "q": "Which AWS service manages who can access Amazon Bedrock and what actions they may perform?",
   "o": [
-   "Ignore it; models don't store data",
-   "Redact/filter PII (e.g., Guardrails sensitive-info filters) AND restrict access via IAM AND audit with CloudTrail",
-   "Only rename the S3 bucket",
-   "Only increase the token limit"
+   "Amazon Polly",
+   "Amazon SNS",
+   "AWS IAM",
+   "AWS Wavelength"
+  ],
+  "a": 2,
+  "e": "AWS IAM controls authentication and authorization — which identities can access Bedrock and which actions they can take. Polly, SNS, and Wavelength are unrelated to access control."
+ },
+ {
+  "d": 5,
+  "q": "A company must ensure prompts and data sent to a foundation model are not used to train the base model and stay within their control. Which practice supports this?",
+  "o": [
+   "Raising the temperature setting",
+   "Increasing the max token limit",
+   "Switching to a larger instance type",
+   "Reviewing the service's data privacy and usage terms"
+  ],
+  "a": 3,
+  "e": "Understanding and configuring the service's data privacy/usage terms determines whether inputs are retained or used for training. Generation settings and instance sizing do not affect data-usage policy."
+ },
+ {
+  "d": 5,
+  "q": "Which service helps discover and protect sensitive data (like PII) stored in Amazon S3?",
+  "o": [
+   "Amazon Macie",
+   "Amazon Lex",
+   "Amazon QuickSight",
+   "AWS Step Functions"
+  ],
+  "a": 0,
+  "e": "Amazon Macie uses ML to discover and classify sensitive data such as PII in S3. Lex builds chatbots, QuickSight is BI, and Step Functions orchestrates workflows."
+ },
+ {
+  "d": 5,
+  "q": "To meet compliance needs, a team wants an audit trail of every Bedrock API call made in their account. Which service provides this?",
+  "o": [
+   "Amazon Rekognition",
+   "AWS CloudTrail",
+   "AWS Amplify",
+   "Amazon EBS"
   ],
   "a": 1,
-  "e": "A layered response — filtering/redacting PII, restricting access with IAM, and auditing with CloudTrail — addresses the risk in depth. Assuming no storage is unsafe, and bucket renaming or token limits don't protect sensitive data."
+  "e": "AWS CloudTrail records API activity across the account, providing an audit trail for governance and compliance. Rekognition is vision AI, Amplify is app development, and EBS is block storage."
  }
 ];
 
@@ -603,13 +605,179 @@ window.AIF_BANK_SET2 = [
   window.AifEval = AifEval;
 })();
 </script>
+<script>/* SF auth gate — Google SSO (hd: sourcefuse.com) + email/password fallback.
+   Reuses the sfcertification-grafana Firebase project. Firebase v10 modular SDK
+   loaded via CDN in the page. Exposes window.SFAuth.mount(onReady) which shows
+   the overlay and calls onReady(email) once a valid @sourcefuse.com user is in.
+   NOTE: paste the real sfcertification-grafana firebaseConfig values below —
+   left as clearly-marked placeholders per the golden rule (never invent config). */
+(function () {
+  // >>> REPLACE with the live sfcertification-grafana config from the deployed repo <<<
+  const firebaseConfig = {
+    apiKey: "PASTE_API_KEY",
+    authDomain: "sfcertification-grafana.firebaseapp.com",
+    projectId: "sfcertification-grafana",
+    storageBucket: "sfcertification-grafana.appspot.com",
+    messagingSenderId: "PASTE_SENDER_ID",
+    appId: "PASTE_APP_ID"
+  };
+  const ALLOWED_DOMAIN = "sourcefuse.com";
+
+  let app, auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn;
+  let readyCb = null;
+
+  async function initFirebase() {
+    const appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    // Reuse default app if the host page already initialized it.
+    app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(firebaseConfig);
+    auth = authMod.getAuth(app);
+    GoogleProvider = authMod.GoogleAuthProvider;
+    signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    getRedirect = () => authMod.getRedirectResult(auth);
+    signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
+    onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
+    signOutFn = () => authMod.signOut(auth);
+  }
+
+  function overlayHTML() {
+    return `
+    <div class="sf-auth-backdrop" id="sf-auth">
+      <div class="sf-auth-card">
+        <div class="sf-auth-badge">SF Knowledge Hub</div>
+        <h2>Sign in to start</h2>
+        <p class="sf-auth-sub">Use your SourceFuse account to save your attempts.</p>
+        <button class="sf-google" id="sf-google">
+          <span class="sf-g">G</span> Sign in with Google
+        </button>
+        <div class="sf-or"><span>or</span></div>
+        <label class="sf-lbl">Email</label>
+        <input class="sf-inp" id="sf-email" type="email" placeholder="you@sourcefuse.com" autocomplete="username">
+        <label class="sf-lbl">Password</label>
+        <input class="sf-inp" id="sf-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        <button class="sf-signin" id="sf-signin">Sign in</button>
+        <div class="sf-err" id="sf-err"></div>
+      </div>
+    </div>`;
+  }
+
+  function styleTag() {
+    return `<style>
+    .sf-auth-backdrop{position:fixed;inset:0;background:rgba(16,38,60,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .sf-auth-card{background:#fff;border-radius:16px;padding:30px 28px;width:100%;max-width:380px;box-shadow:0 12px 40px rgba(10,30,55,.25);font-family:inherit}
+    .sf-auth-badge{display:inline-block;background:var(--blue,#1a6eb5);color:#fff;font-weight:700;font-size:12px;padding:4px 11px;border-radius:14px;margin-bottom:14px}
+    .sf-auth-card h2{margin:0 0 4px;font-size:20px;color:#1a2733}
+    .sf-auth-sub{margin:0 0 20px;color:#5a6b7a;font-size:14px}
+    .sf-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #dbe3ec;border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:#1a2733;cursor:pointer;font-family:inherit}
+    .sf-google:hover{background:#f7fbff;border-color:var(--blue,#1a6eb5)}
+    .sf-g{background:conic-gradient(from -45deg,#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0);color:#fff;font-weight:800;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .sf-or{display:flex;align-items:center;text-align:center;color:#93a1af;font-size:12px;margin:18px 0}
+    .sf-or::before,.sf-or::after{content:"";flex:1;height:1px;background:#e2e8ef}
+    .sf-or span{padding:0 12px}
+    .sf-lbl{display:block;font-size:12.5px;font-weight:600;color:#5a6b7a;margin-bottom:5px}
+    .sf-inp{width:100%;border:1.5px solid #dbe3ec;border-radius:9px;padding:11px 12px;font-size:14.5px;margin-bottom:14px;font-family:inherit}
+    .sf-inp:focus{outline:none;border-color:var(--blue,#1a6eb5)}
+    .sf-signin{width:100%;background:var(--blue,#1a6eb5);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+    .sf-signin:hover{background:var(--blue-d,#12507f)}
+    .sf-err{color:#b5341a;font-size:13px;margin-top:12px;min-height:16px}
+    </style>`;
+  }
+
+  function fail(msg) { const e = document.getElementById("sf-err"); if (e) e.textContent = msg; }
+
+  function validDomain(email) {
+    return typeof email === "string" && email.toLowerCase().endsWith("@" + ALLOWED_DOMAIN);
+  }
+
+  function proceed(email) {
+    const el = document.getElementById("sf-auth");
+    if (el) el.remove();
+    if (readyCb) readyCb(email);
+  }
+
+  async function wireOverlay() {
+    document.getElementById("sf-google").addEventListener("click", async () => {
+      fail("");
+      if (!signInRedirect) return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      try {
+        const provider = new GoogleProvider();
+        provider.setCustomParameters({ hd: ALLOWED_DOMAIN, prompt: "select_account" });
+        // Redirect leaves the page and returns to it; result is picked up on load
+        // by handleRedirectResult(). This works inside the LMS iframe, unlike popup.
+        await signInRedirect(provider);
+      } catch (err) {
+        fail("Google sign-in couldn't start. Use email/password below.");
+      }
+    });
+    document.getElementById("sf-signin").addEventListener("click", async () => {
+      fail("");
+      const email = (document.getElementById("sf-email").value || "").trim();
+      const pass = document.getElementById("sf-pass").value || "";
+      if (!validDomain(email)) return fail("Email must be an @sourcefuse.com address.");
+      if (!pass) return fail("Enter your password.");
+      try {
+        const res = await signInEmail(email, pass);
+        const e = (res.user && res.user.email) || email;
+        proceed(e);
+      } catch (err) { fail("Incorrect email or password."); }
+    });
+  }
+
+  async function mount(onReady) {
+    readyCb = onReady;
+    document.head.insertAdjacentHTML("beforeend", styleTag());
+    document.body.insertAdjacentHTML("beforeend", overlayHTML());
+    try {
+      await initFirebase();
+    } catch (e) {
+      // If Firebase can't load (e.g. local file://), keep overlay but let email/password
+      // at least validate domain so the page is testable; real auth needs https host.
+      fail("Auth service loading… (Google SSO needs the deployed https host).");
+    }
+    // Handle the return leg of signInWithRedirect: when the user comes back from
+    // Google, getRedirectResult() resolves with their credential.
+    if (getRedirect) {
+      try {
+        const res = await getRedirect();
+        if (res && res.user) {
+          const email = res.user.email;
+          if (!validDomain(email)) { await signOutFn(); fail("Please use your @sourcefuse.com account."); }
+          else { proceed(email); return; }
+        }
+      } catch (err) {
+        fail("Google sign-in didn't complete. Try again or use email/password.");
+      }
+    }
+    // If a session already exists (redirect just completed, or prior session), skip the overlay.
+    if (onAuth) {
+      onAuth((user) => {
+        if (user && validDomain(user.email)) proceed(user.email);
+      });
+    }
+    wireOverlay();
+  }
+
+  window.SFAuth = { mount };
+})();
+</script>
 <script>
-AifEval({
-  bank: window.AIF_BANK_SET2,
-  setKey: "aif_set2_adv_v1",
-  mount: document.getElementById("aif2"),
-  title: "AIF-C01 Prep — Set 2 (Intermediate to Advanced)",
-  subtitle: "Scenario-driven questions with close distractors, mirroring the harder AIF-C01 style."
-});
+(function(){
+  var mountId="aif1";
+  document.getElementById(mountId).innerHTML='<p class="aif-sub">Sign in to begin…</p>';
+  window.SFAuth.mount(function(email){
+    var badge=document.getElementById(mountId+"-user");
+    if(badge) badge.textContent=email;
+    // localStorage key is namespaced per signed-in email so attempts are per-user;
+    // swap loadState/persistState in the engine for courseExamResults later.
+    var safe=email.replace(/[^a-z0-9]/gi,"_").toLowerCase();
+    AifEval({
+      bank: window.AIF_BANK_SET1,
+      setKey: "aif_set1_basic_v1__"+safe,
+      mount: document.getElementById(mountId),
+      title: "AIF-C01 Prep — Set 1 (Basic)",
+      subtitle: "Foundational readiness check across all five AWS Certified AI Practitioner domains."
+    });
+  });
+})();
 </script>
 </body></html>
