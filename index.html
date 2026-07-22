@@ -137,10 +137,12 @@ body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-ser
       fail("");
       const email=(document.getElementById("sf-email").value||"").trim();
       const pass=document.getElementById("sf-pass").value||"";
+      console.log("[auth] sign-in clicked; email:",email,"| password length:",pass.length);
+      console.log("[auth] validDomain(email):",validDomain(email));
       if(!validDomain(email))return fail("Email must be an @sourcefuse.com address.");
       if(!pass)return fail("Enter your password.");
-      try{const r=await signInEmail(email,pass);proceed((r.user&&r.user.email)||email);}
-      catch(e){fail("Incorrect email or password.");}
+      try{const r=await signInEmail(email,pass);console.log("[auth] signInEmail success; user:",r.user&&r.user.email);proceed((r.user&&r.user.email)||email);}
+      catch(e){console.log("[auth] signInEmail failed; code:",e&&e.code,"| message:",e&&e.message);fail("Incorrect email or password.");}
     });
   }
   async function mount(onReady){
