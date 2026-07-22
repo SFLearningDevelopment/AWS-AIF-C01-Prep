@@ -469,7 +469,11 @@ window.AIF_BANK_SET1 = [
     function startAttempt() {
       if (state.attemptNo >= MAX_ATTEMPTS) { renderExhausted(); return; }
       const attemptNo = state.attemptNo + 1;
-      const questions = buildAttempt(bank, state, attemptNo);
+      // A/B change: one attempt walks ALL bank questions, grouped into domain
+      // sections in ascending domain order. (Attempt-2/3 rotation = future iteration.)
+      const questions = bank
+        .map((q, i) => Object.assign({ _id: i }, q))
+        .sort((a, b) => (a.d - b.d) || (a._id - b._id));
       current = { attemptNo, questions, answers: new Array(questions.length).fill(null), pos: 0 };
       renderQuestion();
     }
@@ -478,9 +482,14 @@ window.AIF_BANK_SET1 = [
       const q = current.questions[current.pos];
       const wasWrong = state.wrongIds.includes(q._id);
       const answered = current.answers[current.pos];
+      // Domain section context
+      const domainQs = current.questions.filter(x => x.d === q.d);
+      const posInDomain = domainQs.findIndex(x => x._id === q._id) + 1;
+      const domainNo = Array.from(new Set(current.questions.map(x => x.d))).sort((a,b)=>a-b).indexOf(q.d) + 1;
+      const totalDomains = new Set(current.questions.map(x => x.d)).size;
       let html = "";
-      html += `<div class="aif-topbar"><span>Attempt ${current.attemptNo} of ${MAX_ATTEMPTS}</span>`;
-      html += `<span>Question ${current.pos + 1} of ${current.questions.length}</span></div>`;
+      html += `<div class="aif-topbar"><span>Attempt ${current.attemptNo} of ${MAX_ATTEMPTS} · Domain ${domainNo} of ${totalDomains}</span>`;
+      html += `<span>Question ${posInDomain} of ${domainQs.length}</span></div>`;
       html += `<div class="aif-progress"><div class="aif-progress-fill" style="width:${((current.pos) / current.questions.length) * 100}%"></div></div>`;
       html += `<div class="aif-domain">${DOMAIN_NAMES[q.d]}</div>`;
       if (wasWrong) {
@@ -504,7 +513,11 @@ window.AIF_BANK_SET1 = [
         html += `<div class="aif-expl ${right ? "ok" : "no"}">`;
         html += `<strong>${right ? "Correct." : "Not quite."}</strong> ${q.e}</div>`;
         const isLast = current.pos === current.questions.length - 1;
-        html += `<div class="aif-nav"><button class="aif-next" id="aif-next">${isLast ? "See results" : "Next question"}</button></div>`;
+        const nextDifferentDomain = !isLast && current.questions[current.pos + 1].d !== q.d;
+        let label = "Next question";
+        if (isLast) label = "See results";
+        else if (nextDifferentDomain) label = "Move to next domain";
+        html += `<div class="aif-nav"><button class="aif-next" id="aif-next">${label}</button></div>`;
       }
       mount.innerHTML = html;
 
@@ -572,9 +585,8 @@ window.AIF_BANK_SET1 = [
 
     function renderStart() {
       let html = `<div class="aif-start"><h1>${title}</h1><p class="aif-sub">${subtitle}</p>`;
-      html += `<ul class="aif-meta"><li>${MAX_ATTEMPTS} attempts · ${ATTEMPT_SIZE} questions each</li>`;
-      html += `<li>Questions span all five AIF-C01 domains</li>`;
-      html += `<li>Attempt 3 leads with questions you missed earlier</li>`;
+      html += `<ul class="aif-meta"><li>${MAX_ATTEMPTS} attempts · all questions across five domain sections</li>`;
+      html += `<li>One section per AIF-C01 domain, in order</li>`;
       html += `<li>Full explanation after every question</li></ul>`;
       if (state.history.length) {
         html += `<div class="aif-break"><div class="aif-break-title">Your attempts so far</div>`;
