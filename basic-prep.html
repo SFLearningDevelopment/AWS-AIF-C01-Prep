@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072205 -->
+<!-- build: 2026072206 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 1 (Basic)</title>
@@ -407,6 +407,47 @@ window.AIF_BANK_SET1 = [
     try { localStorage.setItem(key, JSON.stringify(s)); } catch (e) {}
   }
 
+  // ── Firestore persistence (aifPrepResults collection) ──────────────────────
+  // Results live at aifPrepResults/{setKey}, where setKey already embeds the
+  // signed-in user's safe email (aif_set1_basic_v1__{safeEmail}). Firestore is
+  // the source of truth so results follow the user across browsers/devices;
+  // localStorage remains a fallback when Firestore is unavailable.
+  let _fsMod = null, _fsDb = null;
+  async function fsInit() {
+    if (_fsDb) return _fsDb;
+    try {
+      const app = (window.SFAuth && window.SFAuth.getApp) ? window.SFAuth.getApp() : null;
+      if (!app) return null;
+      _fsMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      _fsDb = _fsMod.getFirestore(app);
+      return _fsDb;
+    } catch (e) { console.log("[aifPrepResults] Firestore init failed:", e && e.message); return null; }
+  }
+  async function fsLoad(setKey) {
+    try {
+      const db = await fsInit(); if (!db) return null;
+      const snap = await _fsMod.getDoc(_fsMod.doc(db, "aifPrepResults", setKey));
+      if (snap.exists()) { console.log("[aifPrepResults] loaded from Firestore:", setKey); return snap.data(); }
+      return null;
+    } catch (e) { console.log("[aifPrepResults] Firestore load failed:", e && e.message); return null; }
+  }
+  async function fsSave(setKey, state, email) {
+    try {
+      const db = await fsInit(); if (!db) return;
+      await _fsMod.setDoc(_fsMod.doc(db, "aifPrepResults", setKey), Object.assign({}, state, {
+        email: email || "", setKey: setKey, updatedAt: Date.now()
+      }));
+      console.log("[aifPrepResults] saved to Firestore:", setKey);
+    } catch (e) { console.log("[aifPrepResults] Firestore save failed:", e && e.message); }
+  }
+  async function fsClear(setKey) {
+    try {
+      const db = await fsInit(); if (!db) return;
+      await _fsMod.deleteDoc(_fsMod.doc(db, "aifPrepResults", setKey));
+      console.log("[aifPrepResults] cleared Firestore doc:", setKey);
+    } catch (e) { console.log("[aifPrepResults] Firestore clear failed:", e && e.message); }
+  }
+
   // Deterministic shuffle so a given attempt is reproducible per seed.
   function seededShuffle(arr, seed) {
     const a = arr.slice(); let s = seed || 1;
@@ -460,6 +501,7 @@ window.AIF_BANK_SET1 = [
     const mount = opts.mount;
     const title = opts.title;
     const subtitle = opts.subtitle;
+    const email = opts.email || "";
 
     let state = loadState(SET_KEY);
     state.usedIds = state.usedIds || [];
@@ -469,14 +511,41 @@ window.AIF_BANK_SET1 = [
 
     let current = null; // {questions, answers[], pos}
 
+    // Firestore is source of truth: if a doc exists, adopt it and refresh
+    // localStorage from it; otherwise keep the localStorage state we loaded.
+    (async () => {
+      const remote = await fsLoad(SET_KEY);
+      if (remote && Array.isArray(remote.history)) {
+        state.usedIds = remote.usedIds || [];
+        state.wrongIds = remote.wrongIds || [];
+        state.attemptNo = remote.attemptNo || 0;
+        state.history = remote.history || [];
+        persistState(SET_KEY, state);
+        if (!current) renderStart();
+      }
+    })();
+
     function startAttempt() {
       if (state.attemptNo >= MAX_ATTEMPTS) { renderExhausted(); return; }
       const attemptNo = state.attemptNo + 1;
-      // A/B change: one attempt walks ALL bank questions, grouped into domain
-      // sections in ascending domain order. (Attempt-2/3 rotation = future iteration.)
+      // One attempt walks ALL bank questions, grouped into domain sections in
+      // ascending domain order. Option order is shuffled per question each
+      // attempt so retakes don't preserve the A/B/C/D sequence; the correct
+      // index is remapped so correctness is preserved. Domain/question order
+      // stays fixed.
       const questions = bank
         .map((q, i) => Object.assign({ _id: i }, q))
-        .sort((a, b) => (a.d - b.d) || (a._id - b._id));
+        .sort((a, b) => (a.d - b.d) || (a._id - b._id))
+        .map((q) => {
+          const idx = q.o.map((_, i) => i);
+          for (let k = idx.length - 1; k > 0; k--) {
+            const j = Math.floor(Math.random() * (k + 1));
+            [idx[k], idx[j]] = [idx[j], idx[k]];
+          }
+          const shuffledO = idx.map(i => q.o[i]);
+          const newA = idx.indexOf(q.a);
+          return Object.assign({}, q, { o: shuffledO, a: newA });
+        });
       current = { attemptNo, questions, answers: new Array(questions.length).fill(null), pos: 0 };
       renderQuestion();
     }
@@ -548,6 +617,7 @@ window.AIF_BANK_SET1 = [
       state.attemptNo = current.attemptNo;
       state.history.push({ attempt: current.attemptNo, score, total: current.questions.length, ts: Date.now() });
       persistState(SET_KEY, state);
+      fsSave(SET_KEY, state, email);
       renderResults(score, current.questions.length);
     }
 
@@ -579,6 +649,7 @@ window.AIF_BANK_SET1 = [
       if (again) again.addEventListener("click", startAttempt);
       mount.querySelector("#aif-reset").addEventListener("click", () => {
         localStorage.removeItem(SET_KEY);
+        fsClear(SET_KEY);
         state = { usedIds: [], wrongIds: [], attemptNo: 0, history: [] };
         renderStart();
       });
@@ -609,6 +680,7 @@ window.AIF_BANK_SET1 = [
       const r2 = mount.querySelector("#aif-reset2");
       if (r2) r2.addEventListener("click", () => {
         localStorage.removeItem(SET_KEY);
+        fsClear(SET_KEY);
         state = { usedIds: [], wrongIds: [], attemptNo: 0, history: [] };
         renderStart();
       });
@@ -774,7 +846,7 @@ window.AIF_BANK_SET1 = [
     wireOverlay();
   }
 
-  window.SFAuth = { mount };
+  window.SFAuth = { mount, getApp: () => app };
 })();
 </script>
 <script>
@@ -790,6 +862,7 @@ window.AIF_BANK_SET1 = [
     AifEval({
       bank: window.AIF_BANK_SET1,
       setKey: "aif_set1_basic_v1__"+safe,
+      email: email,
       mount: document.getElementById(mountId),
       title: "AIF-C01 Prep — Set 1 (Basic)",
       subtitle: "Foundational readiness check across all five AWS Certified AI Practitioner domains."
