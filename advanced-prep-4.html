@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072211 -->
+<!-- build: 2026072212 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 4 (Advanced · Scenarios with Multiple Answers)</title>
@@ -39,6 +39,11 @@ h1{font-size:22px;margin:0 0 6px}
 .aif-multi-hint{font-size:12.5px;color:var(--mut);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:14px;font-weight:600}
 .aif-selcount{margin-left:12px;font-size:12.5px;color:var(--mut);align-self:center}
 .aif-expl{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px}
+.aif-summary{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.aif-summary-block{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fbfdff}
+.aif-summary-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--blue-d);margin-bottom:6px}
+.aif-summary-list{font-size:14px;color:var(--ink);display:flex;flex-direction:column;gap:4px}
+.aif-summary-list b{color:var(--ink)}
 .aif-expl.ok{background:#eefaf1;border:1px solid #bfe6cc}
 .aif-expl.no{background:#fdeeeb;border:1px solid #f2c6bd}
 .aif-nav{margin-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -695,8 +700,25 @@ window.AIF_BANK_SET4 = [
         const chk = btn.querySelector(".aif-check");
         if (chk) chk.textContent = box;
       });
-      // Insert the explanation before the nav.
+      // Build the answer summary shown BEFORE the explanation: the learner's
+      // submitted choices and the correct answer, each as letter + option text.
       const nav = mount.querySelector(".aif-nav");
+      const letterText = i => `<b>${String.fromCharCode(65 + i)}.</b> ${q.o[i]}`;
+      const submittedItems = [...selSet].sort((a, b) => a - b).map(letterText);
+      const correctItems = [...correctSet].sort((a, b) => a - b).map(letterText);
+      const summary = document.createElement("div");
+      summary.className = "aif-summary";
+      summary.innerHTML =
+        `<div class="aif-summary-block">` +
+          `<div class="aif-summary-title">Your submitted choices</div>` +
+          `<div class="aif-summary-list">${submittedItems.length ? submittedItems.map(x => `<div>${x}</div>`).join("") : "<div>—</div>"}</div>` +
+        `</div>` +
+        `<div class="aif-summary-block">` +
+          `<div class="aif-summary-title">Correct answer</div>` +
+          `<div class="aif-summary-list">${correctItems.map(x => `<div>${x}</div>`).join("")}</div>` +
+        `</div>`;
+      if (nav) mount.insertBefore(summary, nav);
+      // Insert the explanation before the nav (after the summary).
       const expl = document.createElement("div");
       expl.className = "aif-expl " + (right ? "ok" : "no");
       expl.innerHTML = `<strong>${right ? "Correct." : "Not quite."}</strong> ${q.e}`;
@@ -773,6 +795,15 @@ window.AIF_BANK_SET4 = [
         html += `<span class="aif-selcount">${sel.length} of ${q.pick} selected</span></div>`;
       } else {
         const right = selSet.size === correctSet.size && [...correctSet].every(x => selSet.has(x));
+        const letterText = i => `<b>${String.fromCharCode(65 + i)}.</b> ${q.o[i]}`;
+        const submittedItems = [...selSet].sort((a, b) => a - b).map(letterText);
+        const correctItems = [...correctSet].sort((a, b) => a - b).map(letterText);
+        html += `<div class="aif-summary">`;
+        html += `<div class="aif-summary-block"><div class="aif-summary-title">Your submitted choices</div>`;
+        html += `<div class="aif-summary-list">${submittedItems.length ? submittedItems.map(x => `<div>${x}</div>`).join("") : "<div>—</div>"}</div></div>`;
+        html += `<div class="aif-summary-block"><div class="aif-summary-title">Correct answer</div>`;
+        html += `<div class="aif-summary-list">${correctItems.map(x => `<div>${x}</div>`).join("")}</div></div>`;
+        html += `</div>`;
         html += `<div class="aif-expl ${right ? "ok" : "no"}">`;
         html += `<strong>${right ? "Correct." : "Not quite."}</strong> ${q.e}</div>`;
         const isLast = current.pos === current.questions.length - 1;
