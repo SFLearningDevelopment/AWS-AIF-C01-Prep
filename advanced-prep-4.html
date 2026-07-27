@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072209 -->
+<!-- build: 2026072210 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 4 (Advanced · Scenarios with Multiple Answers)</title>
@@ -41,7 +41,9 @@ h1{font-size:22px;margin:0 0 6px}
 .aif-expl{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px}
 .aif-expl.ok{background:#eefaf1;border:1px solid #bfe6cc}
 .aif-expl.no{background:#fdeeeb;border:1px solid #f2c6bd}
-.aif-nav{margin-top:18px}
+.aif-nav{margin-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.aif-prev{background:#fff;color:var(--blue);border:1.5px solid var(--line);border-radius:10px;padding:12px 18px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.aif-prev:hover{border-color:var(--blue);background:#f7fbff}
 .aif-next{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
 .aif-next:hover{background:var(--blue-d)}
 .aif-next:disabled{background:#b9c6d2;cursor:not-allowed}
@@ -719,7 +721,9 @@ window.AIF_BANK_SET4 = [
       html += `</div>`;
       if (!isDone) {
         const canSubmit = sel.length === q.pick;
-        html += `<div class="aif-nav"><button class="aif-next" id="aif-submit" ${canSubmit ? "" : "disabled"}>Submit answer</button>`;
+        html += `<div class="aif-nav">`;
+        if (current.pos > 0) html += `<button class="aif-prev" id="aif-prev">← Previous</button>`;
+        html += `<button class="aif-next" id="aif-submit" ${canSubmit ? "" : "disabled"}>Submit answer</button>`;
         html += `<span class="aif-selcount">${sel.length} of ${q.pick} selected</span></div>`;
       } else {
         const right = selSet.size === correctSet.size && [...correctSet].every(x => selSet.has(x));
@@ -730,7 +734,9 @@ window.AIF_BANK_SET4 = [
         let label = "Next question";
         if (isLast) label = "See results";
         else if (nextDifferentDomain) label = "Move to next domain";
-        html += `<div class="aif-nav"><button class="aif-next" id="aif-next">${label}</button></div>`;
+        html += `<div class="aif-nav">`;
+        if (current.pos > 0) html += `<button class="aif-prev" id="aif-prev">← Previous</button>`;
+        html += `<button class="aif-next" id="aif-next">${label}</button></div>`;
       }
       mount.innerHTML = html;
 
@@ -755,11 +761,19 @@ window.AIF_BANK_SET4 = [
           if (right) state.wrongIds = state.wrongIds.filter(id => id !== q._id);
           renderQuestion();
         });
+        const prevU = mount.querySelector("#aif-prev");
+        if (prevU) prevU.addEventListener("click", () => {
+          if (current.pos > 0) { current.pos--; renderQuestion(); }
+        });
       } else {
         const next = mount.querySelector("#aif-next");
         if (next) next.addEventListener("click", () => {
           if (current.pos < current.questions.length - 1) { current.pos++; renderQuestion(); }
           else finishAttempt();
+        });
+        const prevA = mount.querySelector("#aif-prev");
+        if (prevA) prevA.addEventListener("click", () => {
+          if (current.pos > 0) { current.pos--; renderQuestion(); }
         });
       }
     }
