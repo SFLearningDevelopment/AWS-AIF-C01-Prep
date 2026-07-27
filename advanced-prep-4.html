@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<!-- build: 2026072209 -->
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIF-C01 Prep — Set 4 (Advanced · Scenarios with Multiple Answers)</title>
+<style>
+:root{--blue:#1a6eb5;--blue-d:#12507f;--ink:#1a2733;--mut:#5a6b7a;--line:#e2e8ef;--ok:#127a3e;--no:#b5341a;--amber:#8a5a00;--amber-bg:#fff6e0;--bg:#f5f8fb;}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+.aif-wrap{max-width:760px;margin:0 auto;padding:28px 20px 60px}
+.aif-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:16px;font-weight:600}
+.aif-back:hover{text-decoration:underline}
+.aif-head{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.aif-badge{background:var(--blue);color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:20px;letter-spacing:.3px}
+.aif-head small{color:var(--mut)}
+.aif-user{margin-left:auto;font-size:12.5px;color:var(--mut)}
+.aif-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:0 1px 3px rgba(20,50,80,.05)}
+h1{font-size:22px;margin:0 0 6px}
+.aif-sub{color:var(--mut);margin:0 0 18px}
+.aif-meta{list-style:none;padding:0;margin:0 0 22px}
+.aif-meta li{padding:8px 0;border-bottom:1px solid var(--line);color:var(--mut);font-size:14px}
+.aif-topbar{display:flex;justify-content:space-between;font-size:13px;color:var(--mut);margin-bottom:10px;font-weight:600}
+.aif-progress{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:18px}
+.aif-progress-fill{height:100%;background:var(--blue);transition:width .3s}
+.aif-domain{display:inline-block;font-size:12px;font-weight:700;color:var(--blue-d);background:#eaf3fb;padding:3px 10px;border-radius:12px;margin-bottom:12px}
+.aif-annot{background:var(--amber-bg);border:1px solid #f0d488;color:var(--amber);padding:10px 12px;border-radius:8px;font-size:13.5px;margin-bottom:14px}
+.aif-q{font-size:16.5px;font-weight:600;margin-bottom:18px}
+.aif-opts{display:flex;flex-direction:column;gap:10px}
+.aif-opt{display:flex;align-items:flex-start;gap:10px;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:13px 14px;font-size:14.5px;cursor:pointer;transition:.15s;color:var(--ink);font-family:inherit}
+.aif-opt:hover:not(.locked){border-color:var(--blue);background:#f7fbff}
+.aif-letter{background:var(--bg);border:1px solid var(--line);border-radius:6px;min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.aif-opt.correct{border-color:var(--ok);background:#eefaf1}
+.aif-opt.correct .aif-letter{background:var(--ok);color:#fff;border-color:var(--ok)}
+.aif-opt.wrong{border-color:var(--no);background:#fdeeeb}
+.aif-opt.wrong .aif-letter{background:var(--no);color:#fff;border-color:var(--no)}
+.aif-opt.locked{cursor:default}
+.aif-opt-multi{align-items:flex-start}
+.aif-check{font-size:16px;line-height:1.4;flex-shrink:0}
+.aif-opt.picked{border-color:var(--blue);background:#eef6fc}
+.aif-multi-hint{font-size:12.5px;color:var(--mut);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:14px;font-weight:600}
+.aif-selcount{margin-left:12px;font-size:12.5px;color:var(--mut);align-self:center}
+.aif-expl{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px}
+.aif-expl.ok{background:#eefaf1;border:1px solid #bfe6cc}
+.aif-expl.no{background:#fdeeeb;border:1px solid #f2c6bd}
+.aif-nav{margin-top:18px}
+.aif-next{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.aif-next:hover{background:var(--blue-d)}
+.aif-next:disabled{background:#b9c6d2;cursor:not-allowed}
+.aif-reset{display:block;margin-top:14px;background:none;border:0;color:var(--mut);font-size:13px;cursor:pointer;text-decoration:underline;font-family:inherit}
+.aif-result{text-align:center}
+.aif-score{font-size:44px;font-weight:800;color:var(--blue)}
+.aif-pct{font-size:18px;color:var(--mut);margin-bottom:8px}
+.aif-verdict{font-size:14.5px;margin:12px 0 20px;color:var(--ink)}
+.aif-break{text-align:left;background:var(--bg);border-radius:10px;padding:14px 16px;margin:18px 0}
+.aif-break-title{font-weight:700;font-size:13px;margin-bottom:8px;color:var(--blue-d)}
+.aif-break-row{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0;border-bottom:1px solid var(--line)}
+.aif-break-row:last-child{border-bottom:0}
+.aif-foot{text-align:center;color:var(--mut);font-size:12px;margin-top:24px}
+</style></head>
+<body><div class="aif-wrap">
+<a class="aif-back" href="https://sflearningdevelopment.github.io/AWS-AIF-C01-Prep/index.html?v=2026072201">&larr; Back to dashboard</a>
+<div class="aif-head"><span class="aif-badge">AIF-C01 · SET 4</span><small>Multiple-answer scenarios · AWS Certified AI Practitioner readiness</small><span class="aif-user" id="aif4-user"></span></div>
+<div class="aif-card"><div id="aif4"></div></div>
+<div class="aif-foot">Original practice items aligned to the AIF-C01 exam domains. Not affiliated with or endorsed by AWS. For internal SF Knowledge Hub prep only.</div>
+</div>
+<script>
+// AIF-C01 Prep — Set 4 (Advanced · Scenarios with Multiple Answers in MCQs)
+// Multi-select MCQs. `a` is an ARRAY of correct indices; `pick` = number to select (2 or 3).
+// ALL-OR-NOTHING scoring per AWS: full credit only if the selected set exactly matches.
+// Blueprint-weighted, distinct from Sets 1-3. Options pre-shuffled; engine reshuffles per attempt.
+// domains: 1=Fundamentals AI/ML, 2=Fundamentals GenAI, 3=Applications of FMs, 4=Responsible AI, 5=Security/Compliance/Governance
+window.AIF_BANK_SET4 = [
+ {
+  "d": 2,
+  "pick": 2,
+  "q": "A software company is evaluating AWS services to add AI to its applications. It is weighing Amazon Q for automating business workflows against Amazon Bedrock for leveraging pre-trained foundation models, and needs to understand the core differences in capabilities and target use cases. Which two statements are correct? (Select TWO)",
+  "o": [
+   "Both Amazon Q and Amazon Bedrock are assistants that only let you create pre-packaged generative AI applications with no model choice",
+   "With Amazon Q you can choose the underlying foundation model, whereas Amazon Bedrock does not let you choose the underlying foundation model",
+   "Amazon Bedrock is the pre-packaged assistant while Amazon Q is the environment to build and scale applications on a foundation model",
+   "With Amazon Bedrock you can choose the underlying foundation model, whereas Amazon Q does not let you choose the underlying foundation model",
+   "Amazon Q is a generative AI–powered assistant for creating pre-packaged generative AI applications, whereas Amazon Bedrock provides an environment to build and scale generative AI applications using a foundation model"
+  ],
+  "a": [
+   3,
+   4
+  ],
+  "e": "Amazon Q is a packaged assistant that uses foundation models under the hood, while Bedrock is the environment for building on foundation models with a choice of model — so options 1 and 2 are correct. The others invert the two services or wrongly claim neither lets you pick a model."
+ },
+ {
+  "d": 3,
+  "pick": 2,
+  "q": "A biotechnology company uses a foundation model in Amazon Bedrock to analyze genetic data and wants to make it a domain expert in genomics — better at domain terminology, patterns, and datasets. Which two approaches are most effective for turning the FM into a domain-specific expert? (Select TWO)",
+  "o": [
+   "Domain adaptation fine-tuning, which fine-tunes the model on domain-specific data to adapt its knowledge to that domain",
+   "Continued pre-training, which further trains the model on a large domain-specific corpus to deepen its grasp of domain terms and context",
+   "Generic supervised learning on labeled data to predict outputs and thereby build the model's domain expertise",
+   "Reinforcement learning, where the model learns by trial and error from rewards, to specialize it in the domain",
+   "Incremental learning, which adds new data without forgetting prior knowledge, to specialize the model in the domain"
+  ],
+  "a": [
+   0,
+   1
+  ],
+  "e": "AWS names two FM customization techniques for domain expertise: fine-tuning on domain data (domain adaptation) and continued pre-training on a large domain corpus — options 1 and 3. Reinforcement learning, incremental learning, and generic supervised learning are not the AWS-named customization paths for this."
+ },
+ {
+  "d": 1,
+  "pick": 2,
+  "q": "A team is preparing a dataset to train a supervised model and wants to reduce the risk of a model that fails to generalize. Which two practices directly help? (Select TWO)",
+  "o": [
+   "Remove the held-out test set so all available data can be used to fit the model",
+   "Train repeatedly on the same records until training accuracy reaches one hundred percent",
+   "Evaluate the model with appropriate metrics on held-out data rather than only on the training data",
+   "Choose the metric that produces the highest possible number regardless of the business goal",
+   "Split the data into separate training and test sets so generalization can be measured on unseen data"
+  ],
+  "a": [
+   2,
+   4
+  ],
+  "e": "A train/test split and evaluating on held-out data both measure and protect generalization. Training to 100% on the same records invites overfitting, removing the test set hides the problem, and picking a flattering metric misleads rather than helps."
+ },
+ {
+  "d": 1,
+  "pick": 2,
+  "q": "A retailer wants to apply machine learning and is sorting tasks by learning type. Which two pairings are correctly matched? (Select TWO)",
+  "o": [
+   "Predicting a continuous temperature value is a classification task",
+   "Assigning each email a spam-or-not label with no labeled examples is unsupervised learning",
+   "Predicting a house's sale price as a continuous value is a regression task",
+   "Grouping unlabeled shoppers into segments by similarity is an unsupervised clustering task",
+   "Grouping unlabeled records by similarity is a supervised regression task"
+  ],
+  "a": [
+   2,
+   3
+  ],
+  "e": "Predicting a continuous value is regression, and grouping unlabeled data by similarity is unsupervised clustering — options 1 and 2. Continuous prediction is not classification, clustering is not supervised regression, and labeling spam requires labeled examples (supervised)."
+ },
+ {
+  "d": 1,
+  "pick": 2,
+  "q": "A model that performed well at launch is slowly losing accuracy in production as customer behaviour changes. Which two actions form a sound response? (Select TWO)",
+  "o": [
+   "Delete the historical training data so the model can only see the newest examples",
+   "Raise the model's temperature setting so predictions vary more and mask the decline",
+   "Assume the deployed model needs no further attention once it passed its initial tests",
+   "Monitor the model's performance on live production data over time to detect the decline",
+   "Retrain or update the model on fresher data once the degradation is confirmed"
+  ],
+  "a": [
+   3,
+   4
+  ],
+  "e": "Gradual accuracy loss as real-world data shifts is drift; ongoing monitoring plus retraining on fresher data addresses it. Assuming no maintenance ignores drift, temperature doesn't apply to this classifier, and deleting history harms rather than helps retraining."
+ },
+ {
+  "d": 1,
+  "pick": 3,
+  "q": "A regulated lender must justify individual decisions from its ML model. Which three considerations are most relevant when selecting and operating the model? (Select THREE)",
+  "o": [
+   "Select whichever model has the lowest inference latency regardless of how it reaches decisions",
+   "Favor a model whose individual predictions can be explained and interpreted by a person",
+   "Choose the model with the largest parameter count because size alone establishes fairness",
+   "Weigh interpretability against a small accuracy gain rather than maximizing accuracy alone",
+   "Document the model's intended use and limitations so downstream teams apply it appropriately"
+  ],
+  "a": [
+   1,
+   3,
+   4
+  ],
+  "e": "In a regulated setting, interpretability, the interpretability-vs-accuracy trade-off, and documented intended use/limits all support justifying decisions — options 1, 2, and 3. Latency and raw parameter count don't make an individual decision explainable or fair."
+ },
+ {
+  "d": 2,
+  "pick": 2,
+  "q": "A team wants to reduce hallucinated facts from a foundation model in a customer-facing answer feature. Which two approaches directly help? (Select TWO)",
+  "o": [
+   "Remove all system instructions so the model relies purely on its pre-trained knowledge",
+   "Increase the maximum token limit so the model can produce longer, more detailed answers",
+   "Ground responses in retrieved source documents so answers are based on real, current content",
+   "Instruct the model to answer only from provided context and to say when information is not found",
+   "Raise the temperature so the model generates a wider variety of possible answers"
+  ],
+  "a": [
+   2,
+   3
+  ],
+  "e": "Grounding in retrieved sources and instructing the model to answer only from context (and admit gaps) both curb fabrication. Higher temperature increases invention, a larger token limit just yields longer output, and removing instructions removes the guardrails against hallucination."
+ },
+ {
+  "d": 2,
+  "pick": 2,
+  "q": "An application must control the character of a foundation model's generated text. Which two statements about inference settings are correct? (Select TWO)",
+  "o": [
+   "Lowering the temperature makes the output more focused and deterministic",
+   "Raising the temperature makes the output more random and varied",
+   "Temperature controls which foundation model provider handles the request",
+   "Lowering the temperature makes the output more random and creative",
+   "Temperature sets the maximum number of tokens the model may return"
+  ],
+  "a": [
+   0,
+   1
+  ],
+  "e": "Lower temperature is more deterministic; higher temperature is more varied — options 1 and 2. Lower temperature is not more random, and temperature neither selects a provider nor caps token count."
+ },
+ {
+  "d": 2,
+  "pick": 2,
+  "q": "A team is choosing a foundation model for a high-volume, latency-sensitive chat feature on a tight budget. Which two factors should legitimately drive the choice? (Select TWO)",
+  "o": [
+   "The calendar release date of the model, since newer is always the better choice",
+   "The model's inference latency, since the feature is sensitive to response time",
+   "The per-request cost, since the feature runs at high volume on a tight budget",
+   "The console theme color available when configuring the model",
+   "The total number of AWS Regions that exist worldwide"
+  ],
+  "a": [
+   1,
+   2
+  ],
+  "e": "For a latency-sensitive, high-volume, budget-constrained feature, latency and cost are the relevant selection factors. Release date, UI theme, and global Region count are not meaningful model-selection criteria."
+ },
+ {
+  "d": 2,
+  "pick": 2,
+  "q": "A developer wants to work with embeddings for a semantic search feature. Which two statements are accurate? (Select TWO)",
+  "o": [
+   "Embeddings are numeric vectors that capture semantic meaning so similarity can be measured",
+   "Distances between embedding vectors can rank documents by how related they are in meaning",
+   "Embeddings are the billing units a model uses to charge for each request",
+   "Embeddings disable a model's safety filters for a given request",
+   "Embeddings are encrypted copies of the prompt used to secure it before sending"
+  ],
+  "a": [
+   0,
+   1
+  ],
+  "e": "Embeddings are semantic vectors, and vector distance ranks documents by relatedness — options 1 and 2. They are not encrypted prompts, billing units, or a safety-filter switch."
+ },
+ {
+  "d": 2,
+  "pick": 3,
+  "q": "A company is deciding between Amazon Bedrock and Amazon SageMaker AI for a generative AI initiative. Which three statements correctly describe the fit? (Select THREE)",
+  "o": [
+   "Bedrock is primarily for training proprietary models from scratch on your own data",
+   "Bedrock is a good fit when a team wants to ship on existing models without training pipelines",
+   "SageMaker AI is a full platform for building, training, and deploying custom models from scratch",
+   "SageMaker AI is only a pre-packaged chatbot with no custom training capability",
+   "Bedrock provides managed access to pre-trained foundation models for building applications"
+  ],
+  "a": [
+   1,
+   2,
+   4
+  ],
+  "e": "Bedrock offers managed pre-trained models and suits shipping quickly without training pipelines; SageMaker AI is the build/train/deploy-from-scratch platform — options 1, 2, 3. Bedrock is not for from-scratch training, and SageMaker AI is not a mere pre-packaged chatbot."
+ },
+ {
+  "d": 3,
+  "pick": 2,
+  "q": "A support team wants a chatbot that answers from the company's frequently updated internal manuals while minimizing fabricated answers, without retraining on every edit. Which two choices support this? (Select TWO)",
+  "o": [
+   "Cache one canonical answer and return it for every incoming manual question",
+   "Raise the temperature so the chatbot produces more varied answers about the manuals",
+   "Use Retrieval-Augmented Generation so the latest manual content is retrieved at query time",
+   "Fine-tune the model from scratch every time a manual changes to embed the new content",
+   "Use a managed knowledge base to index the documents so the model can retrieve and cite them"
+  ],
+  "a": [
+   2,
+   4
+  ],
+  "e": "RAG plus a managed knowledge base retrieve current content at query time and keep answers grounded without per-edit retraining — options 1 and 2. Constant fine-tuning is costly, higher temperature adds variance, and one cached answer ignores question variety."
+ },
+ {
+  "d": 3,
+  "pick": 2,
+  "q": "An enterprise is designing an AI agent that plans multi-step tasks and calls internal APIs, and wants it to operate safely. Which two controls most reduce the risk of the agent acting wrongly on its own? (Select TWO)",
+  "o": [
+   "Grant the agent broad permissions so it is never blocked mid-task",
+   "Disable logging so the agent's decisions are not exposed to reviewers",
+   "Raise the agent's temperature so it explores more possible actions",
+   "Scope each tool the agent can call to least-privilege access",
+   "Require human approval before the agent performs high-impact actions"
+  ],
+  "a": [
+   3,
+   4
+  ],
+  "e": "Human approval on high-impact actions and least-privilege tool scoping both constrain an agent's autonomous risk. Broad permissions increase risk, higher temperature adds unpredictability, and disabling logging removes oversight."
+ },
+ {
+  "d": 3,
+  "pick": 2,
+  "q": "A team's prompts return inconsistent output that a downstream system can't parse reliably. Which two prompt-engineering practices improve structural reliability? (Select TWO)",
+  "o": [
+   "Specify an explicit output format or schema for the model to follow",
+   "Provide a worked example of the exact output structure expected",
+   "Ask the model to be more creative and expressive in its formatting",
+   "Increase temperature and top-p so the model has more formatting freedom",
+   "Shorten the prompt by removing all formatting instructions"
+  ],
+  "a": [
+   0,
+   1
+  ],
+  "e": "An explicit schema and a worked example both make structured output reliable. Raising temperature/top-p and asking for creativity increase variability, and stripping instructions removes the guidance the parser needs."
+ },
+ {
+  "d": 3,
+  "pick": 2,
+  "q": "A team must decide when to use fine-tuning versus RAG for a foundation model. Which two statements are correct? (Select TWO)",
+  "o": [
+   "Fine-tuning suits teaching a durable style or behaviour by updating the model's weights on curated data",
+   "RAG works by continuously rewriting the model's internal weights on each document change",
+   "Fine-tuning injects the latest live facts into the model at the moment of each query",
+   "RAG and fine-tuning are identical techniques with no difference in when to use them",
+   "RAG suits knowledge that changes frequently, since current documents are retrieved at query time"
+  ],
+  "a": [
+   0,
+   4
+  ],
+  "e": "RAG fits frequently changing knowledge (retrieval at query time); fine-tuning fits durable style/behaviour via weight updates — options 1 and 2. RAG doesn't change weights, fine-tuning doesn't inject live facts, and the two are not identical."
+ },
+ {
+  "d": 3,
+  "pick": 2,
+  "q": "A team wants to run a foundation model both for interactive chat and for a large non-urgent overnight summarization job, controlling cost. Which two decisions are sound? (Select TWO)",
+  "o": [
+   "Force the overnight job through the real-time endpoint since batch is never cheaper",
+   "Run both workloads at maximum temperature so all responses are produced fastest",
+   "Combine all overnight tickets into a single request by raising the token limit",
+   "Use cheaper batch or asynchronous inference for the non-urgent overnight job",
+   "Use real-time inference for the interactive chat where response speed matters"
+  ],
+  "a": [
+   3,
+   4
+  ],
+  "e": "Matching delivery mode to urgency — real-time for chat, batch for the non-urgent job — controls cost. Temperature doesn't govern cost mode, real-time isn't the only option, and token limits don't merge a whole job into one call."
+ },
+ {
+  "d": 3,
+  "pick": 3,
+  "q": "A team wants safer, more governable use of a foundation model in production. Which three Bedrock capabilities are correctly matched to their purpose? (Select THREE)",
+  "o": [
+   "Guardrails are used to train a custom model from scratch on your own dataset",
+   "Knowledge Bases are a billing dashboard for tracking model spend over time",
+   "Guardrails filter harmful content and can detect or redact sensitive information",
+   "Prompt Management lets teams store, version, and reuse tested prompts",
+   "Knowledge Bases provide managed retrieval so the model answers from your documents"
+  ],
+  "a": [
+   2,
+   3,
+   4
+  ],
+  "e": "Guardrails (safety filtering/PII), Knowledge Bases (managed retrieval), and Prompt Management (prompt versioning) are correctly matched — options 1, 2, 3. Guardrails don't train models, and Knowledge Bases aren't a billing dashboard."
+ },
+ {
+  "d": 4,
+  "pick": 2,
+  "q": "A team is preparing to launch a generative feature responsibly. Which two practices belong in a responsible-AI approach? (Select TWO)",
+  "o": [
+   "Maximize the temperature so the output feels more confident and human to users",
+   "Add human review for higher-risk outputs and monitor the feature after it goes live",
+   "Disable logging entirely so no record of the model's mistakes is ever retained",
+   "Skip pre-launch evaluation to release the feature to customers as fast as possible",
+   "Assess the model for bias and fairness before release and document its known limitations"
+  ],
+  "a": [
+   1,
+   4
+  ],
+  "e": "Fairness assessment with documented limitations, plus human review and post-launch monitoring, are core responsible-AI practices. Disabling logging removes accountability, maximizing temperature adds risk, and skipping evaluation is the opposite of responsible."
+ },
+ {
+  "d": 4,
+  "pick": 2,
+  "q": "An image model performs worse for some demographic groups because of unrepresentative training data. Which two responses address the problem appropriately? (Select TWO)",
+  "o": [
+   "Add more Availability Zones so the model stays available during use",
+   "Raise the model's temperature so weaker outputs are diluted by randomness",
+   "Improve the diversity and representativeness of the training data",
+   "Rotate the API keys used to call the model to remove the disparity",
+   "Evaluate fairness by comparing the model's performance across the affected groups"
+  ],
+  "a": [
+   2,
+   4
+  ],
+  "e": "Representation bias from unrepresentative data is addressed by improving data diversity and evaluating fairness across groups. Temperature, Availability Zones, and key rotation are unrelated to the source of the bias."
+ },
+ {
+  "d": 4,
+  "pick": 2,
+  "q": "A company wants transparency and accountability for an AI system that affects people's outcomes. Which two artifacts or practices most directly support this? (Select TWO)",
+  "o": [
+   "Publish a model card describing intended use, limitations, and performance conditions",
+   "Deploy across more Regions so the system is available in more locations",
+   "Store all prompts in cold archival storage to keep a long-term backup",
+   "Increase top-p sampling so the system's decisions appear clearer to reviewers",
+   "Provide explainability so individual decisions can be understood and challenged"
+  ],
+  "a": [
+   0,
+   4
+  ],
+  "e": "Model cards and decision explainability directly support transparency and accountability. Archival storage, sampling parameters, and multi-Region deployment address backup, randomness, and availability — not accountability for decisions."
+ },
+ {
+  "d": 4,
+  "pick": 3,
+  "q": "A fintech firm must be able to show regulators and affected customers how its AI reached a given outcome, and where the model should and should not be used. Which two artifacts or practices most directly support this? (Select TWO)",
+  "o": [
+   "Evaluate model outcomes separately across groups to detect disparate impact",
+   "Keep a human in the loop to review higher-risk decisions before action is taken",
+   "Examine and curate the training data for representativeness and known biased patterns",
+   "Raise the model's temperature so biased outputs are diluted with random variation",
+   "Increase the token limit so the model can append a disclaimer to every response"
+  ],
+  "a": [
+   0,
+   1,
+   2
+  ],
+  "e": "Curating the data, evaluating outcomes by group, and human review of risky decisions address bias at its source and add accountability — options 1, 2, 3. Temperature and token limits don't remove bias embedded in data or decisions."
+ },
+ {
+  "d": 5,
+  "pick": 2,
+  "q": "A regulated firm must both keep data off the public internet and prove who invoked which models. Which two measures meet these needs? (Select TWO)",
+  "o": [
+   "Increase the token limit so each request and response is captured for audit",
+   "Raise the model temperature so requests are handled without leaving the network",
+   "Use AWS CloudTrail to record API activity tied to IAM identities for an audit trail",
+   "Store prompts in a public S3 bucket so the data path avoids the public internet",
+   "Access Bedrock over a VPC interface endpoint (PrivateLink) to keep traffic on the AWS network"
+  ],
+  "a": [
+   2,
+   4
+  ],
+  "e": "A VPC interface endpoint (PrivateLink) keeps traffic private, and CloudTrail records API calls tied to IAM identities for the audit trail. Temperature, public buckets, and token limits address none of these requirements."
+ },
+ {
+  "d": 5,
+  "pick": 2,
+  "q": "A team must apply least privilege and protect data at rest for an AI workload. Which two measures are appropriate? (Select TWO)",
+  "o": [
+   "Add all users to the account administrator group so no one is ever blocked",
+   "Write a scoped IAM policy granting only the specific actions on the specific resources needed",
+   "Use AWS KMS to manage encryption keys with rotation and access control for data at rest",
+   "Share a single long-lived access key across the whole team for convenience",
+   "Disable IAM evaluation for the service so requests are never denied"
+  ],
+  "a": [
+   1,
+   2
+  ],
+  "e": "A scoped least-privilege IAM policy and KMS-managed encryption keys are the appropriate controls. Admin-for-all, a shared key, and disabling IAM all violate least privilege or remove access control entirely."
+ },
+ {
+  "d": 5,
+  "pick": 2,
+  "q": "A compliance team must confirm how a managed AI service handles their data and where it is processed. Which two steps directly help? (Select TWO)",
+  "o": [
+   "Increase the token limit so more of the data fits within one country's boundary",
+   "Review and configure the service's data privacy and usage terms for the model in use",
+   "Enable response streaming so data crosses borders in smaller increments",
+   "Raise the model's temperature so responses cannot be traced back to the inputs",
+   "Select an AWS Region located where regulations require the data to be processed and stored"
+  ],
+  "a": [
+   1,
+   4
+  ],
+  "e": "Reviewing/configuring the data usage terms and choosing a Region that satisfies residency both address data handling and location. Temperature, token limits, and streaming have nothing to do with data-handling policy or residency."
+ },
+ {
+  "d": 5,
+  "pick": 3,
+  "q": "An organization wants a defensible governance posture for its generative AI usage. Which three practices contribute? (Select THREE)",
+  "o": [
+   "Record API activity with CloudTrail so actions can be audited later",
+   "Share administrator credentials widely so work is never blocked",
+   "Enforce least-privilege access with scoped IAM policies",
+   "Disable all logging so that no sensitive activity is ever recorded",
+   "Monitor spend with cost tracking and budget alerts to catch anomalies"
+  ],
+  "a": [
+   0,
+   2,
+   4
+  ],
+  "e": "CloudTrail auditing, least-privilege IAM, and cost monitoring with alerts all strengthen governance — options 1, 2, 3. Disabling logging and sharing admin credentials directly undermine governance."
+ }
+];
+
+</script>
+<script>/* AIF-C01 Eval Engine — SAP-C02-style attempt model.
+   - Three unique attempts of ATTEMPT_SIZE questions drawn from the bank without
+     cross-attempt repeat (until the bank is exhausted).
+   - Attempt 3+ leads with questions the learner previously answered wrong.
+   - Per-question amber banner when a question was previously answered wrong.
+   - Full explanation shown after each answer.
+   Progress is kept in-memory + localStorage keyed by SET_KEY. No backend calls;
+   swap persistState/loadState for Firestore to wire into the platform.
+*/
+(function () {
+  const DOMAIN_NAMES = {
+    1: "Fundamentals of AI & ML",
+    2: "Fundamentals of Generative AI",
+    3: "Applications of Foundation Models",
+    4: "Guidelines for Responsible AI",
+    5: "Security, Compliance & Governance"
+  };
+  const ATTEMPT_SIZE = 8;
+  const MAX_ATTEMPTS = 3;
+
+  function loadState(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || {}; }
+    catch (e) { return {}; }
+  }
+  function persistState(key, s) {
+    try { localStorage.setItem(key, JSON.stringify(s)); } catch (e) {}
+  }
+
+  // ── Firestore persistence (aifPrepResults collection) ──────────────────────
+  // Results live at aifPrepResults/{setKey}, where setKey already embeds the
+  // signed-in user's safe email (aif_set4_multi_v1__{safeEmail}). Firestore is
+  // the source of truth so results follow the user across browsers/devices;
+  // localStorage remains a fallback when Firestore is unavailable.
+  let _fsMod = null, _fsDb = null;
+  async function fsInit() {
+    if (_fsDb) return _fsDb;
+    try {
+      const app = (window.SFAuth && window.SFAuth.getApp) ? window.SFAuth.getApp() : null;
+      if (!app) return null;
+      _fsMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      _fsDb = _fsMod.getFirestore(app);
+      return _fsDb;
+    } catch (e) { console.log("[aifPrepResults] Firestore init failed:", e && e.message); return null; }
+  }
+  async function fsLoad(setKey) {
+    try {
+      const db = await fsInit(); if (!db) return null;
+      const snap = await _fsMod.getDoc(_fsMod.doc(db, "aifPrepResults", setKey));
+      if (snap.exists()) { console.log("[aifPrepResults] loaded from Firestore:", setKey); return snap.data(); }
+      return null;
+    } catch (e) { console.log("[aifPrepResults] Firestore load failed:", e && e.message); return null; }
+  }
+  async function fsSave(setKey, state, email) {
+    try {
+      const db = await fsInit(); if (!db) return;
+      await _fsMod.setDoc(_fsMod.doc(db, "aifPrepResults", setKey), Object.assign({}, state, {
+        email: email || "", setKey: setKey, updatedAt: Date.now()
+      }));
+      console.log("[aifPrepResults] saved to Firestore:", setKey);
+    } catch (e) { console.log("[aifPrepResults] Firestore save failed:", e && e.message); }
+  }
+  async function fsClear(setKey) {
+    try {
+      const db = await fsInit(); if (!db) return;
+      await _fsMod.deleteDoc(_fsMod.doc(db, "aifPrepResults", setKey));
+      console.log("[aifPrepResults] cleared Firestore doc:", setKey);
+    } catch (e) { console.log("[aifPrepResults] Firestore clear failed:", e && e.message); }
+  }
+
+  // Deterministic shuffle so a given attempt is reproducible per seed.
+  function seededShuffle(arr, seed) {
+    const a = arr.slice(); let s = seed || 1;
+    for (let i = a.length - 1; i > 0; i--) {
+      s = (s * 9301 + 49297) % 233280;
+      const j = Math.floor((s / 233280) * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Build the question list for a given attempt number (1-based).
+  function buildAttempt(bank, state, attemptNo) {
+    const used = new Set((state.usedIds || []));
+    const wrong = new Set((state.wrongIds || []));
+    const withIdx = bank.map((q, i) => Object.assign({ _id: i }, q));
+
+    let pool = withIdx.filter(q => !used.has(q._id));
+    // If the unused pool can't fill an attempt, allow reuse (bank exhausted).
+    if (pool.length < ATTEMPT_SIZE) pool = withIdx.slice();
+
+    let ordered = seededShuffle(pool, attemptNo * 17 + 3);
+
+    // Attempt 3+ : lead with previously-wrong questions.
+    if (attemptNo >= 3) {
+      const lead = ordered.filter(q => wrong.has(q._id));
+      const rest = ordered.filter(q => !wrong.has(q._id));
+      ordered = lead.concat(rest);
+    }
+
+    // Try to spread domains across the selection.
+    const picked = [], seenDomainCount = {};
+    for (const q of ordered) {
+      if (picked.length >= ATTEMPT_SIZE) break;
+      const dc = seenDomainCount[q.d] || 0;
+      if (dc < 2 || picked.length >= ATTEMPT_SIZE - 2) {
+        picked.push(q); seenDomainCount[q.d] = dc + 1;
+      }
+    }
+    let idx = 0;
+    while (picked.length < ATTEMPT_SIZE && idx < ordered.length) {
+      if (!picked.includes(ordered[idx])) picked.push(ordered[idx]);
+      idx++;
+    }
+    return picked.slice(0, ATTEMPT_SIZE);
+  }
+
+  function AifEval(opts) {
+    const bank = opts.bank;
+    const SET_KEY = opts.setKey;
+    const mount = opts.mount;
+    const title = opts.title;
+    const subtitle = opts.subtitle;
+    const email = opts.email || "";
+
+    let state = loadState(SET_KEY);
+    state.usedIds = state.usedIds || [];
+    state.wrongIds = state.wrongIds || [];
+    state.attemptNo = state.attemptNo || 0;
+    state.history = state.history || []; // [{attempt, score, total, ts}]
+
+    let current = null; // {questions, answers[], pos}
+
+    // Firestore is source of truth: if a doc exists, adopt it and refresh
+    // localStorage from it; otherwise keep the localStorage state we loaded.
+    (async () => {
+      const remote = await fsLoad(SET_KEY);
+      if (remote && Array.isArray(remote.history)) {
+        state.usedIds = remote.usedIds || [];
+        state.wrongIds = remote.wrongIds || [];
+        state.attemptNo = remote.attemptNo || 0;
+        state.history = remote.history || [];
+        persistState(SET_KEY, state);
+        if (!current) renderStart();
+      }
+    })();
+
+    function startAttempt() {
+      if (state.attemptNo >= MAX_ATTEMPTS) { renderExhausted(); return; }
+      const attemptNo = state.attemptNo + 1;
+      // One attempt walks ALL bank questions, grouped into domain sections in
+      // ascending domain order. Option order is shuffled per question each
+      // attempt so retakes don't preserve the A/B/C/D sequence; the correct
+      // index is remapped so correctness is preserved. Domain/question order
+      // stays fixed.
+      const questions = bank
+        .map((q, i) => Object.assign({ _id: i }, q))
+        .sort((a, b) => (a.d - b.d) || (a._id - b._id))
+        .map((q) => {
+          const idx = q.o.map((_, i) => i);
+          for (let k = idx.length - 1; k > 0; k--) {
+            const j = Math.floor(Math.random() * (k + 1));
+            [idx[k], idx[j]] = [idx[j], idx[k]];
+          }
+          const shuffledO = idx.map(i => q.o[i]);
+          // q.a is an ARRAY of correct indices; remap each through the shuffle.
+          const newA = q.a.map(orig => idx.indexOf(orig)).sort((a, b) => a - b);
+          return Object.assign({}, q, { o: shuffledO, a: newA });
+        });
+      current = { attemptNo, questions, answers: new Array(questions.length).fill(null), pos: 0 };
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = current.questions[current.pos];
+      const wasWrong = state.wrongIds.includes(q._id);
+      const submitted = current.answers[current.pos]; // null, or array of selected indices
+      const isDone = submitted !== null;
+      const correctSet = new Set(q.a);
+      // Draft selection (pre-submit) is held on the current object per position.
+      current.draft = current.draft || {};
+      if (!isDone && !current.draft[current.pos]) current.draft[current.pos] = [];
+      const sel = isDone ? submitted : current.draft[current.pos];
+      const selSet = new Set(sel);
+      // Domain section context
+      const domainQs = current.questions.filter(x => x.d === q.d);
+      const posInDomain = domainQs.findIndex(x => x._id === q._id) + 1;
+      const domainNo = Array.from(new Set(current.questions.map(x => x.d))).sort((a,b)=>a-b).indexOf(q.d) + 1;
+      const totalDomains = new Set(current.questions.map(x => x.d)).size;
+      let html = "";
+      html += `<div class="aif-topbar"><span>Attempt ${current.attemptNo} of ${MAX_ATTEMPTS} · Domain ${domainNo} of ${totalDomains}</span>`;
+      html += `<span>Question ${posInDomain} of ${domainQs.length}</span></div>`;
+      html += `<div class="aif-progress"><div class="aif-progress-fill" style="width:${((current.pos) / current.questions.length) * 100}%"></div></div>`;
+      html += `<div class="aif-domain">${DOMAIN_NAMES[q.d]}</div>`;
+      if (wasWrong) {
+        html += `<div class="aif-annot">⚠ You answered this incorrectly on a previous attempt — read carefully.</div>`;
+      }
+      html += `<div class="aif-q">${q.q}</div>`;
+      html += `<div class="aif-multi-hint">Select ${q.pick} answers. All must be correct to score — no partial credit.</div>`;
+      html += `<div class="aif-opts">`;
+      q.o.forEach((opt, i) => {
+        let cls = "aif-opt aif-opt-multi";
+        if (isDone) {
+          if (correctSet.has(i)) cls += " correct";
+          else if (selSet.has(i)) cls += " wrong";
+          cls += " locked";
+        } else if (selSet.has(i)) {
+          cls += " picked";
+        }
+        const box = isDone
+          ? (correctSet.has(i) ? "☑" : (selSet.has(i) ? "☒" : "☐"))
+          : (selSet.has(i) ? "☑" : "☐");
+        html += `<button class="${cls}" data-i="${i}" ${isDone ? "disabled" : ""}>`;
+        html += `<span class="aif-check">${box}</span><span class="aif-letter">${String.fromCharCode(65 + i)}</span>${opt}</button>`;
+      });
+      html += `</div>`;
+      if (!isDone) {
+        const canSubmit = sel.length === q.pick;
+        html += `<div class="aif-nav"><button class="aif-next" id="aif-submit" ${canSubmit ? "" : "disabled"}>Submit answer</button>`;
+        html += `<span class="aif-selcount">${sel.length} of ${q.pick} selected</span></div>`;
+      } else {
+        const right = selSet.size === correctSet.size && [...correctSet].every(x => selSet.has(x));
+        html += `<div class="aif-expl ${right ? "ok" : "no"}">`;
+        html += `<strong>${right ? "Correct." : "Not quite."}</strong> ${q.e}</div>`;
+        const isLast = current.pos === current.questions.length - 1;
+        const nextDifferentDomain = !isLast && current.questions[current.pos + 1].d !== q.d;
+        let label = "Next question";
+        if (isLast) label = "See results";
+        else if (nextDifferentDomain) label = "Move to next domain";
+        html += `<div class="aif-nav"><button class="aif-next" id="aif-next">${label}</button></div>`;
+      }
+      mount.innerHTML = html;
+
+      if (!isDone) {
+        mount.querySelectorAll(".aif-opt").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const i = parseInt(btn.getAttribute("data-i"), 10);
+            const d = current.draft[current.pos];
+            const at = d.indexOf(i);
+            if (at >= 0) d.splice(at, 1);
+            else if (d.length < q.pick) d.push(i); // cap selection at pick count
+            renderQuestion();
+          });
+        });
+        const submit = mount.querySelector("#aif-submit");
+        if (submit) submit.addEventListener("click", () => {
+          const chosen = current.draft[current.pos].slice().sort((a, b) => a - b);
+          if (chosen.length !== q.pick) return;
+          current.answers[current.pos] = chosen;
+          const right = chosen.length === correctSet.size && chosen.every(x => correctSet.has(x));
+          if (!right && !state.wrongIds.includes(q._id)) state.wrongIds.push(q._id);
+          if (right) state.wrongIds = state.wrongIds.filter(id => id !== q._id);
+          renderQuestion();
+        });
+      } else {
+        const next = mount.querySelector("#aif-next");
+        if (next) next.addEventListener("click", () => {
+          if (current.pos < current.questions.length - 1) { current.pos++; renderQuestion(); }
+          else finishAttempt();
+        });
+      }
+    }
+
+    function setEq(sel, correct) {
+      if (!Array.isArray(sel) || sel.length !== correct.length) return false;
+      const cs = new Set(correct);
+      return sel.every(x => cs.has(x));
+    }
+
+    function finishAttempt() {
+      let score = 0;
+      current.questions.forEach((q, i) => { if (setEq(current.answers[i], q.a)) score++; });
+      current.questions.forEach(q => { if (!state.usedIds.includes(q._id)) state.usedIds.push(q._id); });
+      state.attemptNo = current.attemptNo;
+      state.history.push({ attempt: current.attemptNo, score, total: current.questions.length, ts: Date.now() });
+      persistState(SET_KEY, state);
+      fsSave(SET_KEY, state, email);
+      renderResults(score, current.questions.length);
+    }
+
+    function renderResults(score, total) {
+      const pct = Math.round((score / total) * 100);
+      // Domain breakdown for this attempt
+      const dTotals = {}, dRight = {};
+      current.questions.forEach((q, i) => {
+        dTotals[q.d] = (dTotals[q.d] || 0) + 1;
+        if (setEq(current.answers[i], q.a)) dRight[q.d] = (dRight[q.d] || 0) + 1;
+      });
+      let html = `<div class="aif-result"><div class="aif-score">${score}/${total}</div>`;
+      html += `<div class="aif-pct">${pct}%</div>`;
+      html += `<div class="aif-verdict">${pct >= 70 ? "On track — 70%+ suggests readiness on this set." : "Keep practicing — aim for 70%+ before exam day."}</div>`;
+      html += `<div class="aif-break"><div class="aif-break-title">By domain (this attempt)</div>`;
+      Object.keys(dTotals).sort().forEach(d => {
+        const r = dRight[d] || 0, t = dTotals[d];
+        html += `<div class="aif-break-row"><span>${DOMAIN_NAMES[d]}</span><span>${r}/${t}</span></div>`;
+      });
+      html += `</div>`;
+      if (state.attemptNo < MAX_ATTEMPTS) {
+        html += `<button class="aif-next" id="aif-again">Start attempt ${state.attemptNo + 1}</button>`;
+      } else {
+        html += `<div class="aif-verdict">All ${MAX_ATTEMPTS} attempts complete.</div>`;
+      }
+      html += `<button class="aif-reset" id="aif-reset">Reset all progress</button></div>`;
+      mount.innerHTML = html;
+      const again = mount.querySelector("#aif-again");
+      if (again) again.addEventListener("click", startAttempt);
+      mount.querySelector("#aif-reset").addEventListener("click", () => {
+        localStorage.removeItem(SET_KEY);
+        fsClear(SET_KEY);
+        state = { usedIds: [], wrongIds: [], attemptNo: 0, history: [] };
+        renderStart();
+      });
+    }
+
+    function renderExhausted() { renderResults(0, ATTEMPT_SIZE); }
+
+    function renderStart() {
+      let html = `<div class="aif-start"><h1>${title}</h1><p class="aif-sub">${subtitle}</p>`;
+      html += `<ul class="aif-meta"><li>${MAX_ATTEMPTS} attempts · all questions across five domain sections</li>`;
+      html += `<li>One section per AIF-C01 domain, in order</li>`;
+      html += `<li>Full explanation after every question</li></ul>`;
+      if (state.history.length) {
+        html += `<div class="aif-break"><div class="aif-break-title">Your attempts so far</div>`;
+        state.history.forEach(h => {
+          html += `<div class="aif-break-row"><span>Attempt ${h.attempt}</span><span>${h.score}/${h.total}</span></div>`;
+        });
+        html += `</div>`;
+      }
+      const label = state.attemptNo >= MAX_ATTEMPTS ? "All attempts used"
+        : state.attemptNo > 0 ? `Start attempt ${state.attemptNo + 1}` : "Start attempt 1";
+      html += `<button class="aif-next" id="aif-begin" ${state.attemptNo >= MAX_ATTEMPTS ? "disabled" : ""}>${label}</button>`;
+      if (state.attemptNo > 0) html += `<button class="aif-reset" id="aif-reset2">Reset all progress</button>`;
+      html += `</div>`;
+      mount.innerHTML = html;
+      const begin = mount.querySelector("#aif-begin");
+      if (begin) begin.addEventListener("click", startAttempt);
+      const r2 = mount.querySelector("#aif-reset2");
+      if (r2) r2.addEventListener("click", () => {
+        localStorage.removeItem(SET_KEY);
+        fsClear(SET_KEY);
+        state = { usedIds: [], wrongIds: [], attemptNo: 0, history: [] };
+        renderStart();
+      });
+    }
+
+    renderStart();
+  }
+
+  window.AifEval = AifEval;
+})();
+</script>
+<script>/* SF auth gate — Google SSO (hd: sourcefuse.com) + email/password fallback.
+   Reuses the sfcertification-grafana Firebase project. Firebase v10 modular SDK
+   loaded via CDN in the page. Exposes window.SFAuth.mount(onReady) which shows
+   the overlay and calls onReady(email) once a valid @sourcefuse.com user is in.
+   NOTE: paste the real sfcertification-grafana firebaseConfig values below —
+   left as clearly-marked placeholders per the golden rule (never invent config). */
+(function () {
+  const firebaseConfig = {
+    apiKey: "AIzaSyC-I-IOCq2fCwa471fsD5xOn6SYQSBDp7Q",
+    authDomain: "sfcertification-grafana.firebaseapp.com",
+    projectId: "sfcertification-grafana",
+    storageBucket: "sfcertification-grafana.firebasestorage.app",
+    messagingSenderId: "227322696511",
+    appId: "1:227322696511:web:12e7ced7dd3d45fa06798a"
+  };
+  const ALLOWED_DOMAIN = "sourcefuse.com";
+  const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
+
+  let app, auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn;
+  let readyCb = null;
+
+  async function initFirebase() {
+    const appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    // Reuse default app if the host page already initialized it.
+    app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(firebaseConfig);
+    auth = authMod.getAuth(app);
+    GoogleProvider = authMod.GoogleAuthProvider;
+    signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    getRedirect = () => authMod.getRedirectResult(auth);
+    signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
+    onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
+    signOutFn = () => authMod.signOut(auth);
+  }
+
+  function overlayHTML() {
+    return `
+    <div class="sf-auth-backdrop" id="sf-auth">
+      <div class="sf-auth-card">
+        <div class="sf-auth-badge">SF Knowledge Hub</div>
+        <h2>Sign in to start</h2>
+        <p class="sf-auth-sub">Use your SourceFuse account to save your attempts.</p>
+        <button class="sf-google" id="sf-google">
+          <span class="sf-g">G</span> Sign in with Google
+        </button>
+        <div class="sf-or"><span>or</span></div>
+        <label class="sf-lbl">Email</label>
+        <input class="sf-inp" id="sf-email" type="email" placeholder="you@sourcefuse.com" autocomplete="username">
+        <label class="sf-lbl">Password</label>
+        <input class="sf-inp" id="sf-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        <button class="sf-signin" id="sf-signin">Sign in</button>
+        <div class="sf-err" id="sf-err"></div>
+      </div>
+    </div>`;
+  }
+
+  function styleTag() {
+    return `<style>
+    .sf-auth-backdrop{position:fixed;inset:0;background:rgba(16,38,60,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .sf-auth-card{background:#fff;border-radius:16px;padding:30px 28px;width:100%;max-width:380px;box-shadow:0 12px 40px rgba(10,30,55,.25);font-family:inherit}
+    .sf-auth-badge{display:inline-block;background:var(--blue,#1a6eb5);color:#fff;font-weight:700;font-size:12px;padding:4px 11px;border-radius:14px;margin-bottom:14px}
+    .sf-auth-card h2{margin:0 0 4px;font-size:20px;color:#1a2733}
+    .sf-auth-sub{margin:0 0 20px;color:#5a6b7a;font-size:14px}
+    .sf-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #dbe3ec;border-radius:10px;padding:12px;font-size:15px;font-weight:600;color:#1a2733;cursor:pointer;font-family:inherit}
+    .sf-google:hover{background:#f7fbff;border-color:var(--blue,#1a6eb5)}
+    .sf-g{background:conic-gradient(from -45deg,#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0);color:#fff;font-weight:800;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .sf-or{display:flex;align-items:center;text-align:center;color:#93a1af;font-size:12px;margin:18px 0}
+    .sf-or::before,.sf-or::after{content:"";flex:1;height:1px;background:#e2e8ef}
+    .sf-or span{padding:0 12px}
+    .sf-lbl{display:block;font-size:12.5px;font-weight:600;color:#5a6b7a;margin-bottom:5px}
+    .sf-inp{width:100%;border:1.5px solid #dbe3ec;border-radius:9px;padding:11px 12px;font-size:14.5px;margin-bottom:14px;font-family:inherit}
+    .sf-inp:focus{outline:none;border-color:var(--blue,#1a6eb5)}
+    .sf-signin{width:100%;background:var(--blue,#1a6eb5);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+    .sf-signin:hover{background:var(--blue-d,#12507f)}
+    .sf-err{color:#b5341a;font-size:13px;margin-top:12px;min-height:16px}
+    </style>`;
+  }
+
+  function fail(msg) { const e = document.getElementById("sf-err"); if (e) e.textContent = msg; }
+
+  function validDomain(email) {
+    if (typeof email !== "string") return false;
+    const e = email.toLowerCase();
+    return e.endsWith("@" + ALLOWED_DOMAIN) || ALLOWED_EXTRA.includes(e);
+  }
+
+  function proceed(email) {
+    const el = document.getElementById("sf-auth");
+    if (el) el.remove();
+    if (readyCb) readyCb(email);
+  }
+
+  async function wireOverlay() {
+    document.getElementById("sf-google").addEventListener("click", async () => {
+      fail("");
+      if (!signInRedirect) return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      try {
+        const provider = new GoogleProvider();
+        provider.setCustomParameters({ hd: ALLOWED_DOMAIN, prompt: "select_account" });
+        // Redirect leaves the page and returns to it; result is picked up on load
+        // by handleRedirectResult(). This works inside the LMS iframe, unlike popup.
+        await signInRedirect(provider);
+      } catch (err) {
+        fail("Google sign-in couldn't start. Use email/password below.");
+      }
+    });
+    document.getElementById("sf-signin").addEventListener("click", async () => {
+      fail("");
+      const email = (document.getElementById("sf-email").value || "").trim();
+      const pass = document.getElementById("sf-pass").value || "";
+      if (!validDomain(email)) return fail("Email must be an @sourcefuse.com address.");
+      if (!pass) return fail("Enter your password.");
+      try {
+        const res = await signInEmail(email, pass);
+        const e = (res.user && res.user.email) || email;
+        proceed(e);
+      } catch (err) { fail("Incorrect email or password."); }
+    });
+  }
+
+  async function mount(onReady) {
+    readyCb = onReady;
+    document.head.insertAdjacentHTML("beforeend", styleTag());
+    document.body.insertAdjacentHTML("beforeend", overlayHTML());
+    try {
+      await initFirebase();
+    } catch (e) {
+      // If Firebase can't load (e.g. local file://), keep overlay but let email/password
+      // at least validate domain so the page is testable; real auth needs https host.
+      fail("Auth service loading… (Google SSO needs the deployed https host).");
+    }
+    // Handle the return leg of signInWithRedirect: when the user comes back from
+    // Google, getRedirectResult() resolves with their credential.
+    if (getRedirect) {
+      try {
+        const res = await getRedirect();
+        if (res && res.user) {
+          const email = res.user.email;
+          if (!validDomain(email)) { await signOutFn(); fail("Please use your @sourcefuse.com account."); }
+          else { proceed(email); return; }
+        }
+      } catch (err) {
+        fail("Google sign-in didn't complete. Try again or use email/password.");
+      }
+    }
+    // If a session already exists (redirect just completed, or prior session), skip the overlay.
+    if (onAuth) {
+      onAuth((user) => {
+        if (user && validDomain(user.email)) proceed(user.email);
+      });
+    }
+    wireOverlay();
+  }
+
+  window.SFAuth = { mount, getApp: () => app };
+})();
+</script>
+<script>
+(function(){
+  var mountId="aif4";
+  document.getElementById(mountId).innerHTML='<p class="aif-sub">Sign in to begin…</p>';
+  window.SFAuth.mount(function(email){
+    var badge=document.getElementById(mountId+"-user");
+    if(badge) badge.textContent=email;
+    // localStorage key is namespaced per signed-in email so attempts are per-user;
+    // swap loadState/persistState in the engine for courseExamResults later.
+    var safe=email.replace(/[^a-z0-9]/gi,"_").toLowerCase();
+    AifEval({
+      bank: window.AIF_BANK_SET4,
+      setKey: "aif_set4_multi_v1__"+safe,
+      email: email,
+      mount: document.getElementById(mountId),
+      title: "AIF-C01 Prep — Set 4 (Advanced · Scenarios with Multiple Answers)",
+      subtitle: "Multiple-answer (select two or three) scenario questions across all five AIF-C01 domains."
+    });
+  });
+})();
+</script>
+</body></html>
