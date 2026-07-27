@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072202 -->
+<!-- build: 2026072203 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AWS AIF-C01 Prep — SF Knowledge Hub</title>
@@ -19,6 +19,7 @@ body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-ser
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:680px){.grid{grid-template-columns:1fr}}
 /* A 3rd box on its own row spans both columns but stays half-width, centered. */
+/* With 4 boxes the grid is a clean 2x2; a lone 3rd box (odd count) centers under the row. */
 .grid .box:nth-child(3):last-child{grid-column:1 / -1;max-width:calc(50% - 10px);justify-self:center;width:100%}
 @media(max-width:680px){.grid .box:nth-child(3):last-child{max-width:none}}
 .box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 3px rgba(20,50,80,.05);display:flex;flex-direction:column}
@@ -26,6 +27,7 @@ body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-ser
 .tag-basic{color:var(--blue-d);background:#eaf3fb}
 .tag-adv{color:#6a3d00;background:#fdf0da}
 .tag-expert{color:#5b2a86;background:#f2e9fb}
+.tag-multi{color:#0f5c4d;background:#e5f6f0}
 .box h2{font-size:17px;margin:0 0 4px}
 .box .desc{color:var(--mut);font-size:13.5px;margin:0 0 16px}
 .stats{background:var(--bg);border-radius:10px;padding:14px 16px;margin-bottom:16px}
@@ -54,7 +56,7 @@ body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-ser
   </div>
   <div class="hero">
     <h1>Your Practice Dashboard</h1>
-    <p>Three practice sets aligned to the AWS Certified AI Practitioner exam domains. Your attempt results are shown below.</p>
+    <p>Four practice sets aligned to the AWS Certified AI Practitioner exam domains. Your attempt results are shown below.</p>
   </div>
   <div class="grid" id="grid">
     <p class="stats-empty">Sign in to see your results…</p>
@@ -171,7 +173,7 @@ const firebaseConfig = {
 <!-- Dashboard: reads the prep pages' localStorage results for the signed-in user -->
 <script>
 (function(){
-  var BUILD="2026072202";
+  var BUILD="2026072203";
   var SETS=[
     { key:"aif_set1_basic_v1", tag:"BASIC", tagClass:"tag-basic",
       name:"Practice results for Basic — Set 1",
@@ -184,7 +186,11 @@ const firebaseConfig = {
     { key:"aif_set3_expert_v1", tag:"EXPERT", tagClass:"tag-expert",
       name:"Practice results for Expert — Set 3",
       desc:"Applied ML & LLM scenarios across all five AIF-C01 domains.",
-      file:"advanced-prep-3.html", boxLabel:"Expert Set 3" }
+      file:"advanced-prep-3.html", boxLabel:"Expert Set 3" },
+    { key:"aif_set4_multi_v1", tag:"MULTI-ANSWER", tagClass:"tag-multi",
+      name:"Practice results for Multi-Answer — Set 4",
+      desc:"Select-two / select-three scenario questions (all-or-nothing, like the real exam).",
+      file:"advanced-prep-4.html", boxLabel:"Multi-Answer Set 4" }
   ];
   var BASE="https://sflearningdevelopment.github.io/AWS-AIF-C01-Prep/";
 
