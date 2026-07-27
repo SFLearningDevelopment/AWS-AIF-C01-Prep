@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072210 -->
+<!-- build: 2026072211 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 4 (Advanced · Scenarios with Multiple Answers)</title>
@@ -670,15 +670,61 @@ window.AIF_BANK_SET4 = [
           const shuffledO = idx.map(i => q.o[i]);
           // q.a is an ARRAY of correct indices; remap each through the shuffle.
           const newA = q.a.map(orig => idx.indexOf(orig)).sort((a, b) => a - b);
-          return Object.assign({}, q, { o: shuffledO, a: newA });
+          // Snapshot "missed on a previous attempt" ONCE, at pose time, so the FYI
+          // banner reflects prior attempts only and never changes when this attempt
+          // is scored on Submit.
+          const priorWrong = state.wrongIds.includes(q._id);
+          return Object.assign({}, q, { o: shuffledO, a: newA, priorWrong: priorWrong });
         });
       current = { attemptNo, questions, answers: new Array(questions.length).fill(null), pos: 0 };
       renderQuestion();
     }
 
+    // Update the current question view IN PLACE after Submit — no full re-render.
+    // Marks correct/wrong options, reveals the explanation, and swaps the nav,
+    // while leaving the learner's selection and the FYI banner untouched.
+    function revealInPlace(q, correctSet, selSet, right) {
+      mount.querySelectorAll(".aif-opt").forEach(btn => {
+        const i = parseInt(btn.getAttribute("data-i"), 10);
+        btn.classList.remove("picked");
+        if (correctSet.has(i)) btn.classList.add("correct");
+        else if (selSet.has(i)) btn.classList.add("wrong");
+        btn.classList.add("locked");
+        btn.setAttribute("disabled", "");
+        const box = correctSet.has(i) ? "☑" : (selSet.has(i) ? "☒" : "☐");
+        const chk = btn.querySelector(".aif-check");
+        if (chk) chk.textContent = box;
+      });
+      // Insert the explanation before the nav.
+      const nav = mount.querySelector(".aif-nav");
+      const expl = document.createElement("div");
+      expl.className = "aif-expl " + (right ? "ok" : "no");
+      expl.innerHTML = `<strong>${right ? "Correct." : "Not quite."}</strong> ${q.e}`;
+      if (nav) mount.insertBefore(expl, nav);
+      // Swap the nav: Submit -> Next / Move to next domain / See results; keep Previous.
+      const isLast = current.pos === current.questions.length - 1;
+      const nextDifferentDomain = !isLast && current.questions[current.pos + 1].d !== q.d;
+      let label = "Next question";
+      if (isLast) label = "See results";
+      else if (nextDifferentDomain) label = "Move to next domain";
+      let navHtml = "";
+      if (current.pos > 0) navHtml += `<button class="aif-prev" id="aif-prev">← Previous</button>`;
+      navHtml += `<button class="aif-next" id="aif-next">${label}</button>`;
+      if (nav) nav.innerHTML = navHtml;
+      const next = mount.querySelector("#aif-next");
+      if (next) next.addEventListener("click", () => {
+        if (current.pos < current.questions.length - 1) { current.pos++; renderQuestion(); }
+        else finishAttempt();
+      });
+      const prev = mount.querySelector("#aif-prev");
+      if (prev) prev.addEventListener("click", () => {
+        if (current.pos > 0) { current.pos--; renderQuestion(); }
+      });
+    }
+
     function renderQuestion() {
       const q = current.questions[current.pos];
-      const wasWrong = state.wrongIds.includes(q._id);
+      const wasWrong = q.priorWrong === true;
       const submitted = current.answers[current.pos]; // null, or array of selected indices
       const isDone = submitted !== null;
       const correctSet = new Set(q.a);
@@ -759,7 +805,11 @@ window.AIF_BANK_SET4 = [
           const right = chosen.length === correctSet.size && chosen.every(x => correctSet.has(x));
           if (!right && !state.wrongIds.includes(q._id)) state.wrongIds.push(q._id);
           if (right) state.wrongIds = state.wrongIds.filter(id => id !== q._id);
-          renderQuestion();
+          // Reveal correct/wrong marks + explanation IN PLACE. We do not call
+          // renderQuestion(): the learner's selection and the FYI banner stay
+          // exactly as displayed; only the answer marking, explanation, and nav
+          // are updated.
+          revealInPlace(q, correctSet, new Set(chosen), right);
         });
         const prevU = mount.querySelector("#aif-prev");
         if (prevU) prevU.addEventListener("click", () => {
