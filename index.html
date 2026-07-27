@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072203 -->
+<!-- build: 2026072204 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AWS AIF-C01 Prep — SF Knowledge Hub</title>
@@ -173,24 +173,24 @@ const firebaseConfig = {
 <!-- Dashboard: reads the prep pages' localStorage results for the signed-in user -->
 <script>
 (function(){
-  var BUILD="2026072203";
+  var BUILD="2026072204";
   var SETS=[
     { key:"aif_set1_basic_v1", tag:"BASIC", tagClass:"tag-basic",
       name:"Practice results for Basic — Set 1",
       desc:"Foundational readiness across all five AIF-C01 domains.",
-      file:"basic-prep.html", boxLabel:"Basic Set 1" },
+      file:"basic-prep.html", build:"2026072203", boxLabel:"Basic Set 1" },
     { key:"aif_set2_adv_v1", tag:"INTERMEDIATE / ADVANCED", tagClass:"tag-adv",
       name:"Practice results for Advanced — Set 2",
       desc:"Scenario-driven questions with close distractors.",
-      file:"advanced-prep-2.html", boxLabel:"Advanced Set 2" },
+      file:"advanced-prep-2.html", build:"2026072203", boxLabel:"Advanced Set 2" },
     { key:"aif_set3_expert_v1", tag:"EXPERT", tagClass:"tag-expert",
       name:"Practice results for Expert — Set 3",
       desc:"Applied ML & LLM scenarios across all five AIF-C01 domains.",
-      file:"advanced-prep-3.html", boxLabel:"Expert Set 3" },
+      file:"advanced-prep-3.html", build:"2026072203", boxLabel:"Expert Set 3" },
     { key:"aif_set4_multi_v1", tag:"MULTI-ANSWER", tagClass:"tag-multi",
       name:"Practice results for Multi-Answer — Set 4",
       desc:"Select-two / select-three scenario questions (all-or-nothing, like the real exam).",
-      file:"advanced-prep-4.html", boxLabel:"Multi-Answer Set 4" }
+      file:"advanced-prep-4.html", build:"2026072210", boxLabel:"Multi-Answer Set 4" }
   ];
   var BASE="https://sflearningdevelopment.github.io/AWS-AIF-C01-Prep/";
 
@@ -230,7 +230,7 @@ const firebaseConfig = {
       });
       html+='</div>';
     }
-    html+='<a class="launch" href="'+BASE+set.file+'?v='+BUILD+'">'
+    html+='<a class="launch" href="'+BASE+set.file+'?v='+(set.build||BUILD)+'">'
         +(hist.length?'Continue practicing':'Launch '+set.boxLabel)+' →</a>';
     html+='</div>';
     return html;
