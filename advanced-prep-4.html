@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072212 -->
+<!-- build: 2026072213 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 4 (Advanced · Scenarios with Multiple Answers)</title>
@@ -706,6 +706,9 @@ window.AIF_BANK_SET4 = [
       const letterText = i => `<b>${String.fromCharCode(65 + i)}.</b> ${q.o[i]}`;
       const submittedItems = [...selSet].sort((a, b) => a - b).map(letterText);
       const correctItems = [...correctSet].sort((a, b) => a - b).map(letterText);
+      console.log("[SET4] AFTER submit — shown as submitted:",
+        [...selSet].sort((a, b) => a - b).map(x => String.fromCharCode(65 + x)).join(","),
+        "| shown as correct:", [...correctSet].sort((a, b) => a - b).map(x => String.fromCharCode(65 + x)).join(","));
       const summary = document.createElement("div");
       summary.className = "aif-summary";
       summary.innerHTML =
@@ -818,14 +821,37 @@ window.AIF_BANK_SET4 = [
       mount.innerHTML = html;
 
       if (!isDone) {
+        // Update ONLY the Submit button + selected-count in place (no re-render).
+        const refreshSelState = () => {
+          const d = current.draft[current.pos];
+          const submitBtn = mount.querySelector("#aif-submit");
+          if (submitBtn) {
+            if (d.length === q.pick) submitBtn.removeAttribute("disabled");
+            else submitBtn.setAttribute("disabled", "");
+          }
+          const cnt = mount.querySelector(".aif-selcount");
+          if (cnt) cnt.textContent = `${d.length} of ${q.pick} selected`;
+        };
         mount.querySelectorAll(".aif-opt").forEach(btn => {
           btn.addEventListener("click", () => {
             const i = parseInt(btn.getAttribute("data-i"), 10);
             const d = current.draft[current.pos];
             const at = d.indexOf(i);
-            if (at >= 0) d.splice(at, 1);
-            else if (d.length < q.pick) d.push(i); // cap selection at pick count
-            renderQuestion();
+            if (at >= 0) {
+              d.splice(at, 1);
+            } else if (d.length < q.pick) {
+              d.push(i); // cap selection at pick count
+            } else {
+              return; // at cap and this option isn't selected — ignore
+            }
+            // Toggle ONLY this button's checkbox glyph + picked style. No renderQuestion().
+            const nowSelected = d.indexOf(i) >= 0;
+            const chk = btn.querySelector(".aif-check");
+            if (chk) chk.textContent = nowSelected ? "☑" : "☐";
+            btn.classList.toggle("picked", nowSelected);
+            refreshSelState();
+            console.log("[SET4] option toggled:", String.fromCharCode(65 + i),
+              "| current selection:", d.slice().sort((a, b) => a - b).map(x => String.fromCharCode(65 + x)).join(",") || "—");
           });
         });
         const submit = mount.querySelector("#aif-submit");
@@ -836,6 +862,9 @@ window.AIF_BANK_SET4 = [
           const right = chosen.length === correctSet.size && chosen.every(x => correctSet.has(x));
           if (!right && !state.wrongIds.includes(q._id)) state.wrongIds.push(q._id);
           if (right) state.wrongIds = state.wrongIds.filter(id => id !== q._id);
+          console.log("[SET4] SUBMIT — selected before submit:",
+            chosen.map(x => String.fromCharCode(65 + x)).join(","),
+            "| correct:", [...correctSet].sort((a, b) => a - b).map(x => String.fromCharCode(65 + x)).join(","));
           // Reveal correct/wrong marks + explanation IN PLACE. We do not call
           // renderQuestion(): the learner's selection and the FYI banner stay
           // exactly as displayed; only the answer marking, explanation, and nav
