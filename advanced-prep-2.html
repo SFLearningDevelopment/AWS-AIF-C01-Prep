@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072206 -->
+<!-- build: 2026072207 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 2 (Intermediate to Advanced)</title>
@@ -792,8 +792,11 @@ window.AIF_BANK_SET2 = [
         provider.setCustomParameters({ hd: ALLOWED_DOMAIN, prompt: "select_account" });
         // Redirect leaves the page and returns to it; result is picked up on load
         // by handleRedirectResult(). This works inside the LMS iframe, unlike popup.
+        try { sessionStorage.setItem("sf-google-pending", "1"); } catch (_) {}
+        console.log("[auth] starting Google redirect\u2026");
         await signInRedirect(provider);
       } catch (err) {
+        console.log("[auth] signInWithRedirect failed; code:", err && err.code, "| message:", err && err.message);
         fail("Google sign-in couldn't start. Use email/password below.");
       }
     });
@@ -827,12 +830,19 @@ window.AIF_BANK_SET2 = [
     if (getRedirect) {
       try {
         const res = await getRedirect();
+        console.log("[auth] getRedirectResult resolved:", res, "| user:", res && res.user && res.user.email);
         if (res && res.user) {
           const email = res.user.email;
           if (!validDomain(email)) { await signOutFn(); fail("Please use your @sourcefuse.com account."); }
           else { proceed(email); return; }
         }
+        else if (sessionStorage.getItem("sf-google-pending") === "1") {
+          sessionStorage.removeItem("sf-google-pending");
+          console.log("[auth] redirect returned NO pending result \u2014 handshake lost (likely third-party cookie/storage blocking).");
+          fail("Google sign-in didn't complete (browser blocked the sign-in handshake). Use email/password below.");
+        }
       } catch (err) {
+        console.log("[auth] getRedirectResult error; code:", err && err.code, "| message:", err && err.message);
         fail("Google sign-in didn't complete. Try again or use email/password.");
       }
     }
