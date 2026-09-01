@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072210 -->
+<!-- build: 2026072211 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AWS AIF-C01 Prep — SF Knowledge Hub</title>
@@ -81,7 +81,10 @@ const firebaseConfig = {
 };
   const ALLOWED_DOMAIN = "sourcefuse.com";
   const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
-  let auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn, appMod;
+  // Google SSO is restricted to these admin addresses ONLY. Everyone else signs in
+  // with email/password (that path is unchanged and still uses validDomain()).
+  const ADMIN_SSO = ["jv.ravichandran@sourcefuse.com","noushin.khan@sourcefuse.com"];
+  let auth, GoogleProvider, signInRedirect, signInPopup, getRedirect, signInEmail, onAuth, signOutFn, appMod;
   let readyCb = null;
 
   async function initFirebase() {
@@ -91,6 +94,7 @@ const firebaseConfig = {
     auth = authMod.getAuth(app);
     GoogleProvider = authMod.GoogleAuthProvider;
     signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    signInPopup = (p) => authMod.signInWithPopup(auth, p);
     getRedirect = () => authMod.getRedirectResult(auth);
     signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
     onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
@@ -131,14 +135,32 @@ const firebaseConfig = {
     </div></div>`;}
   function fail(m){const e=document.getElementById("sf-err");if(e)e.textContent=m;}
   function validDomain(x){if(typeof x!=="string")return false;var e=x.toLowerCase();return e.endsWith("@"+ALLOWED_DOMAIN)||ALLOWED_EXTRA.includes(e);}
+  function validGoogle(x){if(typeof x!=="string")return false;return ADMIN_SSO.includes(x.toLowerCase());}
+  function isGoogleUser(u){try{return !!(u&&u.providerData&&u.providerData.some(function(p){return p&&p.providerId==="google.com";}));}catch(_){return false;}}
   function proceed(email){const el=document.getElementById("sf-auth");if(el)el.remove();if(readyCb)readyCb(email,signOutFn);}
   function wireOverlay(){
     document.getElementById("sf-google").addEventListener("click",async()=>{
       fail("");
       if(!signInRedirect)return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
-      try{const p=new GoogleProvider();p.setCustomParameters({hd:ALLOWED_DOMAIN,prompt:"select_account"});
+      const p=new GoogleProvider();p.setCustomParameters({hd:ALLOWED_DOMAIN,prompt:"select_account"});
+      // Popup avoids the cross-site redirect handshake that browsers now block.
+      if(signInPopup){
+        try{
+          console.log("[auth] starting Google popup…");
+          const r=await signInPopup(p);
+          const email=(r&&r.user&&r.user.email)||"";
+          console.log("[auth] popup result; user:",email);
+          if(!validGoogle(email)){await signOutFn();return fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+          return proceed(email);
+        }catch(e){
+          console.log("[auth] signInWithPopup failed; code:",e&&e.code,"| message:",e&&e.message);
+          const blocked=e&&(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment");
+          if(!blocked)return fail("Google sign-in couldn't complete. Use email/password below.");
+        }
+      }
+      try{
         try{sessionStorage.setItem("sf-google-pending","1");}catch(_){}
-        console.log("[auth] starting Google redirect…");
+        console.log("[auth] popup unavailable — falling back to redirect…");
         await signInRedirect(p);}
       catch(e){console.log("[auth] signInWithRedirect failed; code:",e&&e.code,"| message:",e&&e.message);fail("Google sign-in couldn't start. Use email/password below.");}
     });
@@ -163,7 +185,7 @@ const firebaseConfig = {
       try{const res=await getRedirect();
         console.log("[auth] getRedirectResult resolved:",res,"| user:",res&&res.user&&res.user.email);
         if(res&&res.user){const email=res.user.email;
-          if(!validDomain(email)){await signOutFn();fail("Please use your @sourcefuse.com account.");}
+          if(!validGoogle(email)){await signOutFn();fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
           else{proceed(email);return;}}
         else if(sessionStorage.getItem("sf-google-pending")==="1"){
           sessionStorage.removeItem("sf-google-pending");
@@ -175,7 +197,15 @@ const firebaseConfig = {
         fail("Google sign-in didn't complete. Try again or use email/password.");
       }
     }
-    if(onAuth){onAuth((u)=>{if(u&&validDomain(u.email))proceed(u.email);});}
+    if(onAuth){onAuth(async(u)=>{
+      if(!u)return;
+      if(isGoogleUser(u)){
+        if(validGoogle(u.email))proceed(u.email);
+        else{console.log("[auth] non-admin Google session rejected:",u.email);await signOutFn();fail("Google sign-in is restricted to admin accounts. Use email/password below.");}
+        return;
+      }
+      if(validDomain(u.email))proceed(u.email);
+    });}
     wireOverlay();
   }
   window.SFAuth={mount};
@@ -185,24 +215,24 @@ const firebaseConfig = {
 <!-- Dashboard: reads the prep pages' localStorage results for the signed-in user -->
 <script>
 (function(){
-  var BUILD="2026072210";
+  var BUILD="2026072211";
   var SETS=[
     { key:"aif_set1_basic_v1", tag:"BASIC", tagClass:"tag-basic",
       name:"Practice results for Basic — Set 1",
       desc:"Foundational readiness across all five AIF-C01 domains.",
-      file:"basic-prep.html", build:"2026072207", boxLabel:"Basic Set 1" },
+      file:"basic-prep.html", build:"2026072208", boxLabel:"Basic Set 1" },
     { key:"aif_set2_adv_v1", tag:"INTERMEDIATE / ADVANCED", tagClass:"tag-adv",
       name:"Practice results for Advanced — Set 2",
       desc:"Scenario-driven questions with close distractors.",
-      file:"advanced-prep-2.html", build:"2026072207", boxLabel:"Advanced Set 2" },
+      file:"advanced-prep-2.html", build:"2026072208", boxLabel:"Advanced Set 2" },
     { key:"aif_set3_expert_v1", tag:"EXPERT", tagClass:"tag-expert",
       name:"Practice results for Expert — Set 3",
       desc:"Applied ML & LLM scenarios across all five AIF-C01 domains.",
-      file:"advanced-prep-3.html", build:"2026072209", boxLabel:"Expert Set 3" },
+      file:"advanced-prep-3.html", build:"2026072210", boxLabel:"Expert Set 3" },
     { key:"aif_set4_multi_v1", tag:"MULTI-ANSWER", tagClass:"tag-multi",
       name:"Practice results for Multi-Answer — Set 4",
       desc:"Select-two / select-three scenario questions (all-or-nothing, like the real exam).",
-      file:"advanced-prep-4.html", build:"2026072215", boxLabel:"Multi-Answer Set 4" }
+      file:"advanced-prep-4.html", build:"2026072216", boxLabel:"Multi-Answer Set 4" }
   ];
   var BASE="https://sflearningdevelopment.github.io/AWS-AIF-C01-Prep/";
 
