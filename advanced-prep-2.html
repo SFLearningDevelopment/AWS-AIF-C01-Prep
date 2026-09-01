@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026072207 -->
+<!-- build: 2026072208 -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AIF-C01 Prep — Set 2 (Intermediate to Advanced)</title>
@@ -708,8 +708,11 @@ window.AIF_BANK_SET2 = [
   };
   const ALLOWED_DOMAIN = "sourcefuse.com";
   const ALLOWED_EXTRA = ["ravjv2013@gmail.com"];  // TEST ONLY — remove after testing
+  // Google SSO is restricted to these admin addresses ONLY. Everyone else signs in
+  // with email/password (that path is unchanged and still uses validDomain()).
+  const ADMIN_SSO = ["jv.ravichandran@sourcefuse.com", "noushin.khan@sourcefuse.com"];
 
-  let app, auth, GoogleProvider, signInRedirect, getRedirect, signInEmail, onAuth, signOutFn;
+  let app, auth, GoogleProvider, signInRedirect, signInPopup, getRedirect, signInEmail, onAuth, signOutFn;
   let readyCb = null;
 
   async function initFirebase() {
@@ -720,6 +723,7 @@ window.AIF_BANK_SET2 = [
     auth = authMod.getAuth(app);
     GoogleProvider = authMod.GoogleAuthProvider;
     signInRedirect = (p) => authMod.signInWithRedirect(auth, p);
+    signInPopup = (p) => authMod.signInWithPopup(auth, p);
     getRedirect = () => authMod.getRedirectResult(auth);
     signInEmail = (e, pw) => authMod.signInWithEmailAndPassword(auth, e, pw);
     onAuth = (cb) => authMod.onAuthStateChanged(auth, cb);
@@ -777,6 +781,15 @@ window.AIF_BANK_SET2 = [
     return e.endsWith("@" + ALLOWED_DOMAIN) || ALLOWED_EXTRA.includes(e);
   }
 
+  function validGoogle(email) {
+    if (typeof email !== "string") return false;
+    return ADMIN_SSO.includes(email.toLowerCase());
+  }
+  function isGoogleUser(u) {
+    try { return !!(u && u.providerData && u.providerData.some(function (p) { return p && p.providerId === "google.com"; })); }
+    catch (_) { return false; }
+  }
+
   function proceed(email) {
     const el = document.getElementById("sf-auth");
     if (el) el.remove();
@@ -787,13 +800,26 @@ window.AIF_BANK_SET2 = [
     document.getElementById("sf-google").addEventListener("click", async () => {
       fail("");
       if (!signInRedirect) return fail("Auth service not ready — Google SSO needs the deployed https host. Use email/password below.");
+      const provider = new GoogleProvider();
+      provider.setCustomParameters({ hd: ALLOWED_DOMAIN, prompt: "select_account" });
+      // Popup avoids the cross-site redirect handshake that browsers now block.
+      if (signInPopup) {
+        try {
+          console.log("[auth] starting Google popup\u2026");
+          const r = await signInPopup(provider);
+          const email = (r && r.user && r.user.email) || "";
+          console.log("[auth] popup result; user:", email);
+          if (!validGoogle(email)) { await signOutFn(); return fail("Google sign-in is restricted to admin accounts. Use email/password below."); }
+          return proceed(email);
+        } catch (err) {
+          console.log("[auth] signInWithPopup failed; code:", err && err.code, "| message:", err && err.message);
+          const blocked = err && (err.code === "auth/popup-blocked" || err.code === "auth/operation-not-supported-in-this-environment");
+          if (!blocked) return fail("Google sign-in couldn't complete. Use email/password below.");
+        }
+      }
       try {
-        const provider = new GoogleProvider();
-        provider.setCustomParameters({ hd: ALLOWED_DOMAIN, prompt: "select_account" });
-        // Redirect leaves the page and returns to it; result is picked up on load
-        // by handleRedirectResult(). This works inside the LMS iframe, unlike popup.
         try { sessionStorage.setItem("sf-google-pending", "1"); } catch (_) {}
-        console.log("[auth] starting Google redirect\u2026");
+        console.log("[auth] popup unavailable \u2014 falling back to redirect\u2026");
         await signInRedirect(provider);
       } catch (err) {
         console.log("[auth] signInWithRedirect failed; code:", err && err.code, "| message:", err && err.message);
@@ -833,7 +859,7 @@ window.AIF_BANK_SET2 = [
         console.log("[auth] getRedirectResult resolved:", res, "| user:", res && res.user && res.user.email);
         if (res && res.user) {
           const email = res.user.email;
-          if (!validDomain(email)) { await signOutFn(); fail("Please use your @sourcefuse.com account."); }
+          if (!validGoogle(email)) { await signOutFn(); fail("Google sign-in is restricted to admin accounts. Use email/password below."); }
           else { proceed(email); return; }
         }
         else if (sessionStorage.getItem("sf-google-pending") === "1") {
@@ -848,8 +874,14 @@ window.AIF_BANK_SET2 = [
     }
     // If a session already exists (redirect just completed, or prior session), skip the overlay.
     if (onAuth) {
-      onAuth((user) => {
-        if (user && validDomain(user.email)) proceed(user.email);
+      onAuth(async (user) => {
+        if (!user) return;
+        if (isGoogleUser(user)) {
+          if (validGoogle(user.email)) proceed(user.email);
+          else { console.log("[auth] non-admin Google session rejected:", user.email); await signOutFn(); fail("Google sign-in is restricted to admin accounts. Use email/password below."); }
+          return;
+        }
+        if (validDomain(user.email)) proceed(user.email);
       });
     }
     wireOverlay();
